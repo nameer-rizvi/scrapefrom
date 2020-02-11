@@ -74,7 +74,7 @@ _If there's no matching results for a search term, the function will return an e
 
 ## .custom()
 
-This method takes in a custom config object and returns data in the same way .googleNews() or .twitter() might.
+This method takes in a custom config object and returns data in the same way .googleNews() or .twitter() might. Required props include: api.url, selector.container and selector.text[child]/selector.attr[child].
 
 **WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take the config for .twitter() and form a custom one based off of it:**
 
