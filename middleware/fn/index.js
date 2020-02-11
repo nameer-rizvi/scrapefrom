@@ -1,10 +1,10 @@
-const cheerio = require("./cheerio");
+const _cheerio = require("./_cheerio");
 const convertTwitterDate = require("./convertTwitterDate");
 const log = require("./log");
 const validations = require("./validations");
 
 module.exports = {
-  cheerio,
+  _cheerio,
   convertTwitterDate,
   log,
   ...validations

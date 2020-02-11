@@ -13,7 +13,7 @@ module.exports = {
   selector: {
     container: "article",
     text: {
-      title: "h3",
+      headline: "h3",
       short: "span.xBbh9",
       source: "a.wEwyrc.AVN2gc.uQIVzc.Sksgp"
     },

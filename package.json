@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/nameer-rizvi/scrapeFrom.git"
+    "url": "git+https://github.com/nameer-rizvi/scrapefrom.git"
   },
   "keywords": [
     "webscrape",
@@ -17,9 +17,9 @@
   "author": "Nameer Rizvi (https://github.com/nameer-rizvi)",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/nameer-rizvi/scrapeFrom/issues"
+    "url": "https://github.com/nameer-rizvi/scrapefrom/issues"
   },
-  "homepage": "https://github.com/nameer-rizvi/scrapeFrom#readme",
+  "homepage": "https://github.com/nameer-rizvi/scrapefrom#readme",
   "dependencies": {
     "axios": "^0.19.2",
     "cheerio": "^1.0.0-rc.3"

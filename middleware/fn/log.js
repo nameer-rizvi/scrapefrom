@@ -1,1 +1,1 @@
-module.exports = msg => `\n🚫 [scrapeFrom.] ${msg}.\n`;
+module.exports = msg => `\n🚫 [scrapefrom] ${msg}.\n`;
