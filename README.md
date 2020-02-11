@@ -119,11 +119,9 @@ const config = {
 };
 ```
 
-**NOTE: the scraper works best on webpages that render all of the html on page load (server side rendered). A good way to check if a webpage does this is is by opening your browsers dev tools and disabling javascript before manually loading the webpage.**
-
-**How to disable javscript on Chrome: https://developers.google.com/web/tools/chrome-devtools/javascript/disable.**
+**NOTE: the scraper works best on webpages that render all of the html on page load (server side rendered). A good way to check if a webpage does this is is by [opening your browsers dev tools and disabling javascript](https://developers.google.com/web/tools/chrome-devtools/javascript/disable) before manually loading the webpage.**
 
 ## Dependencies
 
-- [axios][https://www.npmjs.com/package/axios]
-- [cheerio][https://www.npmjs.com/package/cheerio]
+- [axios](https://www.npmjs.com/package/axios)
+- [cheerio](https://www.npmjs.com/package/cheerio)
