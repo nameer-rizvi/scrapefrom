@@ -118,4 +118,6 @@ const config = {
 };
 ```
 
-**NOTE: the scraper works best on webpages that render all of the html on page load (aka. server side rendering). A good way to check if a webpage does this is by opening your browsers dev tools, disabling javascript and refreshing the page. See how to do this on Chrome: https://developers.google.com/web/tools/chrome-devtools/javascript/disable.**
+**NOTE: the scraper works best on webpages that render all of the html on page load (aka. server side rendering). A good way to check if a webpage does this is by opening your browsers dev tools, disabling javascript and refreshing the page.**
+
+**How to disable javscript on Chrome: https://developers.google.com/web/tools/chrome-devtools/javascript/disable.**
