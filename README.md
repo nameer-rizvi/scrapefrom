@@ -2,13 +2,17 @@
 
 scrapefrom is a basic webscraper that can be used to get data from any publicly accessible html webpage.
 
-It currently supports three main methods, all of which are promise-based functions: .googleNews(), .twitter(), and .custom().
+It currently supports three methods, all of which are promise-based functions:
+
+- .googleNews()
+- .twitter()
+- .custom().
 
 ## Get Started
 
 To install scrapefrom run:
 
-```javascript
+```
 $ npm i scrapefrom
 ```
 
@@ -70,41 +74,48 @@ For .twitter() the function will return an array of objects for each search term
 - time
 - link
 
-_If there's no matching results for a search term, the function will return an empty array for that search term._
+_If there are no matching results for a search term, the function will return an empty array for that search term._
 
 ## .custom()
 
-This method takes in a custom config object and returns data in the same way .googleNews() or .twitter() might. Required props include:
+This method takes in a custom config object and returns data in the same way .googleNews() or .twitter() might.
+
+Required props include:
 
 - object.api.url [string]
 - object.selector.container [string]
 - object.selector.text OR object.selector.attr
-  - object.selector.text: { [name of value]: "selector string" }
-  - object.selector.attr: { [name of value]: { selector: "string", attr: "string" } }
+  - object.selector.text: `{ [name of value]: "selector string" }`
+  - object.selector.attr: `{ [name of value]: { selector: "string", attr: "string" } }`
 
-**WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take the config for .twitter() and form a custom one based off it (otherwise, expect lots of validation messages!):**
+**WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take this sample config with all of the available properties and form a custom one based off it (otherwise, expect lots of validation messages!):**
 
 ```javascript
 module.exports = {
   api: {
-    url: "https://mobile.twitter.com/search?",
+    url: "",
     params: {
-      q: "Search term!!"
+      q: ""
     }
   },
   selector: {
-    container: "table.tweet",
+    container: "",
     text: {
-      tweet: "div.tweet-text",
-      user: "div.username",
-      time: "td.timestamp a"
+      name: "",
+      name2: ""
     },
     attr: {
-      link: {
-        selector: "span.metadata a",
-        attr: "href"
+      name: {
+        selector: "",
+        attr: ""
+      },
+      name2: {
+        selector: "",
+        attr: ""
       }
     }
   }
 };
 ```
+
+**NOTE: the scraper works best on webpages that render all of the html on page load (aka. server side rendering). A good way to check if a webpage does this is by [opening your browsers dev tools, disabling javascript][https://developers.google.com/web/tools/chrome-devtools/javascript/disable] and refreshing the page.**
