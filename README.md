@@ -57,33 +57,39 @@ scrapefrom.googleNews(["An array", "With Several", "dope search terms"]);
 
 For .googleNews() the function will return an array of objects for each search term, with each object containing an article's:
 
-- headline,
-- short,
-- source,
-- time,
-- and, link.
+- headline
+- short
+- source
+- time
+- link
 
 For .twitter() the function will return an array of objects for each search term, with each object containing a tweet's:
 
-- content,
-- user handle,
-- time,
-- and, link.
+- content
+- user handle
+- time
+- link
 
 _If there's no matching results for a search term, the function will return an empty array for that search term._
 
 ## .custom()
 
-This method takes in a custom config object and returns data in the same way .googleNews() or .twitter() might. Required props include: api.url, selector.container and selector.text[child]/selector.attr[child].
+This method takes in a custom config object and returns data in the same way .googleNews() or .twitter() might. Required props include:
 
-**WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take the config for .twitter() and form a custom one based off of it:**
+- object.api.url [string]
+- object.selector.container [string]
+- object.selector.text OR object.selector.attr
+  - object.selector.text: { [name of value]: "selector string" }
+  - object.selector.attr: { [name of value]: { selector: "string", attr: "string" } }
+
+**WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take the config for .twitter() and form a custom one based off it (otherwise, expect lots of validation messages!):**
 
 ```javascript
 module.exports = {
   api: {
     url: "https://mobile.twitter.com/search?",
     params: {
-      q: `Search term!! lang:en`
+      q: "Search term!!"
     }
   },
   selector: {
