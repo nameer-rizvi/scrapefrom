@@ -91,7 +91,7 @@ Required props include:
 **WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take this sample config with all of the available properties and form a custom one based off it (otherwise, expect lots of validation messages!):**
 
 ```javascript
-module.exports = {
+const config = {
   api: {
     url: "",
     params: {
@@ -118,4 +118,4 @@ module.exports = {
 };
 ```
 
-**NOTE: the scraper works best on webpages that render all of the html on page load (aka. server side rendering). A good way to check if a webpage does this is by [opening your browsers dev tools, disabling javascript][https://developers.google.com/web/tools/chrome-devtools/javascript/disable] and refreshing the page.**
+**NOTE: the scraper works best on webpages that render all of the html on page load (aka. server side rendering). A good way to check if a webpage does this is by opening your browsers dev tools, disabling javascript and refreshing the page. See how to do this on Chrome: https://developers.google.com/web/tools/chrome-devtools/javascript/disable.**
