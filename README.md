@@ -8,19 +8,19 @@ It currently supports three methods, all of which are promise-based functions:
 - .twitter()
 - .custom().
 
-## Get Started
+## Installation
 
-To install scrapefrom run:
+To install scrapefrom:
 
 ```
 $ npm i scrapefrom
 ```
 
-## .googleNews() & .twitter()
+## Usage: .googleNews() & .twitter()
 
 Supply a search term or a collection of search terms and handle the response or error in a .then() or .catch() function.
 
-For example:
+### Example
 
 ```javascript
 const scrapefrom = require("scrapefrom");
@@ -76,7 +76,7 @@ For .twitter() the function will return an array of objects for each search term
 
 _If there are no matching results for a search term, the function will return an empty array for that search term._
 
-## .custom()
+## Usage: .custom()
 
 This method takes in a custom config object and returns data in the same way .googleNews() or .twitter() might.
 
@@ -88,14 +88,15 @@ Required props include:
   - object.selector.text: `{ [name of value]: "selector string" }`
   - object.selector.attr: `{ [name of value]: { selector: "string", attr: "string" } }`
 
-**WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take this sample config with all of the available properties and form a custom one based off it (otherwise, expect lots of validation messages!):**
+**WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take this sample config, with all of the available properties, and form a custom one based off it (otherwise, expect lots of validation messages!):**
 
 ```javascript
 const config = {
   api: {
     url: "",
     params: {
-      q: ""
+      name: "",
+      name2: ""
     }
   },
   selector: {
@@ -118,6 +119,11 @@ const config = {
 };
 ```
 
-**NOTE: the scraper works best on webpages that render all of the html on page load (aka. server side rendering). A good way to check if a webpage does this is by opening your browsers dev tools, disabling javascript and refreshing the page.**
+**NOTE: the scraper works best on webpages that render all of the html on page load (server side rendered). A good way to check if a webpage does this is is by opening your browsers dev tools and disabling javascript before manually loading the webpage.**
 
 **How to disable javscript on Chrome: https://developers.google.com/web/tools/chrome-devtools/javascript/disable.**
+
+## Dependencies
+
+- [axios][https://www.npmjs.com/package/axios]
+- [cheerio][https://www.npmjs.com/package/cheerio]
