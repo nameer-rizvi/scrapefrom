@@ -18,7 +18,7 @@ module.exports = ({ html, container, text, attr }) => {
             .find(text[key])
             .text();
 
-          obj[key] = textText && textText.replace(/\s+/g, " ").trim();
+          textText && (obj[key] = textText.replace(/\s+/g, " ").trim());
         });
 
       !isObjectEmpty(attr) &&
@@ -26,16 +26,22 @@ module.exports = ({ html, container, text, attr }) => {
           const el = attr[key];
 
           !isObjectEmpty(el) &&
+            !isStringEmpty(el.selector) &&
+            !isStringEmpty(el.attr) &&
             (() => {
               const attrFind = $(child).find(el.selector);
               const attrAttr = attrFind && attrFind.attr(el.attr);
 
-              obj[key] = attrAttr && attrAttr.replace(/\s+/g, " ").trim();
+              attrAttr && (obj[key] = attrAttr.replace(/\s+/g, " ").trim());
             })();
         });
 
       collection.push(obj);
     });
+
+  collection = collection.filter(obj => {
+    return !isObjectEmpty(obj);
+  });
 
   return collection;
 };

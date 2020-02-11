@@ -1,6 +1,5 @@
 const {
   log,
-  exists,
   isArray,
   isString,
   isStringEmpty,
@@ -14,7 +13,7 @@ module.exports = search => {
     const searchString = isString(search);
     const searchArray = isArray(search);
 
-    !exists(search) && error("Missing search");
+    !search && error("Missing search");
 
     !searchString &&
       !searchArray &&
@@ -26,18 +25,17 @@ module.exports = search => {
       isArrayEmpty(search) &&
       error("Array of search terms is empty");
 
-    var formattedSearch = searchString
-      ? search.split(",").map(term => term.trim())
-      : searchArray
-      ? search
-      : [];
+    const arr = searchString ? search.split(",") : searchArray ? search : [];
 
-    formattedSearch = formattedSearch.filter(term => {
-      return isString(term) && term.trim();
-    });
+    var filtered = [];
 
-    isArrayEmpty(formattedSearch)
+    !isArrayEmpty(arr) &&
+      arr.forEach(term => {
+        return !isStringEmpty(term) && filtered.push(term.trim());
+      });
+
+    isArrayEmpty(filtered)
       ? error("All search terms are empty or blank")
-      : resolve(formattedSearch);
+      : resolve(filtered);
   });
 };

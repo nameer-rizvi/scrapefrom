@@ -11,6 +11,6 @@ module.exports = ({ url, params }) => {
           ? resolve(res.data)
           : reject(log("url GET response is not a string"));
       })
-      .catch(err => reject(err));
+      .catch(err => reject(err.message));
   });
 };

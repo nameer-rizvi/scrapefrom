@@ -17,6 +17,6 @@ module.exports = (searchTerms, api) => {
           resolve({ htmls, searchTerms });
         })
       )
-      .catch(err => reject(err));
+      .catch(err => reject(err.message));
   });
 };

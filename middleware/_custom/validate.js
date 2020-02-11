@@ -1,6 +1,5 @@
 const {
   log,
-  exists,
   isObject,
   isString,
   isStringEmpty,
@@ -13,37 +12,39 @@ module.exports = customConfig => {
   return new Promise((resolve, reject) => {
     const error = msg => reject(log(msg));
 
-    !exists(customConfig) && error("Custom config object is required");
+    !customConfig && error("Custom config object is required");
 
     !isObject(customConfig) && error("Custom config must be an object");
 
     const { api } = customConfig;
 
-    !exists(api) && error("Custom config requires an api object with a url");
+    !api && error("Custom config requires an api object with a url");
 
     !isObject(api) && error("Custom config api must be an object");
 
     const { url, params } = api;
 
-    !exists(url) && error("Custom config api requires a url");
+    !url && error("Custom config api requires a url");
 
     !isString(url) && error("Custom config api url must be a string");
 
     isStringEmpty(url) &&
       error("Custom config api url can't be an empty string");
 
-    exists(params) &&
+    params &&
       (() => {
         !isObject(params) &&
           error("Custom config api params must be an object");
 
         !areObjectValuesAllStrings(params) &&
-          error("Custom config api params values must all be strings");
+          error(
+            "Custom config api params values must all be strings with values"
+          );
       })();
 
     const { selector } = customConfig;
 
-    !exists(selector) &&
+    !selector &&
       error(
         "Custom config requires a selector object with a container string and a text and/or attr object"
       );
@@ -52,8 +53,7 @@ module.exports = customConfig => {
 
     const { container, text, attr } = selector;
 
-    !exists(container) &&
-      error("Custom config selector requires a container string");
+    !container && error("Custom config selector requires a container string");
 
     !isString(container) &&
       error("Custom config selector container must be a string");
@@ -61,11 +61,11 @@ module.exports = customConfig => {
     isStringEmpty(container) &&
       error("Custom config selector container must not be an empty string");
 
-    !exists(text) &&
-      !exists(attr) &&
+    !text &&
+      !attr &&
       error("Custom config selector requires a text and/or attr object");
 
-    exists(text) &&
+    text &&
       (() => {
         !isObject(text) &&
           error("Custom config selector text must be an object");
@@ -75,11 +75,11 @@ module.exports = customConfig => {
 
         !areObjectValuesAllStrings(text) &&
           error(
-            "Custom config selector text object values must all be strings"
+            "Custom config selector text object values must all be strings with values"
           );
       })();
 
-    exists(attr) &&
+    attr &&
       (() => {
         !isObject(attr) &&
           error("Custom config selector attr must be an object");
