@@ -4,8 +4,7 @@ const {
   isArray,
   isString,
   isStringEmpty,
-  isArrayEmpty,
-  areArrayValuesAllStrings
+  isArrayEmpty
 } = require("./fn/index");
 
 module.exports = search => {
@@ -21,20 +20,20 @@ module.exports = search => {
       !searchArray &&
       error("Search must be a string or an array of strings");
 
-    searchString && isStringEmpty(searchString) && error("Search is blank");
+    searchString && isStringEmpty(search) && error("Search is blank");
 
     searchArray &&
-      isArrayEmpty(searchArray) &&
+      isArrayEmpty(search) &&
       error("Array of search terms is empty");
 
     var formattedSearch = searchString
-      ? search.split(",")
+      ? search.split(",").map(term => term.trim())
       : searchArray
       ? search
       : [];
 
     formattedSearch = formattedSearch.filter(term => {
-      return !isStringEmpty(term);
+      return isString(term) && term.trim();
     });
 
     isArrayEmpty(formattedSearch)

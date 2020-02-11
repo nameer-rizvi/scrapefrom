@@ -3,30 +3,35 @@ const cheerio = require("cheerio");
 const { isStringEmpty, isObjectEmpty } = require("./validations");
 
 module.exports = ({ html, container, text, attr }) => {
-  const $ = cheerio.load(html);
-
   var collection = [];
 
-  container &&
+  const $ = !isStringEmpty(html) && cheerio.load(html);
+
+  $ &&
+    !isStringEmpty(container) &&
     $(container).each((index, child) => {
       const obj = {};
 
-      text &&
+      !isObjectEmpty(text) &&
         Object.keys(text).map(key => {
-          obj[key] = $(child)
+          const textText = $(child)
             .find(text[key])
-            .text()
-            .replace(/\s+/g, " ")
-            .trim();
+            .text();
+
+          obj[key] = textText && textText.replace(/\s+/g, " ").trim();
         });
 
-      attr &&
+      !isObjectEmpty(attr) &&
         Object.keys(attr).map(key => {
-          obj[key] = $(child)
-            .find(attr[key].selector)
-            .attr(attr[key].attr)
-            .replace(/\s+/g, " ")
-            .trim();
+          const el = attr[key];
+
+          !isObjectEmpty(el) &&
+            (() => {
+              const attrFind = $(child).find(el.selector);
+              const attrAttr = attrFind && attrFind.attr(el.attr);
+
+              obj[key] = attrAttr && attrAttr.replace(/\s+/g, " ").trim();
+            })();
         });
 
       collection.push(obj);
