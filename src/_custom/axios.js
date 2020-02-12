@@ -1,6 +1,6 @@
 const axios = require("axios");
 
-const { log, isString } = require("../fn/index");
+const { log, isString } = require("../shared/index");
 
 module.exports = ({ url, params }) => {
   return new Promise((resolve, reject) => {

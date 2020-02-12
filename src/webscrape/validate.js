@@ -4,7 +4,7 @@ const {
   isString,
   isStringEmpty,
   isArrayEmpty
-} = require("./fn/index");
+} = require("../shared/index");
 
 module.exports = search => {
   return new Promise((resolve, reject) => {

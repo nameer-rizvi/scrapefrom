@@ -1,13 +1,11 @@
-const config = require("./config/index");
-
-const { webscrape, _custom } = require("./middleware/index");
+const { webscrape, _custom } = require("./src/index");
 
 exports.googleNews = search => {
-  return webscrape(search, config.googleNews);
+  return webscrape(search, "googleNews");
 };
 
 exports.twitter = search => {
-  return webscrape(search, config.twitter);
+  return webscrape(search, "twitter");
 };
 
 exports.custom = customConfig => {

@@ -6,7 +6,7 @@ const {
   isObjectEmpty,
   areObjectValuesAllStrings,
   areObjectValuesAllObjects
-} = require("../fn/index");
+} = require("../shared/index");
 
 module.exports = customConfig => {
   return new Promise((resolve, reject) => {
