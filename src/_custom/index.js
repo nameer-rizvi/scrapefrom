@@ -3,6 +3,11 @@ const axios = require("./axios");
 const { cheerio } = require("../shared/index");
 
 module.exports = customConfig => {
+  // Not declaring customConfig constants
+  // here since customConfig hasn't been
+  // validated yet to make sure it contains
+  // all the required props.
+
   return new Promise((resolve, reject) => {
     validate(customConfig)
       .then(() => {
