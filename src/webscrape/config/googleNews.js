@@ -1,8 +1,10 @@
+const { isNumber } = require("../../shared/index");
+
 module.exports = {
   api: {
     url: "https://news.google.com/search",
     params: (search, age) => {
-      const when = age && !isNaN(age) ? ` when:${age}d` : "";
+      const when = isNumber(age) ? ` when:${age}d` : "";
       return {
         q: `${search}${when}`,
         hl: "en-US",

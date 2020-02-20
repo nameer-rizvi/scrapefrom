@@ -1,4 +1,5 @@
 module.exports = {
+  isNumber: test => Boolean(test && !isNaN(test)),
   isArray: test => Boolean(test && test.constructor === Array),
   isString: test => Boolean(test && test.constructor === String),
   isObject: test => Boolean(test && test.constructor === Object),
