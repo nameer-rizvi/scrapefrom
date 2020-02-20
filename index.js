@@ -1,11 +1,11 @@
 const { webscrape, _custom } = require("./src/index");
 
-exports.googleNews = search => {
-  return webscrape(search, "googleNews");
+exports.googleNews = (search, age) => {
+  return webscrape("googleNews", search, age);
 };
 
-exports.twitter = search => {
-  return webscrape(search, "twitter");
+exports.twitter = (search, age) => {
+  return webscrape("twitter", search, age);
 };
 
 exports.custom = customConfig => {

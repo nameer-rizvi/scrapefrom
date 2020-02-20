@@ -1,9 +1,13 @@
+const ageParam = require("./ageParam");
+const convertTime = require("./convertTime");
+
 module.exports = {
   api: {
     url: "https://mobile.twitter.com/search?",
-    params: search => {
+    params: (search, age) => {
       return {
-        q: `${search} lang:en`
+        q: `${search} lang:en${ageParam(age)}`,
+        s: "typd"
       };
     }
   },
@@ -20,5 +24,6 @@ module.exports = {
         attr: "href"
       }
     }
-  }
+  },
+  convertTime
 };

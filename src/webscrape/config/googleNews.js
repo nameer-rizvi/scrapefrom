@@ -1,9 +1,10 @@
 module.exports = {
   api: {
     url: "https://news.google.com/search",
-    params: search => {
+    params: (search, age) => {
+      const when = age && !isNaN(age) ? ` when:${age}d` : "";
       return {
-        q: `${search}`,
+        q: `${search}${when}`,
         hl: "en-US",
         gl: "US",
         ceid: "US:en"
@@ -27,5 +28,6 @@ module.exports = {
         attr: "href"
       }
     }
-  }
+  },
+  convertTime: time => time && new Date(time).getTime()
 };

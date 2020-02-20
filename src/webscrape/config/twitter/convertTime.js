@@ -14,13 +14,11 @@ module.exports = timestampText => {
             ? num * 3600000
             : num;
 
-        const time = new Date().getTime() - num;
-
-        return time;
+        return new Date().getTime() - num;
       })()
     : (() => {
         const currentYear = new Date().getFullYear();
 
-        return new Date(`${timestampText} ${currentYear}`);
+        return new Date(`${timestampText} ${currentYear}`).getTime();
       })();
 };

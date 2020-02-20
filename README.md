@@ -33,9 +33,11 @@ scrapefrom
   .catch(err => console.log(err));
 ```
 
-### Search term(s)
+### Search term(s) and age
 
-Both methods accept one param:
+Both methods accept two params, search and age.
+
+The first param is the search, and it is required. It can either be:
 
 - A string (can be comma separated):
 
@@ -56,6 +58,8 @@ scrapefrom.googleNews(["An array with a single interesting search term"]);
 ```javascript
 scrapefrom.googleNews(["An array", "With Several", "dope search terms"]);
 ```
+
+The second param is the age, and it is optional. It's used to limit search results to within a number of days previous to your current time.
 
 ### Response data
 

@@ -1,9 +1,9 @@
 const axios = require("axios");
 const { cheerio } = require("../shared/index");
 
-module.exports = (searchTerms, { api, selector }) => {
+module.exports = (searchTerms, age, api, selector) => {
   const getSearchTerms = searchTerms.map(searchTerm => {
-    return axios.get(api.url, { params: api.params(searchTerm) });
+    return axios.get(api.url, { params: api.params(searchTerm, age) });
   });
 
   return new Promise((resolve, reject) => {
