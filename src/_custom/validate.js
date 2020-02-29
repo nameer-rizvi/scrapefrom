@@ -8,8 +8,8 @@ const {
   areObjectValuesAllObjects
 } = require("../shared/index");
 
-module.exports = customConfig => {
-  return new Promise((resolve, reject) => {
+module.exports = customConfig =>
+  new Promise((resolve, reject) => {
     const error = msg => reject(log(msg));
 
     !customConfig && error("Custom config object is required");
@@ -104,9 +104,7 @@ module.exports = customConfig => {
             "Custom config selector attr objects can't be empty and must contain string values for selector and attr"
           );
 
-        !Object.keys(attr).every(key => {
-          return areObjectValuesAllStrings(attr[key]);
-        }) &&
+        !Object.keys(attr).every(key => areObjectValuesAllStrings(attr[key])) &&
           error(
             "Custom config selector attr objects can't be empty and must only contain string values for selector and attr"
           );
@@ -114,4 +112,3 @@ module.exports = customConfig => {
 
     resolve();
   });
-};

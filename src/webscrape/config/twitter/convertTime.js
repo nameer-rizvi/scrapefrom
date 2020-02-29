@@ -1,5 +1,5 @@
-module.exports = timestampText => {
-  return timestampText.split(" ").length === 1
+module.exports = timestampText =>
+  timestampText.split(" ").length === 1
     ? (() => {
         const split = timestampText.match(/[a-z]+|[^a-z]+/gi);
 
@@ -21,4 +21,3 @@ module.exports = timestampText => {
 
         return new Date(`${timestampText} ${currentYear}`).getTime();
       })();
-};

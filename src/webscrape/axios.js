@@ -2,18 +2,16 @@ const axios = require("axios");
 const { cheerio } = require("../shared/index");
 
 module.exports = (searchTerms, age, api, selector) => {
-  const getSearchTerms = searchTerms.map(searchTerm => {
-    return axios.get(api.url, { params: api.params(searchTerm, age) });
-  });
+  const getSearchTerms = searchTerms.map(searchTerm =>
+    axios.get(api.url, { params: api.params(searchTerm, age) })
+  );
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) =>
     axios
       .all(getSearchTerms)
       .then(
         axios.spread((...responses) => {
-          const htmls = responses.map(response => {
-            return response.data;
-          });
+          const htmls = responses.map(response => response.data);
 
           const data = {};
 
@@ -31,6 +29,6 @@ module.exports = (searchTerms, age, api, selector) => {
           resolve(data);
         })
       )
-      .catch(err => reject(err.message));
-  });
+      .catch(err => reject(err.message))
+  );
 };

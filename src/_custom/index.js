@@ -2,17 +2,15 @@ const validate = require("./validate");
 const axios = require("./axios");
 const { cheerio } = require("../shared/index");
 
-module.exports = customConfig => {
-  // Not declaring customConfig constants
-  // here since customConfig hasn't been
-  // validated yet to make sure it contains
-  // all the required props.
+// Not declaring customConfig constants
+// here since customConfig hasn't been
+// validated yet to make sure it contains
+// all the required props.
 
-  return new Promise((resolve, reject) => {
+module.exports = customConfig =>
+  new Promise((resolve, reject) =>
     validate(customConfig)
-      .then(() => {
-        return axios(customConfig.api);
-      })
+      .then(() => axios(customConfig.api))
       .then(html => {
         const {
           selector: { container, text, attr }
@@ -22,6 +20,5 @@ module.exports = customConfig => {
 
         resolve(data);
       })
-      .catch(err => reject(err));
-  });
-};
+      .catch(err => reject(err))
+  );

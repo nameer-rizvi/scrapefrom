@@ -6,17 +6,13 @@ const timestamps = require("./timestamps");
 module.exports = (site, search, age) => {
   const { api, selector, convertTime } = config[site];
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) =>
     validate(search)
-      .then(validatedSearch => {
-        return axios(validatedSearch, age, api, selector);
-      })
+      .then(validatedSearch => axios(validatedSearch, age, api, selector))
       .then(data => {
         timestamps(data, convertTime);
         resolve(data);
       })
-      .catch(err => {
-        reject(err);
-      });
-  });
+      .catch(err => reject(err))
+  );
 };

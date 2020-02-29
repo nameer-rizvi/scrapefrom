@@ -6,8 +6,8 @@ const {
   isArrayEmpty
 } = require("../shared/index");
 
-module.exports = search => {
-  return new Promise((resolve, reject) => {
+module.exports = search =>
+  new Promise((resolve, reject) => {
     const error = msg => reject(log(msg));
 
     const searchString = isString(search);
@@ -30,12 +30,9 @@ module.exports = search => {
     var filtered = [];
 
     !isArrayEmpty(arr) &&
-      arr.forEach(term => {
-        return !isStringEmpty(term) && filtered.push(term.trim());
-      });
+      arr.forEach(term => !isStringEmpty(term) && filtered.push(term.trim()));
 
     isArrayEmpty(filtered)
       ? error("All search terms are empty or blank")
       : resolve(filtered);
   });
-};

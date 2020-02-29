@@ -39,9 +39,7 @@ module.exports = ({ html, container, text, attr }) => {
       collection.push(obj);
     });
 
-  collection = collection.filter(obj => {
-    return !isObjectEmpty(obj);
-  });
+  collection = collection.filter(obj => !isObjectEmpty(obj));
 
   return collection;
 };
