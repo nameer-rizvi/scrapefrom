@@ -1,4 +1,10 @@
-const webscrape = require("./webscrape/index");
-const _custom = require("./_custom/index");
+const validate = require("./validate/index");
+const scraper = require("./scraper");
 
-module.exports = { webscrape, _custom };
+module.exports = (config) =>
+  new Promise((resolve, reject) =>
+    validate(config)
+      .then(scraper)
+      .then(resolve)
+      .catch((err) => reject(`🚫 [scrapefrom] ${err}.`))
+  );
