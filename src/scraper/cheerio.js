@@ -16,9 +16,7 @@ module.exports = (html, container, text, attr) => {
             .find(text[key])
             .contents()
             .toArray()
-            .map((element) =>
-              element.type === "text" ? cheerio(element).text() : null
-            )
+            .map((element) => cheerio(element).text())
             .filter(isStringValid)
             .join(" ");
           textContent && (_data[key] = textContent.replace(/\s+/g, " ").trim());
