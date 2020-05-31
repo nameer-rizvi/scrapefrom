@@ -1,8 +1,8 @@
 const {
   isString,
-  isStringEmpty,
+  isStringValid,
   isObject,
-  isObjectEmpty,
+  isObjectValid,
   areObjectValuesAllStrings,
   areObjectValuesAllObjects,
 } = require("./utils");
@@ -16,13 +16,13 @@ module.exports = (configObject, error) => {
     const { url, params } = api;
     !url && error("config.api.url is null or undefined");
     !isString(url) && error("config.api.url must be a string");
-    isStringEmpty(url) && error("config.api.url is an empty string");
+    !isStringValid(url) && error("config.api.url is an empty string");
     params && !isObject(params) && error("config.api.params must be an object");
   };
 
   const validateText = (text) => {
     !isObject(text) && error("config.selector.text must be an object");
-    isObjectEmpty(text) && error("config.selector.text is an empty object");
+    !isObjectValid(text) && error("config.selector.text is an empty object");
     !areObjectValuesAllStrings(text) &&
       error(
         "config.selector.text object values must all be strings with values"
@@ -31,7 +31,7 @@ module.exports = (configObject, error) => {
 
   const validateAttr = (attr) => {
     !isObject(attr) && error("config.selector.attr must be an object");
-    isObjectEmpty(attr) && error("config.selector.attr is an empty object");
+    !isObjectValid(attr) && error("config.selector.attr is an empty object");
     !areObjectValuesAllObjects(attr) &&
       error(
         "config.selector.attr must contain named objects with 'selector' and 'attr' properties"
@@ -57,7 +57,7 @@ module.exports = (configObject, error) => {
     const { container, text, attr } = selector;
     !container && error("config.selector.container is null or undefined");
     !isString(container) && error("config.selector.container must be a string");
-    isStringEmpty(container) &&
+    !isStringValid(container) &&
       error("config.selector.container is an empty string");
     !text &&
       !attr &&
@@ -67,6 +67,5 @@ module.exports = (configObject, error) => {
   };
 
   validateApi();
-
   validateSelector();
 };

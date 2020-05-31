@@ -1,21 +1,27 @@
 const cheerio = require("cheerio");
 
-const { isStringEmpty, isObjectEmpty } = require("../validate/utils");
+const { isStringValid, isObjectValid } = require("../validate/utils");
 
 module.exports = (html, container, text, attr) => {
   var data = [];
 
-  const $ = !isStringEmpty(html) && cheerio.load(html);
+  const $ = isStringValid(html) && cheerio.load(html);
 
   const scrapeHTML = () =>
     $(container).each((index, child) => {
-      const obj = {};
+      const _data = {};
       const scrapeText = () =>
         Object.keys(text).map((key) => {
           const textContent = $(child)
             .find(text[key])
-            .text();
-          textContent && (obj[key] = textContent.replace(/\s+/g, " ").trim());
+            .contents()
+            .toArray()
+            .map((element) =>
+              element.type === "text" ? cheerio(element).text() : null
+            )
+            .filter(isStringValid)
+            .join(" ");
+          textContent && (_data[key] = textContent.replace(/\s+/g, " ").trim());
         });
       const scrapeAttr = () =>
         Object.keys(attr).map((key) => {
@@ -23,21 +29,22 @@ module.exports = (html, container, text, attr) => {
           const findAndAddAttr = () => {
             const attrFind = $(child).find(el.selector);
             const attrContent = attrFind && attrFind.attr(el.attr);
-            attrContent && (obj[key] = attrContent.replace(/\s+/g, " ").trim());
+            attrContent &&
+              (_data[key] = attrContent.replace(/\s+/g, " ").trim());
           };
-          !isObjectEmpty(el) &&
-            !isStringEmpty(el.selector) &&
-            !isStringEmpty(el.attr) &&
+          isObjectValid(el) &&
+            isStringValid(el.selector) &&
+            isStringValid(el.attr) &&
             findAndAddAttr();
         });
-      !isObjectEmpty(text) && scrapeText();
-      !isObjectEmpty(attr) && scrapeAttr();
-      data.push(obj);
+      isObjectValid(text) && scrapeText();
+      isObjectValid(attr) && scrapeAttr();
+      data.push(_data);
     });
 
-  $ && !isStringEmpty(container) && scrapeHTML();
+  $ && isStringValid(container) && scrapeHTML();
 
-  data = data.filter((i) => !isObjectEmpty(i));
+  data = data.filter(isObjectValid);
 
   return data;
 };
