@@ -8,7 +8,7 @@ const {
 } = require("./utils");
 
 module.exports = (configObject, error) => {
-  const { api, selector } = configObject;
+  const { api, selector, structured } = configObject;
 
   const validateApi = () => {
     !api && error("config.api is null or undefined");
@@ -66,6 +66,24 @@ module.exports = (configObject, error) => {
     attr && validateAttr(attr);
   };
 
+  const validateStructured = () => {
+    !structured && error("config.structured is null or undefined");
+    !isObject(structured) && error("config.structured must be an object");
+    const { type, mapper } = structured;
+    !type && error("config.structured.type is null or undefined");
+    !isString(type) && error("config.structured.type must be a string");
+    !isStringValid(type) && error("config.structured.type is an empty string");
+    !mapper && error("config.structured.mapper is null or underined");
+    !isObject(mapper) && error("config.structured.mapper must be an object");
+    !isObjectValid(mapper) &&
+      error("config.structured.mapper is an empty object");
+    !areObjectValuesAllStrings(mapper) &&
+      error(
+        "config.structured.mapper object values must all be strings with values"
+      );
+  };
+
   validateApi();
-  validateSelector();
+  !structured && validateSelector();
+  !selector && validateStructured();
 };

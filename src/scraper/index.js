@@ -1,8 +1,8 @@
 const axios = require("axios");
-const cheerio = require("./cheerio");
+const cheerioSelector = require("./cheerioSelector");
 const cheerioStructured = require("./cheerioStructured");
 
-module.exports = ({ config, structuredDataConfig }) =>
+module.exports = (config) =>
   new Promise((resolve, reject) => {
     const configs =
       config.constructor === Array
@@ -17,9 +17,13 @@ module.exports = ({ config, structuredDataConfig }) =>
 
     const handleResponses = (responses) => {
       const data = responses.map((response, index) =>
-        structuredDataConfig
-          ? cheerioStructured(response.data, configs[index])
-          : cheerio(response.data, configs[index].selector)
+        configs[index]
+          ? configs[index].structured
+            ? cheerioStructured(response.data, configs[index].structured)
+            : configs[index].selector
+            ? cheerioSelector(response.data, configs[index].selector)
+            : []
+          : []
       );
       resolve(data);
     };
