@@ -2,7 +2,7 @@ const cheerio = require("cheerio");
 
 const { isStringValid, isObjectValid } = require("../validate/utils");
 
-module.exports = (html, container, text, attr) => {
+module.exports = (html, { container, text, attr }) => {
   var data = [];
 
   const $ = isStringValid(html) && cheerio.load(html);
