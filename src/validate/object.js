@@ -52,18 +52,18 @@ module.exports = (configObject, error) => {
   };
 
   const validateSelector = () => {
-    !selector && error("config.selector is null or undefined");
-    !isObject(selector) && error("config.selector must be an object");
-    const { container, text, attr } = selector;
-    !container && error("config.selector.container is null or undefined");
-    !isString(container) && error("config.selector.container must be a string");
-    !isStringValid(container) &&
-      error("config.selector.container is an empty string");
-    !text &&
-      !attr &&
-      error("config.selector requires a 'text' and/or 'attr' property");
-    text && validateText(text);
-    attr && validateAttr(attr);
+    // !selector && error("config.selector is null or undefined");
+    // !isObject(selector) && error("config.selector must be an object");
+    // const { container, text, attr } = selector;
+    // !container && error("config.selector.container is null or undefined");
+    // !isString(container) && error("config.selector.container must be a string");
+    // !isStringValid(container) &&
+    //   error("config.selector.container is an empty string");
+    // !text &&
+    //   !attr &&
+    //   error("config.selector requires a 'text' and/or 'attr' property");
+    // text && validateText(text);
+    // attr && validateAttr(attr);
   };
 
   validateApi();

@@ -1,7 +1,8 @@
 const axios = require("axios");
 const cheerio = require("./cheerio");
+const structuredDataScraper = require("./structuredData")
 
-module.exports = (config) =>
+module.exports = (config, structuredData=false) =>
   new Promise((resolve, reject) => {
     const configs =
       config.constructor === Array
@@ -16,6 +17,7 @@ module.exports = (config) =>
 
     const handleResponses = (responses) => {
       const data = responses.map((response, index) => {
+        if(structuredData) return structuredDataScraper(response.data, configs[index])
         const { container, text, attr } = configs[index].selector;
         return cheerio(response.data, container, text, attr);
       });
