@@ -31,7 +31,25 @@ const yahooFinanceConfig = {
   },
 };
 
-scrapefrom(yahooFinanceConfig)
+const capitalPrideConfig = {
+  api: {
+    url: "https://www.capitalpride.org/events-365/",
+  },
+  structured: {
+    type: "Event",
+    mapper: {
+      type: "@type",
+      title: "name",
+      description: "description",
+      date: "startDate",
+      link: "url",
+      price: "offers.price",
+      img: "image",
+    },
+  },
+};
+
+scrapefrom([yahooFinanceConfig, capitalPrideConfig])
   .then((data) => console.log(data))
   .catch((err) => console.log(err));
 ```
@@ -79,6 +97,6 @@ const config = {
 };
 ```
 
-[Folder containing some sample configs for google news, twitter or yahoo finance.](https://github.com/nameer-rizvi/scrapefrom/tree/master/src/samples)
+[Folder containing some sample configs for google news, twitter, yahoo finance and capital pride (for structured data).](https://github.com/nameer-rizvi/scrapefrom/tree/master/src/samples)
 
 **NOTE: the scraper works best on webpages that render all of the html on page load (server side rendered). A good way to check if a webpage does this is is by [opening your browsers dev tools and disabling javascript](https://developers.google.com/web/tools/chrome-devtools/javascript/disable) before manually loading the webpage.**

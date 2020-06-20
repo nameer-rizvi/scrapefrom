@@ -1,6 +1,6 @@
 {
   "name": "scrapefrom",
-  "version": "2.0.4",
+  "version": "2.0.5",
   "description": "Webscrape Google News, Twitter or any site using a custom config object.",
   "main": "src/index.js",
   "scripts": {
@@ -12,7 +12,10 @@
   },
   "keywords": [
     "webscrape",
-    "webscraper"
+    "webscraper",
+    "html",
+    "data",
+    "structured data"
   ],
   "author": "Nameer Rizvi (https://github.com/nameer-rizvi)",
   "license": "ISC",
