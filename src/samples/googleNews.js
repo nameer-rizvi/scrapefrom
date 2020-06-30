@@ -1,4 +1,4 @@
-const googleNewsConfig = {
+const googleNewsConfig = (search) => ({
   api: {
     url: "https://news.google.com/search",
     params: {
@@ -26,4 +26,6 @@ const googleNewsConfig = {
       },
     },
   },
-};
+});
+
+module.exports = googleNewsConfig;

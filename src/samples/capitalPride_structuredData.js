@@ -15,3 +15,5 @@ const capitalPrideConfig = {
     },
   },
 };
+
+module.exports = capitalPrideConfig;

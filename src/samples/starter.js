@@ -24,3 +24,5 @@ const starterConfig = {
     },
   },
 };
+
+module.exports = starterConfig;

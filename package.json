@@ -4,7 +4,9 @@
   "description": "Webscrape Google News, Twitter or any site using a custom config object.",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --verbose"
+    "test": "jest --verbose",
+    "lint": "eslint . --ext .js,.jsx; exit 0",
+    "sandbox": "node src/sandbox.js"
   },
   "repository": {
     "type": "git",
@@ -28,6 +30,7 @@
     "cheerio": "^1.0.0-rc.3"
   },
   "devDependencies": {
+    "eslint": "^7.3.1",
     "jest": "^26.0.1"
   }
 }

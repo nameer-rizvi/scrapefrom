@@ -1,4 +1,4 @@
-const validate = require("./validate/index");
+const validate = require("./validate");
 const scraper = require("./scraper");
 
 module.exports = (config) =>
@@ -6,5 +6,5 @@ module.exports = (config) =>
     validate(config)
       .then(scraper)
       .then(resolve)
-      .catch((err) => reject(`🚫 [scrapefrom] ${err}.`))
+      .catch((err) => reject(`[scrapefrom] ${err}.`))
   );

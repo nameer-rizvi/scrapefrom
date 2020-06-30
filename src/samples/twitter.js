@@ -1,4 +1,4 @@
-const twitterConfig = {
+const twitterConfig = (search) => ({
   api: {
     url: "https://mobile.twitter.com/search?",
     params: {
@@ -20,4 +20,6 @@ const twitterConfig = {
       },
     },
   },
-};
+});
+
+module.exports = twitterConfig;

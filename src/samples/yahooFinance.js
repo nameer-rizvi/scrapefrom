@@ -11,3 +11,5 @@ const yahooFinanceConfig = {
     },
   },
 };
+
+module.exports = yahooFinanceConfig;

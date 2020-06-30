@@ -51,19 +51,33 @@ module.exports = (configObject, error) => {
       error("config.selector.attr objects must contain string values");
   };
 
-  const validateSelector = () => {
-    !selector && error("config.selector is null or undefined");
-    !isObject(selector) && error("config.selector must be an object");
-    const { container, text, attr } = selector;
-    !container && error("config.selector.container is null or undefined");
-    !isString(container) && error("config.selector.container must be a string");
+  // const validateFollow = (follow) => {
+  //   !isObject(follow) && error("config.selector.follow must be an object");
+  //   !isObjectValid(follow) &&
+  //     error("config.selector.follow is an empty object");
+  //   const { href, selector: followSelector } = follow;
+  //   !href && error("config.selector.follow.href is null or undefined");
+  //   !isString(href) && error("config.selector.follow.href must be a string");
+  //   !isStringValid(href) &&
+  //     error("config.selector.follow.href is an empty string");
+  //   validateSelector(followSelector, "config.selector.follow.selector");
+  // };
+
+  const validateSelector = (_selector, source) => {
+    !_selector && error(`${source} is null or undefined`);
+    !isObject(_selector) && error(`${source} must be an object`);
+    const { container, text, attr, follow } = _selector;
+    !container && error(`${source}.container is null or undefined`);
+    !isString(container) && error(`${source}.container must be a string`);
     !isStringValid(container) &&
-      error("config.selector.container is an empty string");
+      error(`${source}.container is an empty string`);
     !text &&
       !attr &&
-      error("config.selector requires a 'text' and/or 'attr' property");
+      // !follow &&
+      error(`${source} requires a 'text' and/or 'attr' propery`);
     text && validateText(text);
     attr && validateAttr(attr);
+    // follow && validateFollow(follow);
   };
 
   const validateStructured = () => {
@@ -84,6 +98,6 @@ module.exports = (configObject, error) => {
   };
 
   validateApi();
-  !structured && validateSelector();
+  !structured && validateSelector(selector, "config.selector");
   !selector && validateStructured();
 };
