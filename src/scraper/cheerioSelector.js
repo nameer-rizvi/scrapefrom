@@ -46,3 +46,27 @@ module.exports = (html, { container, text, attr }) => {
 
   return data;
 };
+
+// WIP, adding follow config for next round of scraping.
+//
+// const scrapeFollow = () => {
+//   const followSelector =
+//     follow && follow.api && follow.api.url && follow.api.url.selector;
+//   const followAttr =
+//     follow && follow.api && follow.api.url && follow.api.url.attr;
+//   const findAndAddFollowURL = () => {
+//     const followFind = $(child).find(followSelector);
+//     const followContent = followFind && followFind.attr(followAttr);
+//     followContent &&
+//       (_data.follow = {
+//         ...follow,
+//         api: {
+//           ...follow.api,
+//           url: followContent.replace(/\s+/g, " ").trim(),
+//         },
+//       });
+//   };
+//   isStringValid(followSelector) &&
+//     isStringValid(followAttr) &&
+//     findAndAddFollowURL();
+// };
