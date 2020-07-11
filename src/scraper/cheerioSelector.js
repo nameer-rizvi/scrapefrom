@@ -1,6 +1,11 @@
 const cheerio = require("cheerio");
 
-const { isStringValid, isObjectValid } = require("../validate/utils");
+const {
+  isStringValid,
+  isObjectValid,
+  isString,
+  isObject,
+} = require("../validate/utils");
 
 module.exports = (html, { container, text, attr }) => {
   var data = [];
@@ -12,14 +17,25 @@ module.exports = (html, { container, text, attr }) => {
       const _data = {};
       const scrapeText = () =>
         Object.keys(text).map((key) => {
-          const textContent = $(child)
-            .find(text[key])
-            .contents()
-            .toArray()
-            .map((element) => cheerio(element).text())
-            .filter(isStringValid)
-            .join(" ");
-          textContent && (_data[key] = textContent.replace(/\s+/g, " ").trim());
+          const findTextKey = isString(text[key])
+            ? text[key]
+            : isObject(text[key]) && isString(text[key].container)
+            ? text[key].container
+            : null;
+          const asArray = isObject(text[key]) && text[key].asArray;
+          const textContent =
+            findTextKey &&
+            $(child)
+              .find(findTextKey)
+              .contents()
+              .toArray()
+              .map((element) => cheerio(element).text())
+              .filter(isStringValid);
+          const textCleaner = (str) => str.replace(/\s+/g, " ").trim();
+          textContent &&
+            (_data[key] = asArray
+              ? textContent.map((text, index) => textCleaner(text))
+              : textCleaner(textContent.join(" ")));
         });
       const scrapeAttr = () =>
         Object.keys(attr).map((key) => {

@@ -1,8 +1,8 @@
 // For testing configs/features.
 
 const scrapefrom = require("./index");
-const { yahooFinance } = require("./samples");
+const { twitter: config } = require("./samples");
 
-scrapefrom(yahooFinance)
-  .then((data) => console.log(data[0].length))
+scrapefrom(config("washington capitals"))
+  .then((data) => console.log(data[0]))
   .catch((err) => console.log(err));

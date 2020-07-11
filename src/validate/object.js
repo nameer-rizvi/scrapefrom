@@ -23,8 +23,8 @@ module.exports = (configObject, error) => {
   const validateText = (text, path) => {
     !isObject(text) && error(`${path} must be an object`);
     !isObjectValid(text) && error(`${path} is an empty object`);
-    !areObjectValuesAllStrings(text) &&
-      error(`${path} object values must all be strings with valus`);
+    // !areObjectValuesAllStrings(text) &&
+    //   error(`${path} object values must all be strings with valus`);
   };
 
   const validateAttr = (attr, path) => {
