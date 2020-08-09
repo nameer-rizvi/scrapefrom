@@ -6,5 +6,5 @@ module.exports = (config) =>
     validate(config)
       .then(scraper)
       .then(resolve)
-      .catch((err) => reject(`[scrapefrom] ${err}.`))
+      .catch((err) => reject(`[scrapefrom] ${err && err.toString()}.`))
   );

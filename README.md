@@ -18,9 +18,7 @@ const scrapefrom = require("scrapefrom");
 // import scrapefrom from "scrapefrom"
 
 const yahooFinanceConfig = {
-  api: {
-    url: "https://finance.yahoo.com/gainers",
-  },
+  api: "https://finance.yahoo.com/gainers",
   selector: {
     container: `table[class="W(100%)"] tr`,
     text: {
@@ -32,9 +30,7 @@ const yahooFinanceConfig = {
 };
 
 const capitalPrideConfig = {
-  api: {
-    url: "https://www.capitalpride.org/events-365/",
-  },
+  api: "https://www.capitalpride.org/events-365/",
   structured: {
     type: "Event",
     mapper: {
@@ -58,7 +54,8 @@ scrapefrom([yahooFinanceConfig, capitalPrideConfig])
 
 Required props include:
 
-- object.api.url [string]
+- object.api [string] OR object.api.url [string]
+- object.selector || object.structured || object.customParser
 - object.selector.container [string]
 - object.selector.text [object] AND/OR object.selector.attr [object]
   - object.selector.text:
@@ -70,13 +67,7 @@ Required props include:
 
 ```javascript
 const config = {
-  api: {
-    url: "",
-    params: {
-      name: "",
-      name2: "",
-    },
-  },
+  api: "",
   selector: {
     container: "",
     text: {

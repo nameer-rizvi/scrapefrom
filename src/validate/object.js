@@ -8,16 +8,18 @@ const {
 } = require("./utils");
 
 module.exports = (configObject, error) => {
-  const { api, selector, structured } = configObject;
+  const { api, selector, structured, customParser } = configObject;
 
   const validateApi = (path) => {
     !api && error(`${path} is null or undefined`);
-    !isObject(api) && error(`${path} must be an object`);
-    const { url, params } = api;
-    !url && error(`${path}.url is null or undefined`);
-    !isString(url) && error(`${path}.url must be a string`);
-    !isStringValid(url) && error(`${path}.url is an empty string`);
-    params && !isObject(params) && error(`${path}.params must be an object`);
+    !isObject(api) &&
+      !isString(api) &&
+      error(`${path} must be an object or a string`);
+    // const { url, params } = api;
+    // !url && error(`${path}.url is null or undefined`);
+    // !isString(url) && error(`${path}.url must be a string`);
+    // !isStringValid(url) && error(`${path}.url is an empty string`);
+    // params && !isObject(params) && error(`${path}.params must be an object`);
   };
 
   const validateText = (text, path) => {
@@ -84,6 +86,8 @@ module.exports = (configObject, error) => {
   };
 
   validateApi("config.api");
-  !structured && validateSelector(selector, "config.selector");
-  !selector && validateStructured(structured, "config.structured");
+  !customParser && !structured && validateSelector(selector, "config.selector");
+  !customParser &&
+    !selector &&
+    validateStructured(structured, "config.structured");
 };
