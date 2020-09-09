@@ -15,13 +15,12 @@ module.exports = (html, { type, mapper }) => {
   return mapper
     ? jsons.map((json) =>
         Object.keys(mapper).reduce((object, mapperKey) => {
-          let value;
           const splitMapperKeys = mapper[mapperKey].split(".");
-          splitMapperKeys.forEach(
-            (splitMapperKey) =>
-              (value = value ? value[splitMapperKey] : json[splitMapperKeys])
+          object[mapperKey] = splitMapperKeys.reduce(
+            (_value, splitMapperKey) =>
+              (_value = json[splitMapperKey] || _value[splitMapperKey]),
+            ""
           );
-          object[mapperKey] = value;
           return object;
         }, {})
       )
