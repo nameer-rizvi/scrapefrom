@@ -18,8 +18,7 @@ module.exports = (html, { type, mapper }) => {
           const splitMapperKeys = mapper[mapperKey].split(".");
           object[mapperKey] = splitMapperKeys.reduce(
             (_value, splitMapperKey) =>
-              (_value =
-                json[splitMapperKey] || _value[splitMapperKey] || _value),
+              (_value = json[splitMapperKey] || _value[splitMapperKey]),
             ""
           );
           return object;

@@ -34,7 +34,7 @@ module.exports = (html, { container, text, attr }) => {
           const textCleaner = (str) => str.replace(/\s+/g, " ").trim();
           textContent &&
             (_data[key] = asArray
-              ? textContent.map((text, index) => textCleaner(text))
+              ? textContent.map((text) => textCleaner(text))
               : textCleaner(textContent.join(" ")));
         });
       const scrapeAttr = () =>
