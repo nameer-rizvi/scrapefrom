@@ -1,6 +1,6 @@
 {
   "name": "scrapefrom",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Webscrape Google News, Twitter or any site using a custom config object.",
   "main": "src/index.js",
   "scripts": {
