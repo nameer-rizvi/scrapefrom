@@ -12,25 +12,27 @@ module.exports = (config) =>
         ? [config]
         : [];
 
-    const requests = configs.map((config) => axios(config.api));
+    const promises = configs.map((config) => axios(config.api));
 
     const handleResponses = (responses) => {
       const data = responses.map((response, index) =>
-        configs[index]
+        response.value && response.value.data && configs[index]
           ? configs[index].structured
-            ? cheerioStructured(response.data, configs[index].structured)
+            ? cheerioStructured(response.value.data, configs[index].structured)
             : configs[index].selector
-            ? cheerioSelector(response.data, configs[index].selector)
+            ? cheerioSelector(response.value.data, configs[index].selector)
             : configs[index].customParser
-            ? cheerioCustomParser(response.data, configs[index].customParser)
+            ? cheerioCustomParser(
+                response.value.data,
+                configs[index].customParser
+              )
             : []
           : []
       );
       resolve(data);
     };
 
-    axios
-      .all(requests)
+    Promise.allSettled(promises)
       .then(handleResponses)
       .catch(reject);
   });

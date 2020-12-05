@@ -5,6 +5,6 @@ const samples = require("./samples");
 
 // const customConfig = {};
 
-scrapefrom(samples.customConfig)
-  .then((data) => console.log(data[0]))
+scrapefrom(samples.twitter("Washington Capitals"))
+  .then((data) => console.log(data))
   .catch((err) => console.log(err));
