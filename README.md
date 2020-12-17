@@ -88,6 +88,6 @@ const config = {
 };
 ```
 
-[Folder containing some sample configs for google news, twitter, yahoo finance and capital pride (for structured data).](https://github.com/nameer-rizvi/scrapefrom/tree/master/src/samples)
+[Folder containing some sample configs for google news, yahoo finance and capital pride (for structured data).](https://github.com/nameer-rizvi/scrapefrom/tree/master/src/samples)
 
 **NOTE: the scraper works best on webpages that render all of the html on page load (server side rendered). A good way to check if a webpage does this is is by [opening your browsers dev tools and disabling javascript](https://developers.google.com/web/tools/chrome-devtools/javascript/disable) before manually loading the webpage.**
