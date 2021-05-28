@@ -4,7 +4,6 @@
   "description": "Webscrape any site using a custom config object.",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest --verbose",
     "lint": "eslint . --ext .js,.jsx; exit 0",
     "sandbox": "node src/sandbox.js"
   },
@@ -26,11 +25,12 @@
   },
   "homepage": "https://github.com/nameer-rizvi/scrapefrom#readme",
   "dependencies": {
-    "axios": "^0.21.1",
-    "cheerio": "^1.0.0-rc.3"
-  },
-  "devDependencies": {
-    "eslint": "^7.3.1",
-    "jest": "^26.0.1"
+    "cheerio": "*",
+    "chrono-node": "^2.2.6",
+    "eslint": "^7.25.0",
+    "node-fetch": "^2.6.1",
+    "puppeteer": "^9.1.1",
+    "simpul": "^0.3.9",
+    "string-strip-html": "^8.2.13"
   }
 }

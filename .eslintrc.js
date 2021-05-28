@@ -1,4 +1,4 @@
-module.exports = {
+const eslintrc = {
   env: {
     browser: true,
     commonjs: true,
@@ -11,3 +11,5 @@ module.exports = {
   },
   rules: {},
 };
+
+module.exports = eslintrc;

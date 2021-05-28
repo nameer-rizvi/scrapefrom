@@ -1,10 +1,16 @@
-const validate = require("./validate");
-const scraper = require("./scraper");
+const makeConfigs = require("./1.makeConfigs");
+const fetchResponses = require("./2.fetchResponses");
+const handleResponses = require("./3.handleResponses");
+const parseResponses = require("./4.parseResponses");
 
-module.exports = (config) =>
+const scrapefrom = (input) =>
   new Promise((resolve, reject) =>
-    validate(config)
-      .then(scraper)
+    makeConfigs(input)
+      .then(fetchResponses)
+      .then(handleResponses)
+      .then(parseResponses)
       .then(resolve)
-      .catch((err) => reject(`[scrapefrom] ${err && err.toString()}.`))
+      .catch(reject)
   );
+
+module.exports = scrapefrom;
