@@ -22,7 +22,7 @@ const makeExtractConfigs = (extract, extracts = []) =>
     .flat(Infinity)
     .filter(Boolean);
 
-function extractor({ extract, extracts, $ }) {
+function extractor({ extract, extracts, $, defaultDelimiter }) {
   let data = {};
 
   extracts = makeExtractConfigs(extract, extracts);
@@ -39,7 +39,7 @@ function extractor({ extract, extracts, $ }) {
           extracts: extractsList,
           attribute,
           isDate,
-          delimiter,
+          delimiter = defaultDelimiter,
           name,
         },
         index

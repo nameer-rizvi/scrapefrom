@@ -1,5 +1,5 @@
 const cheerio = require("cheerio");
-const { isStringValid, isObject, cleanSpace } = require("simpul");
+const { isStringValid, isObject, isArray, cleanSpace } = require("simpul");
 const { stripHtml } = require("string-strip-html");
 const mapKeys = require("./util.mapKeys");
 const extractor = require("./util.extractor");
@@ -9,7 +9,7 @@ const parseResponses = (configs) =>
     let datas = configs.map((config) => {
       if (config.error) return { error: config.error };
 
-      if (isObject(config.response)) {
+      if (isObject(config.response) || isArray(config.response)) {
         if (config.extractor) return config.extractor(config.response);
 
         if (isObject(config.keyMap))
