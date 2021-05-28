@@ -24,7 +24,7 @@ Extract html_raw_full, html_raw_split, html_stripped_full, html_stripped_split.
 scrapefrom("https://www.npmjs.com/package/scrapefrom").then(console.log);
 ```
 
-Extract an array of strings for all <h1 /> on a page.
+Extract an array of strings for all h1 tags on a page.
 
 ```javascript
 scrapefrom({
@@ -33,7 +33,7 @@ scrapefrom({
 }).then(console.log); // "{ h1: [...] }"
 ```
 
-Extract an array of strings for all <h1 /> on a page as "titles".
+Extract an array of strings for all h1 tags on a page as "titles".
 
 ```javascript
 scrapefrom({
@@ -42,7 +42,7 @@ scrapefrom({
 }).then(console.log); // "{ titles: [...] }"
 ```
 
-Extract a joined array of strings for all <h1 /> on a page using a delimiter, as "title".
+Extract a joined array of strings for all h1 tags on a page using a delimiter, as "title".
 
 ```javascript
 scrapefrom({
@@ -51,7 +51,7 @@ scrapefrom({
 }).then(console.log); // "{ title: "...--..." }"
 ```
 
-Extract an array of datetime attribute values for all <time /> on a page as "dates".
+Extract an array of datetime attribute values for all time tags on a page as "dates".
 
 - All "time" selectors or "datetime" attributes are parsed using [chrono-node](https://www.npmjs.com/package/chrono-node).
 - To parse any other selectors or attributes as dates, use the "isDate" flag.
