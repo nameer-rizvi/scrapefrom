@@ -26,19 +26,18 @@ const parseResponses = (configs) =>
         if (config.extract || config.extracts)
           return extractor({ ...config, $ });
 
-        if (config.htmlOnly)
-          return {
-            html_raw_full: config.response,
-            html_raw_split: config.response
-              .split("\n")
-              .map(cleanSpace)
-              .filter(Boolean),
-            html_stripped_full: cleanSpace(stripHtml(config.response).result),
-            html_stripped_split: stripHtml(config.response)
-              .result.split("\n")
-              .map(cleanSpace)
-              .filter(Boolean),
-          };
+        return {
+          html_raw_full: config.response,
+          html_raw_split: config.response
+            .split("\n")
+            .map(cleanSpace)
+            .filter(Boolean),
+          html_stripped_full: cleanSpace(stripHtml(config.response).result),
+          html_stripped_split: stripHtml(config.response)
+            .result.split("\n")
+            .map(cleanSpace)
+            .filter(Boolean),
+        };
       }
     });
 

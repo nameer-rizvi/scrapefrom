@@ -1,7 +1,7 @@
 {
   "name": "scrapefrom",
-  "version": "2.1.5",
-  "description": "Webscrape any site using a custom config object.",
+  "version": "2.1.6",
+  "description": "Scrape from any URL for data.",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint . --ext .js,.jsx; exit 0",
@@ -14,6 +14,9 @@
   "keywords": [
     "webscrape",
     "webscraper",
+    "webcrawl",
+    "webcrawler",
+    "crawler",
     "html",
     "data",
     "structured data"

@@ -1,6 +1,6 @@
 # scrapefrom
 
-scrapefrom is a webscraper that can be used to get data from any publicly accessible html webpage.
+scrapefrom is a webscraper that can be used to fetch data from any URL.
 
 ## Installation
 
@@ -8,86 +8,137 @@ scrapefrom is a webscraper that can be used to get data from any publicly access
 $ npm i scrapefrom
 ```
 
-### Usage
-
-Provide a config object or an array of config objects and handle the promise response data or error.
+## Import
 
 ```javascript
 const scrapefrom = require("scrapefrom");
 // or,
 // import scrapefrom from "scrapefrom"
-
-const yahooFinanceConfig = {
-  api: "https://finance.yahoo.com/gainers",
-  selector: {
-    container: `table[class="W(100%)"] tr`,
-    text: {
-      symbol: `a[class="Fw(600)"]`,
-      company: `td[class="Va(m) Ta(start) Px(10px) Fz(s)"]`,
-      change: `span[class="Trsdu(0.3s) Fw(600) C($dataGreen)"]`,
-    },
-  },
-};
-
-const capitalPrideConfig = {
-  api: "https://www.capitalpride.org/events-365/",
-  structured: {
-    type: "Event",
-    mapper: {
-      type: "@type",
-      title: "name",
-      description: "description",
-      date: "startDate",
-      link: "url",
-      price: "offers.price",
-      img: "image",
-    },
-  },
-};
-
-scrapefrom([yahooFinanceConfig, capitalPrideConfig])
-  .then((data) => console.log(data))
-  .catch((err) => console.log(err));
 ```
 
-### Requirements
+## Use Cases
 
-Required props include:
-
-- object.api [string] OR object.api.url [string]
-- object.selector || object.structured || object.customParser
-- object.selector.container [string]
-- object.selector.text [object] AND/OR object.selector.attr [object]
-  - object.selector.text:
-    - `{ [name of value]: "selector string" }`
-  - object.selector.attr:
-    - `{ [name of value]: { selector: "string", attr: "string" } }`
-
-**WARNING: the config object requirements are extremely rigid and opinionated, so much so that it might be best to take this sample config, with all of the available properties, and form a custom one based off of it (otherwise, expect lots of validation messages!):**
+Extract html_raw_full, html_raw_split, html_stripped_full, html_stripped_split.
 
 ```javascript
-const config = {
-  api: "",
-  selector: {
-    container: "",
-    text: {
-      name: "",
-      name2: "",
-    },
-    attr: {
-      name: {
-        selector: "",
-        attr: "",
-      },
-      name2: {
-        selector: "",
-        attr: "",
-      },
-    },
-  },
-};
+scrapefrom("https://www.npmjs.com/package/scrapefrom").then(console.log);
 ```
 
-[Folder containing some sample configs for google news, yahoo finance and capital pride (for structured data).](https://github.com/nameer-rizvi/scrapefrom/tree/master/src/samples)
+Extract an array of strings for all <h1 /> on a page.
 
-**NOTE: the scraper works best on webpages that render all of the html on page load (server side rendered). A good way to check if a webpage does this is is by [opening your browsers dev tools and disabling javascript](https://developers.google.com/web/tools/chrome-devtools/javascript/disable) before manually loading the webpage.**
+```javascript
+scrapefrom({
+  url: "https://www.npmjs.com/package/scrapefrom",
+  extract: "h1",
+}).then(console.log); // "{ h1: [...] }"
+```
+
+Extract an array of strings for all <h1 /> on a page as "titles".
+
+```javascript
+scrapefrom({
+  url: "https://www.npmjs.com/package/scrapefrom",
+  extract: { name: "titles", selector: "h1" },
+}).then(console.log); // "{ titles: [...] }"
+```
+
+Extract a joined array of strings for all <h1 /> on a page using a delimiter, as "title".
+
+```javascript
+scrapefrom({
+  url: "https://www.npmjs.com/package/scrapefrom",
+  extract: { name: "title", selector: "h1", delimiter: "--" },
+}).then(console.log); // "{ title: "...--..." }"
+```
+
+Extract an array of datetime attribute values for all <time /> on a page as "dates".
+
+- All "time" selectors or "datetime" attributes are parsed using [chrono-node](https://www.npmjs.com/package/chrono-node).
+- To parse any other selectors or attributes as dates, use the "isDate" flag.
+
+```javascript
+scrapefrom({
+  url: "https://www.npmjs.com/package/scrapefrom",
+  extract: { name: "dates", selector: "time", attribute: "datetime" },
+}).then(console.log); // "{ dates: [...] }"
+```
+
+Extract previous use cases in a single config.
+
+```javascript
+scrapefrom({
+  url: "https://www.npmjs.com/package/scrapefrom",
+  extracts: [
+    { name: "titles", selector: "h1" },
+    { name: "dates", selector: "time", attribute: "datetime" },
+  ],
+}).then(console.log); // "{ titles: [...], dates: [...] }"
+```
+
+Extract previous use cases from multiple URLs.
+
+```javascript
+scrapefrom([
+  {
+    url: "https://www.npmjs.com/package/scrapefrom",
+    extracts: [
+      { name: "titles", selector: "h1" },
+      { name: "dates", selector: "time", attribute: "datetime" },
+    ],
+  },
+  {
+    url: "https://www.npmjs.com/package/async-fetch",
+    extracts: [
+      { name: "titles", selector: "h1" },
+      { name: "dates", selector: "time", attribute: "datetime" },
+    ],
+  },
+]).then(console.log); // "[{ titles: [...], dates: [...] }, { titles: [...], dates: [...] }]"
+```
+
+Extract a list of items from a page.
+
+```javascript
+scrapefrom({
+  url: "https://www.npmjs.com/package/async-fetch",
+  extract: {
+    selector: "tbody tr",
+    name: "rows",
+    extracts: [
+      { selector: "td:nth-child(1)", name: "key" },
+      { selector: "td:nth-child(2)", name: "type" },
+      { selector: "td:nth-child(3)", name: "definition" },
+      { selector: "td:nth-child(4)", name: "default" },
+    ],
+  },
+}).then(console.log); // "[ { key: "...", type: "...", definition: "...", default: "..." }, ...]"
+```
+
+Extract json from a page using a json filter and a keyMap.
+
+```javascript
+scrapefrom({
+  url: "https://dcmusic.live/",
+  extracts: [
+    {
+      json: true,
+      name: "organization_logos",
+      filter: (json) => json["@type"] === "Organization",
+      keyMap: { site_logo: "logo" },
+    },
+  ],
+}).then(console.log); // { organization_logos: [ { site_logo: '...' } ] }
+```
+
+Extract json from an api using a keyMap.
+
+```javascript
+scrapefrom({
+  url: "https://api.dcmusic.live/app/initialize",
+  keyMap: { silver_metroline_color: "metrolines.1.color" },
+}).then(console.log); // { silver_metroline_color: 'blue-600' }
+```
+
+## If a page requires javascript...
+
+By default scrapefrom utilizes [node-fetch](https://www.npmjs.com/package/node-fetch) under the hood, but if a page is unavailable because it requires javascript, there is the option to use [puppeteer](https://www.npmjs.com/package/puppeteer) (which should be able to bypass this requirement through the use of a headless chrome browser).
