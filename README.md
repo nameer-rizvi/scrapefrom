@@ -2,13 +2,13 @@
 
 scrapefrom is a webscraper that can be used to fetch data from any URL.
 
-## Installation
+## installation
 
 ```
 $ npm i scrapefrom
 ```
 
-## Import
+## import
 
 ```javascript
 const scrapefrom = require("scrapefrom");
@@ -16,7 +16,7 @@ const scrapefrom = require("scrapefrom");
 // import scrapefrom from "scrapefrom"
 ```
 
-## Use Cases
+## use cases
 
 Extract html_raw_full, html_raw_split, html_stripped_full, html_stripped_split.
 
@@ -136,6 +136,15 @@ Extract json from an api using a keyMap.
 scrapefrom({
   url: "https://api.dcmusic.live/app/initialize",
   keyMap: { silver_metroline_color: "metrolines.1.color" },
+}).then(console.log); // { silver_metroline_color: 'blue-600' }
+```
+
+Extract json from an api using a custom extractor.
+
+```javascript
+scrapefrom({
+  url: "https://api.dcmusic.live/app/initialize",
+  extractor: (json) => ({ silver_metroline_color: json.metrolines[1].color }),
 }).then(console.log); // { silver_metroline_color: 'blue-600' }
 ```
 

@@ -1,13 +1,6 @@
 const scrapefrom = require("./index");
 
 scrapefrom({
-  url: "https://dcmusic.live/",
-  extracts: [
-    {
-      json: true,
-      name: "organization_logos",
-      filter: (json) => json["@type"] === "Organization",
-      keyMap: { site_logo: "logo" },
-    },
-  ],
+  url: "https://api.dcmusic.live/app/initialize",
+  extractor: (json) => ({ silver_metroline_color: json.metrolines[1].color }),
 }).then(console.log);
