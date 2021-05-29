@@ -7,7 +7,6 @@ const {
 } = require("simpul");
 const mapKeys = require("./util.mapKeys");
 const cheerio = require("cheerio");
-const chrono = require("chrono-node");
 
 const makeExtractConfig = (extract) =>
   isString(extract)
@@ -38,7 +37,6 @@ function extractor({ extract, extracts, $, defaultDelimiter }) {
           extract: extractList,
           extracts: extractsList,
           attribute,
-          isDate,
           delimiter = defaultDelimiter,
           name,
         },
@@ -76,23 +74,26 @@ function extractor({ extract, extracts, $, defaultDelimiter }) {
             const html = $(child).html();
             const xml = { decodeEntities: false };
             const htmlCheerio = cheerio.load(html, { xml });
-            list.push(extractor({ ...extractConfig, $: htmlCheerio }));
+            const props = {
+              ...extractConfig,
+              $: htmlCheerio,
+              defaultDelimiter,
+            };
+            list.push(extractor(props));
           });
 
           data[name || selector] = list;
         } else if (selector) {
           let contents = [];
 
-          $(selector).each((index, child) =>
-            contents.push(
-              attribute ? $(child).attr(attribute) : $(child).text()
-            )
-          );
+          $(selector).each((index, child) => {
+            const content = attribute
+              ? $(child).attr(attribute)
+              : $(child).text();
+            contents.push(content);
+          });
 
           contents = contents.map(cleanSpace).filter(isStringValid);
-
-          if (isDate || selector === "time" || attribute === "datetime")
-            contents = contents.map(chrono.parseDate);
 
           if (contents.length === 1) {
             contents = contents[0];

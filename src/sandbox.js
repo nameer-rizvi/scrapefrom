@@ -1,22 +1,41 @@
 const scrapefrom = require("./index");
-
 scrapefrom({
-  url:
-    "https://www.trumba.com/calendars/smithsonian-events.json?filter1=_16645_&filter2=_16672_&filterfield1=11153&filterfield2=11165",
-  extractor: (events) =>
-    events
-      .map((event) => {
-        const { title, description, dateTimeFormatted, permaLinkUrl } =
-          event || {};
-
-        return {
-          title,
-          date: dateTimeFormatted,
-          time: dateTimeFormatted,
-          description,
-          eventLink: permaLinkUrl,
-        };
-      })
-      .flat()
-      .filter(Boolean),
+  url: "http://www.blackcatdc.com/schedule.html",
+  defaultDelimiter: " ",
+  extract: {
+    selector: "div#main-calendar div.show",
+    name: "events",
+    extracts: [
+      {
+        name: "title",
+        selector: "h1.headline",
+      },
+      {
+        name: "title2",
+        selector: "h2.support",
+      },
+      {
+        name: "price",
+        selector: "p.show-text",
+      },
+      {
+        name: "time",
+        selector: "p.show-text",
+      },
+      {
+        name: "date",
+        selector: "h2.date",
+      },
+      {
+        name: "eventLink",
+        selector: "h1.headline a",
+        attribute: "href",
+      },
+      {
+        name: "ticketLink",
+        selector: "div.show-details>a",
+        attribute: "href",
+      },
+    ],
+  },
 }).then(console.log);

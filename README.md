@@ -53,9 +53,6 @@ scrapefrom({
 
 Extract an array of datetime attribute values for all time tags on a page as "dates".
 
-- All "time" selectors or "datetime" attributes are parsed using [chrono-node](https://www.npmjs.com/package/chrono-node).
-- To parse any other selectors or attributes as dates, use the "isDate" flag.
-
 ```javascript
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
