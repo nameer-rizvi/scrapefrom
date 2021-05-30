@@ -1,41 +1,25 @@
 const scrapefrom = require("./index");
 scrapefrom({
-  url: "http://www.blackcatdc.com/schedule.html",
-  defaultDelimiter: " ",
+  use: "puppeteer",
+  //
+  // Using json response parser...
+  //
+  // url: "https://api.dcmusic.live/event/list",
+  // extractor: (data) => data.returnVenues,
+  //
+  // Using waitForSelector...
+  //
+  url: "https://citywinery.com/washingtondc/Online/default.asp?BOparam::WScontent::loadArticle::permalink=washingtondc-buy-tickets&BOparam::WScontent::loadArticle::context_id=",
+  waitForSelector: ".result-box-item",
   extract: {
-    selector: "div#main-calendar div.show",
+    selector: "div.result-box-item",
     name: "events",
     extracts: [
-      {
-        name: "title",
-        selector: "h1.headline",
-      },
-      {
-        name: "title2",
-        selector: "h2.support",
-      },
-      {
-        name: "price",
-        selector: "p.show-text",
-      },
-      {
-        name: "time",
-        selector: "p.show-text",
-      },
-      {
-        name: "date",
-        selector: "h2.date",
-      },
-      {
-        name: "eventLink",
-        selector: "h1.headline a",
-        attribute: "href",
-      },
-      {
-        name: "ticketLink",
-        selector: "div.show-details>a",
-        attribute: "href",
-      },
+      { selector: "div.item-name", name: "title" },
+      { selector: "span.start-date", name: "date" },
+      { selector: "span.start-date", name: "time" },
+      { selector: "div.item-venue", name: "status" },
+      { selector: "div.item-name a", name: "eventLink", attribute: "href" },
     ],
   },
 }).then(console.log);

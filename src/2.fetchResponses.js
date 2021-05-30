@@ -25,33 +25,45 @@ async function nodeFetcher({ url, api, responseParser }) {
   }
 }
 
-async function puppeteerFetcher({ url, responseParser }) {
+async function puppeteerFetcher({ url, waitForSelector, responseParser }) {
   try {
     const browser = await puppeteer.launch();
 
     const page = await browser.newPage();
 
-    await page.setDefaultNavigationTimeout(0);
+    if (waitForSelector) {
+      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 0 });
 
-    await page.setRequestInterception(true);
+      await page.waitForSelector(waitForSelector);
 
-    await page.on("request", (interceptedRequest) =>
-      interceptedRequest.resourceType() === "image" ||
-      interceptedRequest.resourceType() === "img" ||
-      interceptedRequest.resourceType() === "stylesheet" ||
-      interceptedRequest.resourceType() === "css" ||
-      interceptedRequest.resourceType() === "font"
-        ? interceptedRequest.abort()
-        : interceptedRequest.continue()
-    );
+      const pageContent = await page.content();
 
-    const response = await page.goto(url);
+      await browser.close();
 
-    const parsedResponse = await response[responseParser || "text"]();
+      return pageContent;
+    } else {
+      await page.setDefaultNavigationTimeout(0);
 
-    await browser.close();
+      await page.setRequestInterception(true);
 
-    return responseParser ? parsedResponse : tryJSONResponse(parsedResponse);
+      await page.on("request", (interceptedRequest) =>
+        interceptedRequest.resourceType() === "image" ||
+        interceptedRequest.resourceType() === "img" ||
+        interceptedRequest.resourceType() === "stylesheet" ||
+        interceptedRequest.resourceType() === "css" ||
+        interceptedRequest.resourceType() === "font"
+          ? interceptedRequest.abort()
+          : interceptedRequest.continue()
+      );
+
+      const response = await page.goto(url);
+
+      const parsedResponse = await response[responseParser || "text"]();
+
+      await browser.close();
+
+      return responseParser ? parsedResponse : tryJSONResponse(parsedResponse);
+    }
   } catch (error) {
     throw new Error(error);
   }
