@@ -25,7 +25,12 @@ async function nodeFetcher({ url, api, responseParser }) {
   }
 }
 
-async function puppeteerFetcher({ url, waitForSelector, responseParser }) {
+async function puppeteerFetcher({
+  url,
+  waitForSelector,
+  selectDropdown,
+  responseParser,
+}) {
   try {
     const browser = await puppeteer.launch();
 
@@ -35,6 +40,9 @@ async function puppeteerFetcher({ url, waitForSelector, responseParser }) {
       await page.goto(url, { waitUntil: "domcontentloaded", timeout: 0 });
 
       await page.waitForSelector(waitForSelector);
+
+      if (selectDropdown)
+        await page.select(selectDropdown[0], selectDropdown[1]); // select selector, value
 
       const pageContent = await page.content();
 
