@@ -1,4 +1,5 @@
 const scrapefrom = require("./index");
+
 scrapefrom({
   use: "puppeteer",
   //
@@ -9,7 +10,8 @@ scrapefrom({
   //
   // Using waitForSelector...
   //
-  url: "https://citywinery.com/washingtondc/Online/default.asp?BOparam::WScontent::loadArticle::permalink=washingtondc-buy-tickets&BOparam::WScontent::loadArticle::context_id=",
+  url:
+    "https://citywinery.com/washingtondc/Online/default.asp?BOparam::WScontent::loadArticle::permalink=washingtondc-buy-tickets&BOparam::WScontent::loadArticle::context_id=",
   waitForSelector: ".result-box-item",
   extract: {
     selector: "div.result-box-item",

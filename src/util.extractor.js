@@ -57,6 +57,8 @@ function extractor({ extract, extracts, $, defaultDelimiter }) {
             })
           );
 
+          jsons = jsons.flat();
+
           if (filter) jsons = jsons.filter(filter);
 
           if (keyMap) jsons = jsons.map((json) => mapKeys(json, keyMap));
