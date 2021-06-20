@@ -27,6 +27,7 @@ async function nodeFetcher({ url, api, responseParser }) {
 
 async function puppeteerFetcher({
   url,
+  pageGoTo = {},
   waitForSelector,
   selectDropdown,
   responseParser,
@@ -37,7 +38,11 @@ async function puppeteerFetcher({
     const page = await browser.newPage();
 
     if (waitForSelector) {
-      await page.goto(url, { waitUntil: "domcontentloaded", timeout: 0 });
+      await page.goto(url, {
+        waitUntil: "domcontentloaded",
+        timeout: 30000,
+        ...pageGoTo,
+      });
 
       await page.waitForSelector(waitForSelector);
 
@@ -64,7 +69,7 @@ async function puppeteerFetcher({
           : interceptedRequest.continue()
       );
 
-      const response = await page.goto(url);
+      const response = await page.goto(url, pageGoTo);
 
       const parsedResponse = await response[responseParser || "text"]();
 
