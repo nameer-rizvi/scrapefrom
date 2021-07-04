@@ -10,14 +10,20 @@ function tryJSONResponse(parsedResponse) {
   }
 }
 
-async function nodeFetcher({ url, api, responseParser }) {
+async function nodeFetcher({ logFetch, url, api, responseParser }) {
+  if (logFetch) console.log("[scrapefrom:node-fetch] fetching ", url);
+
   try {
     const response = await fetch(url || api);
     if (response.ok) {
       const parsedResponse = await response[responseParser || "text"]();
+
+      if (logFetch) console.log("[scrapefrom:node-fetch] fetched ", url);
+
       return responseParser ? parsedResponse : tryJSONResponse(parsedResponse);
     } else {
       const error = response.statusText || response.status.toString();
+
       throw new Error(error);
     }
   } catch (error) {
@@ -26,12 +32,15 @@ async function nodeFetcher({ url, api, responseParser }) {
 }
 
 async function puppeteerFetcher({
+  logFetch,
   url,
   pageGoTo = {},
   waitForSelector,
   selectDropdown,
   responseParser,
 }) {
+  if (logFetch) console.log("[scrapefrom:puppeteer] fetching ", url);
+
   try {
     const browser = await puppeteer.launch();
 
@@ -52,6 +61,8 @@ async function puppeteerFetcher({
       const pageContent = await page.content();
 
       await browser.close();
+
+      if (logFetch) console.log("[scrapefrom:puppeteer] fetched ", url);
 
       return pageContent;
     } else {
@@ -74,6 +85,8 @@ async function puppeteerFetcher({
       const parsedResponse = await response[responseParser || "text"]();
 
       await browser.close();
+
+      if (logFetch) console.log("[scrapefrom:puppeteer] fetched ", url);
 
       return responseParser ? parsedResponse : tryJSONResponse(parsedResponse);
     }

@@ -3,6 +3,7 @@ const scrapefrom = require("./index");
 scrapefrom({
   use: "puppeteer",
   url: "https://www.unionstage.com/",
+  // logFetch: true,
   pageGoTo: { timeout: 5000 },
   waitForSelector: "div.tessera-search-bar select",
   selectDropdown: ["div.tessera-search-bar select", "UNION STAGE"],
