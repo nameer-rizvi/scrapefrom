@@ -7,7 +7,9 @@ const makeConfig = (input) =>
     ? input.map(makeConfig)
     : [input];
 
-const makeConfigs = (input) =>
-  new Promise((resolve) => resolve(makeConfig(input).flat(Infinity)));
+const configurize = (input) =>
+  makeConfig(input)
+    .flat(Infinity)
+    .map((config, index) => ({ index, ...config }));
 
-module.exports = makeConfigs;
+module.exports = configurize;

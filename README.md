@@ -30,6 +30,7 @@ Extract an array of strings for all h1 tags on a page.
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
   extract: "h1",
+  defaultDelimiter: null,
 }).then(console.log); // "{ h1: [...] }"
 ```
 
@@ -38,7 +39,7 @@ Extract an array of strings for all h1 tags on a page as "titles".
 ```javascript
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
-  extract: { name: "titles", selector: "h1" },
+  extract: { name: "titles", selector: "h1", delimiter: null },
 }).then(console.log); // "{ titles: [...] }"
 ```
 
@@ -56,7 +57,12 @@ Extract an array of datetime attribute values for all time tags on a page as "da
 ```javascript
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
-  extract: { name: "dates", selector: "time", attribute: "datetime" },
+  extract: {
+    name: "dates",
+    selector: "time",
+    attribute: "datetime",
+    delimiter: null,
+  },
 }).then(console.log); // "{ dates: [...] }"
 ```
 
@@ -65,6 +71,7 @@ Extract previous use cases in a single config.
 ```javascript
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
+  defaultDelimiter: null,
   extracts: [
     { name: "titles", selector: "h1" },
     { name: "dates", selector: "time", attribute: "datetime" },
@@ -78,6 +85,7 @@ Extract previous use cases from multiple URLs.
 scrapefrom([
   {
     url: "https://www.npmjs.com/package/scrapefrom",
+    defaultDelimiter: null,
     extracts: [
       { name: "titles", selector: "h1" },
       { name: "dates", selector: "time", attribute: "datetime" },
@@ -85,6 +93,7 @@ scrapefrom([
   },
   {
     url: "https://www.npmjs.com/package/async-fetch",
+    defaultDelimiter: null,
     extracts: [
       { name: "titles", selector: "h1" },
       { name: "dates", selector: "time", attribute: "datetime" },

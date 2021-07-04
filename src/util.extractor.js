@@ -1,10 +1,4 @@
-const {
-  isString,
-  isObject,
-  isArray,
-  cleanSpace,
-  isStringValid,
-} = require("simpul");
+const { isString, isObject, isArray, trim, isStringValid } = require("simpul");
 const mapKeys = require("./util.mapKeys");
 const cheerio = require("cheerio");
 
@@ -21,7 +15,7 @@ const makeExtractConfigs = (extract, extracts = []) =>
     .flat(Infinity)
     .filter(Boolean);
 
-function extractor({ extract, extracts, $, defaultDelimiter }) {
+function extractor({ extract, extracts, $, defaultDelimiter = " " }) {
   let data = {};
 
   extracts = makeExtractConfigs(extract, extracts);
@@ -95,7 +89,7 @@ function extractor({ extract, extracts, $, defaultDelimiter }) {
             contents.push(content);
           });
 
-          contents = contents.map(cleanSpace).filter(isStringValid);
+          contents = contents.map(trim).filter(isStringValid);
 
           if (contents.length === 1) {
             contents = contents[0];

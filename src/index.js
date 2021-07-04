@@ -1,16 +1,24 @@
-const makeConfigs = require("./1.makeConfigs");
-const fetchResponses = require("./2.fetchResponses");
-const handleResponses = require("./3.handleResponses");
-const parseResponses = require("./4.parseResponses");
+const configurize = require("./1.configurize");
+const fetchNodeResponses = require("./2.fetch.node");
+const fetchPuppeteerResponses = require("./2.fetch.puppeteer");
+const dataExtraction = require("./3.extraction");
 
-const scrapefrom = (input) =>
-  new Promise((resolve, reject) =>
-    makeConfigs(input)
-      .then(fetchResponses)
-      .then(handleResponses)
-      .then(parseResponses)
-      .then(resolve)
-      .catch(reject)
-  );
+async function scrapefrom(input, callback) {
+  try {
+    const configs = configurize(input);
+
+    await fetchNodeResponses(configs);
+
+    await fetchPuppeteerResponses(configs);
+
+    const results = await dataExtraction(configs);
+
+    return results;
+  } catch (error) {
+    if (callback) callback(error);
+
+    if (!callback) throw new Error(error);
+  }
+}
 
 module.exports = scrapefrom;
