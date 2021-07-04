@@ -89,7 +89,7 @@ function extractor({ extract, extracts, $, defaultDelimiter = " " }) {
             contents.push(content);
           });
 
-          contents = contents.map(trim).filter(isStringValid);
+          contents = contents.map((i) => trim(i)).filter(isStringValid);
 
           if (contents.length === 1) {
             contents = contents[0];

@@ -24,12 +24,12 @@ async function extraction(configs) {
               html_raw_full: config.response,
               html_raw_split: config.response
                 .split("\n")
-                .map(trim)
+                .map((i) => trim(i))
                 .filter(Boolean),
               html_stripped_full: trim(stripHtml(config.response).result),
               html_stripped_split: stripHtml(config.response)
                 .result.split("\n")
-                .map(trim)
+                .map((i) => trim(i))
                 .filter(Boolean),
             };
       }
