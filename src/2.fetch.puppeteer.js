@@ -14,12 +14,15 @@ async function fetchPuppeteerResponses(configs) {
         let {
           logFetch,
           url,
+          timeout = 30000,
           waitForSelector,
           pageGoTo,
           selectDropdown,
           index,
           responseParser,
         } = fetchConfigs[i];
+
+        page.setDefaultNavigationTimeout(timeout);
 
         try {
           if (logFetch) console.log(`[scrapefrom:puppeteer] fetching "${url}"`);

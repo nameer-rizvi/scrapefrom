@@ -8,6 +8,7 @@ const scrapefrom = require("./index");
 const unionstageScraper = ({ venue = "UNION STAGE" }) => ({
   use: "puppeteer",
   logFetch: true,
+  timeout: 10000,
   url: "https://www.unionstage.com/",
   waitForSelector: "select.venue-select",
   selectDropdown: ["select.venue-select", venue],
@@ -27,9 +28,11 @@ const unionstageScraper = ({ venue = "UNION STAGE" }) => ({
 });
 
 scrapefrom([
-  // unionstageScraper({ venue: "CAPITAL TURNAROUND" }),
-  // unionstageScraper({ venue: "MIRACLE THEATRE" }),
+  unionstageScraper({ venue: "CAPITAL TURNAROUND" }),
+  unionstageScraper({ venue: "MIRACLE THEATRE" }),
   unionstageScraper({ venue: "UNION STAGE" }),
 ])
-  .then((response) => console.log(response.result.events))
+  .then((responses) => {
+    responses.forEach((response) => console.log(response.result.events.length));
+  })
   .catch(console.log);
