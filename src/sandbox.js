@@ -2,8 +2,9 @@ const scrapefrom = require("./index");
 
 // scrapefrom({
 //   url: "https://api.dcmusic.live/app/initialize",
-//   extractor: (json) => ({ silver_metroline_color: json.metrolines[1].color }),
-// }).then((r) => console.log(r.result));
+//   extractor: (json) => ({ silver_metroline_color: json.metrolines["1"].color }),
+//   logFetch: true,
+// }).then((r) => console.log(r));
 
 const unionstageScraper = ({ venue = "UNION STAGE" }) => ({
   use: "puppeteer",
@@ -31,8 +32,8 @@ scrapefrom([
   unionstageScraper({ venue: "CAPITAL TURNAROUND" }),
   unionstageScraper({ venue: "MIRACLE THEATRE" }),
   unionstageScraper({ venue: "UNION STAGE" }),
-])
-  .then((responses) => {
-    responses.forEach((response) => console.log(response.result.events.length));
-  })
-  .catch(console.log);
+]);
+//   .then((responses) => {
+//     // responses.forEach((response) => console.log(response.result.events.length));
+//   })
+//   .catch(console.log);

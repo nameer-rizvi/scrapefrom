@@ -1,32 +1,34 @@
+const { isObject, parseJSON } = require("simpul");
 const puppeteer = require("puppeteer");
-const tryJSONResponse = require("./util.tryJSONResponse");
 
 async function fetchPuppeteerResponses(configs) {
-  const fetchConfigs = configs.filter((config) => config.use === "puppeteer");
+  try {
+    const puppeteerConfigs = configs.filter(
+      (config) => isObject(config) && config.use === "puppeteer"
+    );
 
-  if (fetchConfigs.length) {
-    try {
+    if (puppeteerConfigs.length) {
       const browser = await puppeteer.launch();
 
       const page = await browser.newPage();
 
-      for (let i = 0; i < fetchConfigs.length; i++) {
+      for (let puppeteerConfig of puppeteerConfigs) {
         let {
+          index,
+          timeout = 30000,
           logFetch,
           url,
-          timeout = 30000,
           waitForSelector,
           pageGoTo,
           selectDropdown,
-          index,
           responseParser,
-        } = fetchConfigs[i];
+        } = puppeteerConfig;
 
         page.setDefaultNavigationTimeout(timeout);
 
-        try {
-          if (logFetch) console.log(`[scrapefrom:puppeteer] fetching "${url}"`);
+        if (logFetch) console.log(`[scrapefrom:puppeteer] fetching ${url}...`);
 
+        try {
           if (waitForSelector) {
             await page.goto(url, {
               waitUntil: "domcontentloaded",
@@ -53,26 +55,25 @@ async function fetchPuppeteerResponses(configs) {
                 ? interceptedRequest.abort()
                 : interceptedRequest.continue()
             );
-
             const response = await page.goto(url, pageGoTo);
 
             const parsedResponse = await response[responseParser || "text"]();
 
             configs[index].response = responseParser
               ? parsedResponse
-              : tryJSONResponse(parsedResponse);
+              : parseJSON(parsedResponse) || parsedResponse;
           }
 
-          if (logFetch) console.log(`[scrapefrom:puppeteer] fetched  "${url}"`);
+          if (logFetch) console.log(`[scrapefrom:puppeteer] fetched  ${url}.`);
         } catch (error) {
           configs[index].error = error.toString();
         }
       }
 
       await browser.close();
-    } catch (error) {
-      throw new Error(error);
     }
+  } catch (error2) {
+    throw new Error(error2);
   }
 }
 

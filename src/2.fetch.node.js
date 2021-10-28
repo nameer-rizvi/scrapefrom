@@ -1,32 +1,31 @@
-const fetch = require("node-fetch");
-const tryJSONResponse = require("./util.tryJSONResponse");
+const { isObject, parseJSON } = require("simpul");
+const nodefetch = require("node-fetch");
 
 async function fetchNodeResponses(configs) {
-  const fetchConfigs = configs.filter(
-    (config) => !config.use || config.use === "node-fetch"
-  );
+  for (let config of configs) {
+    if (isObject(config) && (!config.use || config.use === "node-fetch")) {
+      let { logFetch, url, api, responseParser, index } = config;
 
-  for (let i = 0; i < fetchConfigs.length; i++) {
-    let { logFetch, url, api, responseParser, index } = fetchConfigs[i];
+      try {
+        if (logFetch) console.log(`[scrapefrom:node-fetch] fetching ${url}...`);
 
-    if (logFetch) console.log(`[scrapefrom:node-fetch] fetching "${url}"`);
+        let response = await nodefetch(url || api);
 
-    try {
-      const response = await fetch(url || api);
+        if (response.ok) {
+          if (logFetch) console.log(`[scrapefrom:node-fetch] fetched  ${url}.`);
 
-      if (response.ok) {
-        const parsedResponse = await response[responseParser || "text"]();
+          let parsedResponse = await response[responseParser || "text"]();
 
-        configs[index].response = responseParser
-          ? parsedResponse
-          : tryJSONResponse(parsedResponse);
-
-        if (logFetch) console.log(`[scrapefrom:node-fetch] fetched  "${url}"`);
-      } else
-        configs[index].error =
-          response.statusText || response.status.toString();
-    } catch (error) {
-      configs[index].error = error.toString();
+          configs[index].response = responseParser
+            ? parsedResponse
+            : parseJSON(parsedResponse) || parsedResponse;
+        } else {
+          let responseError = response.statusText || response.status.toString();
+          configs[index].error = responseError;
+        }
+      } catch (error) {
+        configs[index].error = error.toString();
+      }
     }
   }
 }

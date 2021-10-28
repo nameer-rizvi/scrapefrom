@@ -1,7 +1,7 @@
 const configurize = require("./1.configurize");
 const fetchNodeResponses = require("./2.fetch.node");
 const fetchPuppeteerResponses = require("./2.fetch.puppeteer");
-const dataExtraction = require("./3.extraction");
+// const dataExtraction = require("./3.extraction");
 
 async function scrapefrom(input, callback) {
   try {
@@ -11,12 +11,13 @@ async function scrapefrom(input, callback) {
 
     await fetchPuppeteerResponses(configs);
 
-    const results = await dataExtraction(configs);
+    console.log(configs);
 
-    return results;
+    // const results = await dataExtraction(configs);
+    // if (callback) callback(null, results);
+    // return results;
   } catch (error) {
     if (callback) callback(error);
-
     if (!callback) throw new Error(error);
   }
 }
