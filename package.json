@@ -29,6 +29,7 @@
   "homepage": "https://github.com/nameer-rizvi/scrapefrom#readme",
   "dependencies": {
     "cheerio": "*",
+    "dottpath": "^0.0.1",
     "eslint": "^7.27.0",
     "node-fetch": "^2.6.1",
     "puppeteer": "^10.4.0",
