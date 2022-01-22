@@ -31,7 +31,7 @@
     "cheerio": "*",
     "dottpath": "^0.0.1",
     "eslint": "^7.27.0",
-    "node-fetch": "^2.6.1",
+    "node-fetch": "^3.1.1",
     "puppeteer": "^10.4.0",
     "simpul": "^0.7.3",
     "string-strip-html": "^8.3.0"
