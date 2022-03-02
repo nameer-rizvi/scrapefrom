@@ -120,7 +120,7 @@ scrapefrom({
 }).then(console.log); // "[ { key: "...", type: "...", definition: "...", default: "..." }, ...]"
 ```
 
-Extract json from a page using a json filter and a keyMap.
+Extract json from a page using a json filter and a keyPath.
 
 ```javascript
 scrapefrom({
@@ -130,18 +130,18 @@ scrapefrom({
       json: true,
       name: "organization_logos",
       filter: (json) => json["@type"] === "Organization",
-      keyMap: { site_logo: "logo" },
+      keyPath: { site_logo: "logo" },
     },
   ],
 }).then(console.log); // { organization_logos: [ { site_logo: '...' } ] }
 ```
 
-Extract json from an api using a keyMap.
+Extract json from an api using a keyPath.
 
 ```javascript
 scrapefrom({
   url: "https://api.dcmusic.live/app/initialize",
-  keyMap: { silver_metroline_color: "metrolines.1.color" },
+  keyPath: { silver_metroline_color: "metrolines.1.color" },
 }).then(console.log); // { silver_metroline_color: 'blue-600' }
 ```
 

@@ -6,7 +6,7 @@ const {
   parseJSON,
   trim,
 } = require("simpul");
-const keyMapExtraction = require("./3.extraction.keyMap");
+const keyPathExtraction = require("./3.extraction.keyPath");
 const cheerio = require("cheerio");
 
 const makeExtractConfig = (extract) =>
@@ -32,7 +32,7 @@ function htmlExtraction({ extract, extracts, $, defaultDelimiter = " " }) {
       let {
         json: extractJSON,
         filter,
-        keyMap,
+        keyPath,
         name,
         extract: extractList,
         extracts: extractsList,
@@ -43,7 +43,8 @@ function htmlExtraction({ extract, extracts, $, defaultDelimiter = " " }) {
 
       if (extractJSON) {
         let jsons = [];
-        for (scriptType of ["application/ld+json", "application/json"])
+
+        for (let scriptType of ["application/ld+json", "application/json"])
           $(`script[type="${scriptType}"]`).each((index, child) => {
             let html = $(child).html();
             jsons.push(parseJSON(html));
@@ -53,9 +54,10 @@ function htmlExtraction({ extract, extracts, $, defaultDelimiter = " " }) {
 
         if (filter) jsons = jsons.filter(filter);
 
-        if (keyMap) jsons = jsons.map((json) => keyMapExtraction(keyMap, json));
+        if (keyPath)
+          jsons = jsons.map((json) => keyPathExtraction(keyPath, json));
 
-        data[name || "json_" + index] = jsons;
+        data[name || "json_" + i] = jsons;
       } else if (extractList || extractsList) {
         let extractConfig = { extract: extractList, extracts: extractsList };
 
@@ -91,6 +93,7 @@ function htmlExtraction({ extract, extracts, $, defaultDelimiter = " " }) {
         data[name || selector] = contents;
       }
     }
+
   return data;
 }
 

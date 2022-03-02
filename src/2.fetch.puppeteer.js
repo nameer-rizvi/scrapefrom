@@ -12,28 +12,35 @@ async function fetchPuppeteerResponses(configs) {
 
       const page = await browser.newPage();
 
-      for (let puppeteerConfig of puppeteerConfigs) {
-        let {
-          index,
-          timeout = 30000,
-          logFetch,
-          url,
-          waitForSelector,
-          pageGoTo,
-          selectDropdown,
-          responseParser,
-        } = puppeteerConfig;
-
-        page.setDefaultNavigationTimeout(timeout);
-
-        if (logFetch) console.log(`[scrapefrom:puppeteer] fetching ${url}...`);
-
+      for (let puppeteerConfig of puppeteerConfigs)
         try {
+          let {
+            timeout = 30000,
+            logFetch,
+            name,
+            url,
+            api,
+            waitForSelector,
+            pageGoTo,
+            selectDropdown,
+            index,
+            responseParser,
+          } = puppeteerConfig;
+
+          page.setDefaultNavigationTimeout(timeout);
+
+          if (!name) name = url || api;
+
+          if (logFetch)
+            console.log(`[scrapefrom:puppeteer] fetching ${name}...`);
+
           if (waitForSelector) {
-            await page.goto(url, {
+            const pageGoToOptions = {
               waitUntil: "domcontentloaded",
               ...pageGoTo,
-            });
+            };
+
+            await page.goto(url || api, pageGoToOptions);
 
             await page.waitForSelector(waitForSelector);
 
@@ -47,15 +54,14 @@ async function fetchPuppeteerResponses(configs) {
             await page.setRequestInterception(true);
 
             await page.on("request", (interceptedRequest) =>
-              interceptedRequest.resourceType() === "image" ||
-              interceptedRequest.resourceType() === "img" ||
-              interceptedRequest.resourceType() === "stylesheet" ||
-              interceptedRequest.resourceType() === "css" ||
-              interceptedRequest.resourceType() === "font"
+              ["image", "img", "stylesheet", "css", "font"].includes(
+                interceptedRequest.resourceType()
+              )
                 ? interceptedRequest.abort()
                 : interceptedRequest.continue()
             );
-            const response = await page.goto(url, pageGoTo);
+
+            const response = await page.goto(url || api, pageGoTo);
 
             const parsedResponse = await response[responseParser || "text"]();
 
@@ -64,16 +70,15 @@ async function fetchPuppeteerResponses(configs) {
               : parseJSON(parsedResponse) || parsedResponse;
           }
 
-          if (logFetch) console.log(`[scrapefrom:puppeteer] fetched  ${url}.`);
+          if (logFetch) console.log(`[scrapefrom:puppeteer] fetched  ${name}.`);
         } catch (error) {
-          configs[index].error = error.toString();
+          configs[puppeteerConfig.index].error = error.toString();
         }
-      }
 
       await browser.close();
     }
-  } catch (error2) {
-    throw new Error(error2);
+  } catch (error) {
+    throw new Error(error);
   }
 }
 

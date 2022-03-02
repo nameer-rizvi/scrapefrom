@@ -1,15 +1,17 @@
 const scrapefrom = require("./index");
 
+// node-fetch options: logFetch, name, url, api, responseParser
+// puppeteer options: timeout = 30000, logFetch, name, url, api, waitForSelector, pageGoTo, selectDropdown, index, responseParser,
+
 scrapefrom({
-  url: "",
-  extract: {
-    selector: "",
-    name: "",
-    extracts: [],
-  },
+  name: "NPM: Scrapefrom",
+  url: "https://www.npmjs.com/package/scrapefrom",
+  extract: { name: "titles", selector: "h1", delimiter: null },
+  use: "puppeteer",
+  logFetch: true,
 })
   .then(
-    (responses) => console.log(responses.result.events)
+    (responses) => console.log(responses)
     // responses.forEach((response) => console.log(response.result.events))
   )
   .catch(console.log);

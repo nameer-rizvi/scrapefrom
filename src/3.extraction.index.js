@@ -1,7 +1,7 @@
 const { isStringValid, isObject, isArray, trim } = require("simpul");
 const cheerio = require("cheerio");
 const { stripHtml } = require("string-strip-html");
-const keyMapExtraction = require("./3.extraction.keyMap");
+const keyPathExtraction = require("./3.extraction.keyPath");
 const htmlExtraction = require("./3.extraction.html");
 
 async function extraction(configs) {
@@ -14,8 +14,8 @@ async function extraction(configs) {
       isObject(config.response) || isArray(config.response)
         ? config.extractor
           ? config.extractor(config.response)
-          : isObject(config.keyMap)
-          ? keyMapExtraction(config.keyMap, config.response)
+          : isObject(config.keyPath)
+          ? keyPathExtraction(config.keyPath, config.response)
           : undefined
         : isStringValid(config.response)
         ? config.extractor
