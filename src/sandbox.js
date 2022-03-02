@@ -10,8 +10,5 @@ scrapefrom({
   use: "puppeteer",
   logFetch: true,
 })
-  .then(
-    (responses) => console.log(responses)
-    // responses.forEach((response) => console.log(response.result.events))
-  )
+  .then((responses) => console.log(responses))
   .catch(console.log);

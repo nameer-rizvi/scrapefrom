@@ -22,7 +22,13 @@ const makeExtractConfigs = (extract, extracts = []) =>
     .flat(Infinity)
     .filter(Boolean);
 
-function htmlExtraction({ extract, extracts, $, defaultDelimiter = " " }) {
+function htmlExtraction({
+  extract,
+  extracts,
+  $,
+  delimiter: configDelimiter,
+  defaultDelimiter = " ",
+}) {
   let data = {};
 
   extracts = makeExtractConfigs(extract, extracts);
@@ -38,7 +44,7 @@ function htmlExtraction({ extract, extracts, $, defaultDelimiter = " " }) {
         extracts: extractsList,
         selector,
         attribute,
-        delimiter,
+        delimiter = configDelimiter,
       } = extracts[i];
 
       if (extractJSON) {
@@ -86,8 +92,8 @@ function htmlExtraction({ extract, extracts, $, defaultDelimiter = " " }) {
 
         if (contents.length === 1) {
           contents = contents[0];
-        } else if (delimiter) {
-          contents = contents.join(delimiter);
+        } else if (delimiter !== undefined) {
+          contents = delimiter ? contents.join(delimiter) : contents;
         } else if (defaultDelimiter) contents = contents.join(defaultDelimiter);
 
         data[name || selector] = contents;

@@ -140,7 +140,7 @@ Extract json from an api using a keyPath.
 
 ```javascript
 scrapefrom({
-  url: "https://api.dcmusic.live/app/initialize",
+  url: "https://v1.api.dcmusic.live/app/initialize",
   keyPath: { silver_metroline_color: "metrolines.1.color" },
 }).then(console.log); // { silver_metroline_color: 'blue-600' }
 ```
@@ -149,7 +149,7 @@ Extract json from an api using a custom extractor.
 
 ```javascript
 scrapefrom({
-  url: "https://api.dcmusic.live/app/initialize",
+  url: "https://v1.api.dcmusic.live/app/initialize",
   extractor: (json) => ({ silver_metroline_color: json.metrolines[1].color }),
 }).then(console.log); // { silver_metroline_color: 'blue-600' }
 ```
