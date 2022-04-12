@@ -19,7 +19,6 @@ async function fetchPuppeteerResponses(configs) {
             logFetch,
             name,
             url,
-            api,
             waitForSelector,
             pageGoTo,
             selectDropdown,
@@ -29,7 +28,7 @@ async function fetchPuppeteerResponses(configs) {
 
           page.setDefaultNavigationTimeout(timeout);
 
-          if (!name) name = url || api;
+          if (!name) name = url;
 
           if (logFetch)
             console.log(`[scrapefrom:puppeteer] fetching ${name}...`);
@@ -40,7 +39,7 @@ async function fetchPuppeteerResponses(configs) {
               ...pageGoTo,
             };
 
-            await page.goto(url || api, pageGoToOptions);
+            await page.goto(url, pageGoToOptions);
 
             await page.waitForSelector(waitForSelector);
 
@@ -61,7 +60,7 @@ async function fetchPuppeteerResponses(configs) {
                 : interceptedRequest.continue()
             );
 
-            const response = await page.goto(url || api, pageGoTo);
+            const response = await page.goto(url, pageGoTo);
 
             const parsedResponse = await response[responseParser || "text"]();
 

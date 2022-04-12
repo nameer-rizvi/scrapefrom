@@ -3,16 +3,16 @@ const nodefetch = require("node-fetch");
 
 async function fetchNodeResponses(configs) {
   for (let config of configs)
-    if (isObject(config) && (!config.use || config.use === "node-fetch")) {
+    if (isObject(config) && (!config.use || config.use === "node-fetch"))
       try {
-        let { logFetch, name, url, api, responseParser, index } = config;
+        let { logFetch, name, url, fetch = {}, responseParser, index } = config;
 
-        if (!name) name = url || api;
+        if (!name) name = url;
 
         if (logFetch)
           console.log(`[scrapefrom:node-fetch] fetching ${name}...`);
 
-        let response = await nodefetch(url || api);
+        let response = await nodefetch(url, fetch);
 
         if (response.ok) {
           if (logFetch)
@@ -29,7 +29,6 @@ async function fetchNodeResponses(configs) {
       } catch (error) {
         configs[config.index].error = error.toString();
       }
-    }
 }
 
 module.exports = fetchNodeResponses;
