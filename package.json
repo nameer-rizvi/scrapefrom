@@ -1,6 +1,6 @@
 {
   "name": "scrapefrom",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "Scrape from any URL for data.",
   "main": "src/index.js",
   "scripts": {
