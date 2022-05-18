@@ -30,10 +30,10 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.10",
     "dottpath": "^0.0.1",
-    "eslint": "^8.10.0",
+    "eslint": "^8.15.0",
     "node-fetch": "^2.6.7",
-    "puppeteer": "^13.4.1",
-    "simpul": "^0.8.3",
+    "puppeteer": "^14.1.0",
+    "simpul": "^0.8.7",
     "string-strip-html": "^8.3.0"
   }
 }

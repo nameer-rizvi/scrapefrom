@@ -120,40 +120,6 @@ scrapefrom({
 }).then(console.log); // "[ { key: "...", type: "...", definition: "...", default: "..." }, ...]"
 ```
 
-Extract json from a page using a json filter and a keyPath.
-
-```javascript
-scrapefrom({
-  url: "https://dcmusic.live/",
-  extracts: [
-    {
-      json: true,
-      name: "organization_logos",
-      filter: (json) => json["@type"] === "Organization",
-      keyPath: { site_logo: "logo" },
-    },
-  ],
-}).then(console.log); // { organization_logos: [ { site_logo: '...' } ] }
-```
-
-Extract json from an api using a keyPath.
-
-```javascript
-scrapefrom({
-  url: "https://v1.api.dcmusic.live/app/initialize",
-  keyPath: { silver_metroline_color: "metrolines.1.color" },
-}).then(console.log); // { silver_metroline_color: 'blue-600' }
-```
-
-Extract json from an api using a custom extractor.
-
-```javascript
-scrapefrom({
-  url: "https://v1.api.dcmusic.live/app/initialize",
-  extractor: (json) => ({ silver_metroline_color: json.metrolines[1].color }),
-}).then(console.log); // { silver_metroline_color: 'blue-600' }
-```
-
 ## If a page requires javascript...
 
 By default scrapefrom utilizes [node-fetch](https://www.npmjs.com/package/node-fetch) under the hood, but if a page is unavailable because it requires javascript, there is the option to use [puppeteer](https://www.npmjs.com/package/puppeteer) (which should be able to bypass this requirement through the use of a headless chrome browser).

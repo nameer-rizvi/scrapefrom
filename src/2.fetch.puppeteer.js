@@ -16,14 +16,14 @@ async function fetchPuppeteerResponses(configs) {
         try {
           let {
             timeout = 30000,
-            logFetch,
             name,
             url,
+            logFetch,
             waitForSelector,
             pageGoTo,
             selectDropdown,
             index,
-            responseParser,
+            parser,
           } = puppeteerConfig;
 
           page.setDefaultNavigationTimeout(timeout);
@@ -44,7 +44,7 @@ async function fetchPuppeteerResponses(configs) {
             await page.waitForSelector(waitForSelector);
 
             if (selectDropdown)
-              await page.select(selectDropdown[0], selectDropdown[1]); // select selector, value
+              await page.select(selectDropdown[0], selectDropdown[1]); // === page.select(selector, value)
 
             const pageContent = await page.content();
 
@@ -62,9 +62,9 @@ async function fetchPuppeteerResponses(configs) {
 
             const response = await page.goto(url, pageGoTo);
 
-            const parsedResponse = await response[responseParser || "text"]();
+            const parsedResponse = await response[parser || "text"]();
 
-            configs[index].response = responseParser
+            configs[index].response = parser
               ? parsedResponse
               : parseJSON(parsedResponse) || parsedResponse;
           }

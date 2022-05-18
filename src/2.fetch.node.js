@@ -5,7 +5,7 @@ async function fetchNodeResponses(configs) {
   for (let config of configs)
     if (isObject(config) && (!config.use || config.use === "node-fetch"))
       try {
-        let { logFetch, name, url, fetch = {}, responseParser, index } = config;
+        let { name, url, logFetch, fetch = {}, parser, index } = config;
 
         if (!name) name = url;
 
@@ -18,14 +18,15 @@ async function fetchNodeResponses(configs) {
           if (logFetch)
             console.log(`[scrapefrom:node-fetch] fetched  ${name}.`);
 
-          let parsedResponse = await response[responseParser || "text"]();
+          let parsedResponse = await response[parser || "text"]();
 
-          configs[index].response = responseParser
+          configs[index].response = parser
             ? parsedResponse
             : parseJSON(parsedResponse) || parsedResponse;
-        } else
-          configs[index].error =
-            response.statusText || response.status.toString();
+        } else {
+          let error = response.statusText || response.status.toString();
+          configs[index].error = error;
+        }
       } catch (error) {
         configs[config.index].error = error.toString();
       }
