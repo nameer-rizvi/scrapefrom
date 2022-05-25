@@ -1,6 +1,6 @@
 {
   "name": "scrapefrom",
-  "version": "2.3.1",
+  "version": "2.3.2",
   "description": "Scrape from any URL for data.",
   "main": "src/index.js",
   "scripts": {
@@ -29,11 +29,11 @@
   "homepage": "https://github.com/nameer-rizvi/scrapefrom#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.10",
-    "dottpath": "^0.0.1",
+    "dottpath": "^0.0.3",
     "eslint": "^8.15.0",
     "node-fetch": "^2.6.7",
     "puppeteer": "^14.1.0",
-    "simpul": "^0.8.7",
+    "simpul": "^0.9.0",
     "string-strip-html": "^8.3.0"
   }
 }
