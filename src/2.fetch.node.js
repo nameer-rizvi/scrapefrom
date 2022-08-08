@@ -12,6 +12,8 @@ async function fetchNodeResponses(configs) {
         if (logFetch)
           console.log(`[scrapefrom:node-fetch] fetching ${name}...`);
 
+        if (typeof fetch.timeout === "number") addTimeoutProp(fetch);
+
         let response = await nodefetch(url, fetch);
 
         if (response.ok) {
@@ -30,6 +32,15 @@ async function fetchNodeResponses(configs) {
       } catch (error) {
         configs[config.index].error = error.toString();
       }
+}
+
+function addTimeoutProp(fetch) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => {
+    controller.abort();
+  }, fetch.timeout);
+  fetch.signal = controller.signal;
+  delete fetch.timeout;
 }
 
 module.exports = fetchNodeResponses;
