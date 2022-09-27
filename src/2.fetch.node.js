@@ -36,6 +36,7 @@ async function fetchNodeResponses(configs) {
 
 function addTimeoutProp(fetch) {
   const controller = new AbortController();
+  // eslint-disable-next-line
   const timeout = setTimeout(() => {
     controller.abort();
   }, fetch.timeout);
