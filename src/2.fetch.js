@@ -1,13 +1,12 @@
 const { isObject, parseJSON } = require("simpul");
+if (fetch) fetch = require("node-fetch");
 
 async function fetchNodeResponses(configs) {
   for (let config of configs)
     if (isObject(config) && (!config.use || config.use === "fetch")) {
       if (!config.name) config.name = config.url;
 
-      function log(message, method = "info") {
-        console[method](`[scrapefrom:fetch] ${config.name}: ${message}.`);
-      }
+      const log = makeLog(config.name);
 
       try {
         if (config.logFetch) log("fetching...");
@@ -53,6 +52,11 @@ function addAbortControllerWithTimeout(config) {
   config.fetch = { ...config.fetch, signal: controller.signal };
 
   delete config.fetch.timeout;
+}
+
+function makeLog(configName) {
+  return (message, method = "info") =>
+    console[method](`[scrapefrom:fetch] ${configName}: ${message}.`);
 }
 
 module.exports = fetchNodeResponses;

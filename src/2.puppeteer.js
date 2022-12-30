@@ -15,9 +15,7 @@ async function fetchPuppeteerResponses(configs) {
       for (let config of puppeteerConfigs) {
         if (!config.name) config.name = config.url;
 
-        function log(message, method = "info") {
-          console[method](`[scrapefrom:puppeteer] ${config.name}: ${message}.`);
-        }
+        const log = makeLog(config.name);
 
         try {
           page.setDefaultNavigationTimeout(config.timeout || 30000);
@@ -72,6 +70,11 @@ async function fetchPuppeteerResponses(configs) {
   } catch (error) {
     throw new Error(error);
   }
+}
+
+function makeLog(configName) {
+  return (message, method = "info") =>
+    console[method](`[scrapefrom:puppeteer] ${configName}: ${message}.`);
 }
 
 module.exports = fetchPuppeteerResponses;
