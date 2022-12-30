@@ -1,5 +1,5 @@
 const { isObject, parseJSON } = require("simpul");
-if (fetch) fetch = require("node-fetch");
+if (!fetch) fetch = require("node-fetch");
 
 async function fetchNodeResponses(configs) {
   for (let config of configs)
