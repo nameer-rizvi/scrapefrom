@@ -122,4 +122,4 @@ scrapefrom({
 
 ## If a page requires javascript...
 
-By default scrapefrom utilizes [node-fetch](https://www.npmjs.com/package/node-fetch) under the hood, but if a page is unavailable because it requires javascript, there is the option to use [puppeteer](https://www.npmjs.com/package/puppeteer) (which should be able to bypass this requirement through the use of a headless chrome browser).
+By default scrapefrom utilizes fetch under the hood, but if a page is unavailable because it requires javascript, there is the option to use [puppeteer](https://www.npmjs.com/package/puppeteer) (which should be able to bypass this requirement through the use of a headless chrome browser).
