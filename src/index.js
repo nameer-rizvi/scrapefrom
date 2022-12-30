@@ -1,15 +1,15 @@
 const configurize = require("./1.configurize");
-const fetchNodeResponses = require("./2.fetch.node");
-const fetchPuppeteerResponses = require("./2.fetch.puppeteer");
+const fetchResponses = require("./2.fetch");
+const puppeteerResponses = require("./2.puppeteer");
 const dataExtraction = require("./3.extraction.index");
 
 async function scrapefrom(input, callback) {
   try {
     const configs = configurize(input);
 
-    await fetchNodeResponses(configs);
+    await fetchResponses(configs);
 
-    await fetchPuppeteerResponses(configs);
+    await puppeteerResponses(configs);
 
     const results = await dataExtraction(configs);
 

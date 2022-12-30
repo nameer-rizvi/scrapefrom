@@ -1,6 +1,6 @@
 # scrapefrom
 
-scrapefrom is a webscraper that can be used to fetch data from any URL.
+Scrape data from any webpage
 
 ## installation
 

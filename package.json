@@ -1,11 +1,11 @@
 {
   "name": "scrapefrom",
-  "version": "2.3.7",
-  "description": "Scrape from any URL for data.",
+  "version": "2.3.8",
+  "description": "Scrape data from any webpage.",
   "main": "src/index.js",
   "scripts": {
     "lint": "eslint . --ext .js,.jsx; exit 0",
-    "sandbox": "node src/sandbox.js"
+    "sandbox": "NODE_NO_WARNINGS=1 node src/sandbox.js"
   },
   "repository": {
     "type": "git",
@@ -30,10 +30,11 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
     "dottpath": "^0.0.5",
-    "eslint": "^8.24.0",
-    "node-fetch": "^2.6.7",
-    "puppeteer": "^16.1.0",
+    "puppeteer": "^19.4.1",
     "simpul": "^0.9.2",
     "string-strip-html": "^8.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.30.0"
   }
 }
