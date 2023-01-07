@@ -40,13 +40,15 @@ async function fetchPuppeteerResponses(configs) {
 
             config.response = pageContent;
           } else {
+            page.removeAllListeners("request");
+
             await page.setRequestInterception(true);
 
-            await page.on("request", (interceptedRequest) => {
+            await page.on("request", async (interceptedRequest) => {
               const abortTypes = ["image", "img", "stylesheet", "css", "font"];
-              abortTypes.includes(interceptedRequest.resourceType())
-                ? interceptedRequest.abort()
-                : interceptedRequest.continue();
+              if (abortTypes.includes(interceptedRequest.resourceType())) {
+                await interceptedRequest.abort();
+              } else await interceptedRequest.continue();
             });
 
             const response = await page.goto(config.url, config.pageGoTo);

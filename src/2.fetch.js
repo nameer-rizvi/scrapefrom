@@ -1,5 +1,5 @@
 const { isObject, parseJSON } = require("simpul");
-if (typeof fetch === "undefined") fetch = require("node-fetch");
+const fetcher = requireFetch();
 
 async function fetchNodeResponses(configs) {
   for (let config of configs)
@@ -13,7 +13,7 @@ async function fetchNodeResponses(configs) {
 
         addAbortControllerWithTimeout(config);
 
-        let response = await fetch(config.url, config.fetch);
+        let response = await fetcher(config.url, config.fetch);
 
         if (response.ok) {
           if (config.logFetch) log("fetch complete");
@@ -35,6 +35,18 @@ async function fetchNodeResponses(configs) {
     }
 }
 
+function requireFetch() {
+  if (typeof fetch === "undefined") {
+    return require("node-fetch");
+  } else return fetch;
+}
+
+function makeLog(configName) {
+  return (message, method = "info") => {
+    console[method](`[scrapefrom:fetch] ${configName}: ${message}.`);
+  };
+}
+
 function addAbortControllerWithTimeout(config) {
   const time =
     typeof config.timeout === "number"
@@ -52,11 +64,6 @@ function addAbortControllerWithTimeout(config) {
   config.fetch = { ...config.fetch, signal: controller.signal };
 
   delete config.fetch.timeout;
-}
-
-function makeLog(configName) {
-  return (message, method = "info") =>
-    console[method](`[scrapefrom:fetch] ${configName}: ${message}.`);
 }
 
 module.exports = fetchNodeResponses;
