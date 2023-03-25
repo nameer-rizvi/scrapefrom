@@ -6,10 +6,10 @@ const scrapefrom = require("./index");
 scrapefrom({
   name: "NPM: Scrapefrom",
   url: "https://www.npmjs.com/package/scrapefrom",
-  extract: { name: "titles", selector: "h1", delimiter: null },
+  extracts: [{ name: "titles", selector: "h1", delimiter: null }],
   fetch: { timeout: 30000 },
   logFetch: true,
   // use: "puppeteer",
 })
-  .then((responses) => console.log(responses))
+  .then(console.log)
   .catch(console.log);

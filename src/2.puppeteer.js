@@ -1,11 +1,9 @@
-const { isObject, parseJSON } = require("simpul");
+const simpul = require("simpul");
 const puppeteer = require("puppeteer");
 
-async function fetchPuppeteerResponses(configs) {
+async function puppeteerResponses(configs) {
   try {
-    const puppeteerConfigs = configs.filter(
-      (config) => isObject(config) && config.use === "puppeteer"
-    );
+    const puppeteerConfigs = getPuppeteerConfigs(configs);
 
     if (puppeteerConfigs.length) {
       const browser = await puppeteer.launch();
@@ -15,12 +13,12 @@ async function fetchPuppeteerResponses(configs) {
       for (let config of puppeteerConfigs) {
         if (!config.name) config.name = config.url;
 
-        const log = makeLog(config.name);
+        const log = makeLog(config.logFetch, config.name);
 
         try {
           page.setDefaultNavigationTimeout(config.timeout || 30000);
 
-          if (config.logFetch) log("fetching...");
+          log("Sending request...");
 
           if (config.waitForSelector) {
             await page.goto(config.url, {
@@ -57,12 +55,12 @@ async function fetchPuppeteerResponses(configs) {
 
             config.response = config.parser
               ? parsedResponse
-              : parseJSON(parsedResponse) || parsedResponse;
+              : simpul.parseJSON(parsedResponse) || parsedResponse;
           }
 
-          if (config.logFetch) log("fetch complete");
+          log("Received response.");
         } catch (error) {
-          if (config.logFetch) log(error.toString(), "error");
+          log(error.toString(), "error");
           config.error = error.toString();
         }
       }
@@ -74,9 +72,20 @@ async function fetchPuppeteerResponses(configs) {
   }
 }
 
-function makeLog(configName) {
-  return (message, method = "info") =>
-    console[method](`[scrapefrom:puppeteer] ${configName}: ${message}.`);
+function makeLog(logFetch, configName) {
+  return (message, method = "info") => {
+    if (logFetch) {
+      console[method](`[scrapefrom:puppeteer] ${configName}: ${message}.`);
+    }
+  };
 }
 
-module.exports = fetchPuppeteerResponses;
+function getPuppeteerConfigs(configs) {
+  const puppeteerConfigs = [];
+  for (let config of configs)
+    if (simpul.isObject(config) && config.use === "puppeteer")
+      puppeteerConfigs.push(config);
+  return puppeteerConfigs;
+}
+
+module.exports = puppeteerResponses;

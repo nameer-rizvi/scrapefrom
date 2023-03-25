@@ -1,6 +1,6 @@
 # scrapefrom
 
-Scrape data from any webpage
+Scrape data from any webpage.
 
 ## installation
 
@@ -18,7 +18,7 @@ const scrapefrom = require("scrapefrom");
 
 ## use cases
 
-Extract html_raw_full, html_raw_split, html_stripped_full, html_stripped_split.
+Extract html, htmlSplits, htmlStripped, htmlStrippedSplits.
 
 ```javascript
 scrapefrom("https://www.npmjs.com/package/scrapefrom").then(console.log);
@@ -48,8 +48,8 @@ Extract a joined array of strings for all h1 tags on a page using a delimiter, a
 ```javascript
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
-  extract: { name: "title", selector: "h1", delimiter: "--" },
-}).then(console.log); // "{ title: "...--..." }"
+  extract: { name: "title", selector: "h1", delimiter: "," },
+}).then(console.log); // "{ title: "...,..." }"
 ```
 
 Extract an array of datetime attribute values for all time tags on a page as "dates".
@@ -120,6 +120,6 @@ scrapefrom({
 }).then(console.log); // "[ { key: "...", type: "...", definition: "...", default: "..." }, ...]"
 ```
 
-## If a page requires javascript...
+## if a page requires javascript...
 
 By default scrapefrom utilizes fetch under the hood, but if a page is unavailable because it requires javascript, there is the option to use [puppeteer](https://www.npmjs.com/package/puppeteer) (which should be able to bypass this requirement through the use of a headless chrome browser).

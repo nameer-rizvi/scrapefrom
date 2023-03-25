@@ -1,15 +1,19 @@
-const { isString, isArray } = require("simpul");
+const simpul = require("simpul");
 
-const makeConfig = (input) =>
-  isString(input)
-    ? [{ url: input }]
-    : isArray(input)
-    ? input.map(makeConfig)
-    : [input];
+function configurize(input) {
+  const configs = parseConfigs(input).flat(Infinity);
+  for (let i = 0; i < configs.length; i++) configs[i].index = i;
+  return configs;
+}
 
-const configurize = (input) =>
-  makeConfig(input)
-    .flat(Infinity)
-    .map((config, index) => ({ index, ...config }));
+function parseConfigs(input) {
+  if (simpul.isString(input)) {
+    return [{ url: input }];
+  } else if (simpul.isArray(input)) {
+    const configs = [];
+    for (let i of input) configs.push(parseConfigs(i));
+    return configs;
+  } else return [input];
+}
 
 module.exports = configurize;

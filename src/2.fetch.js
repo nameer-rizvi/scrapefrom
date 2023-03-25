@@ -1,33 +1,33 @@
-const { isObject, parseJSON } = require("simpul");
+const simpul = require("simpul");
 const fetcher = requireFetch();
 
-async function fetchNodeResponses(configs) {
+async function fetchResponses(configs) {
   for (let config of configs)
-    if (isObject(config) && (!config.use || config.use === "fetch")) {
+    if (simpul.isObject(config) && (!config.use || config.use === "fetch")) {
       if (!config.name) config.name = config.url;
 
-      const log = makeLog(config.name);
+      const log = makeLog(config.logFetch, config.name);
 
       try {
-        if (config.logFetch) log("fetching...");
+        log("Sending request...");
 
         addAbortControllerWithTimeout(config);
 
         let response = await fetcher(config.url, config.fetch);
 
         if (response.ok) {
-          if (config.logFetch) log("fetch complete");
+          log("Received response.");
 
           let parsedResponse = await response[config.parser || "text"]();
 
           config.response = config.parser
             ? parsedResponse
-            : parseJSON(parsedResponse) || parsedResponse;
+            : simpul.parseJSON(parsedResponse) || parsedResponse;
         } else {
           throw new Error(response.statusText || response.status.toString());
         }
       } catch (error) {
-        if (config.logFetch) log(error.toString(), "error");
+        log(error.toString(), "error");
         config.error = error.toString();
       } finally {
         clearTimeout(config.timeout);
@@ -41,29 +41,32 @@ function requireFetch() {
   } else return fetch;
 }
 
-function makeLog(configName) {
+function makeLog(logFetch, configName) {
   return (message, method = "info") => {
-    console[method](`[scrapefrom:fetch] ${configName}: ${message}.`);
+    if (logFetch) {
+      console[method](`[scrapefrom:fetch] ${configName}: ${message}.`);
+    }
   };
 }
 
 function addAbortControllerWithTimeout(config) {
-  const time =
-    typeof config.timeout === "number"
-      ? config.timeout
-      : typeof config.fetch?.timeout === "number"
-      ? config.fetch.timeout
-      : 30000;
+  let timeout = 30000; // 30 seconds.
+
+  if (typeof config.timeout === "number") {
+    timeout = config.timeout;
+  } else if (typeof config.fetch?.timeout === "number") {
+    timeout = config.fetch.timeout;
+  }
 
   const controller = new AbortController();
 
   config.timeout = setTimeout(() => {
     controller.abort();
-  }, time);
+  }, timeout);
 
   config.fetch = { ...config.fetch, signal: controller.signal };
 
   delete config.fetch.timeout;
 }
 
-module.exports = fetchNodeResponses;
+module.exports = fetchResponses;
