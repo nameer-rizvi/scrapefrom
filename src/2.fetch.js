@@ -9,14 +9,14 @@ async function fetchResponses(configs) {
       const log = makeLog(config.logFetch, config.name);
 
       try {
-        log("Sending request...");
+        log("Request sent.");
 
         addAbortControllerWithTimeout(config);
 
         let response = await fetcher(config.url, config.fetch);
 
         if (response.ok) {
-          log("Received response.");
+          log("Response received.");
 
           let parsedResponse = await response[config.parser || "text"]();
 
@@ -44,7 +44,7 @@ function requireFetch() {
 function makeLog(logFetch, configName) {
   return (message, method = "info") => {
     if (logFetch) {
-      console[method](`[scrapefrom:fetch] ${configName}: ${message}.`);
+      console[method](`[scrapefrom:fetch] ${configName}: ${message}`);
     }
   };
 }

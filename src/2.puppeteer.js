@@ -18,7 +18,7 @@ async function puppeteerResponses(configs) {
         try {
           page.setDefaultNavigationTimeout(config.timeout || 30000);
 
-          log("Sending request...");
+          log("Request sent.");
 
           if (config.waitForSelector) {
             await page.goto(config.url, {
@@ -58,7 +58,7 @@ async function puppeteerResponses(configs) {
               : simpul.parseJSON(parsedResponse) || parsedResponse;
           }
 
-          log("Received response.");
+          log("Response received.");
         } catch (error) {
           log(error.toString(), "error");
           config.error = error.toString();
@@ -75,7 +75,7 @@ async function puppeteerResponses(configs) {
 function makeLog(logFetch, configName) {
   return (message, method = "info") => {
     if (logFetch) {
-      console[method](`[scrapefrom:puppeteer] ${configName}: ${message}.`);
+      console[method](`[scrapefrom:puppeteer] ${configName}: ${message}`);
     }
   };
 }
