@@ -9,7 +9,7 @@ scrapefrom({
   extracts: [{ name: "titles", selector: "h1", delimiter: null }],
   fetch: { timeout: 30000 },
   logFetch: true,
-  // use: "puppeteer",
+  use: "puppeteer",
 })
   .then(console.log)
   .catch(console.log);

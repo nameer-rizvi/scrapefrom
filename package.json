@@ -4,8 +4,8 @@
   "description": "Scrape data from any webpage.",
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint . --ext .js,.jsx; exit 0",
-    "sandbox": "NODE_NO_WARNINGS=1 node src/sandbox.js"
+    "lint": "eslint . --ext .js,.jsx",
+    "sandbox": "node src/sandbox.js"
   },
   "repository": {
     "type": "git",
@@ -31,11 +31,11 @@
     "cheerio": "^1.0.0-rc.12",
     "dottpath": "^0.0.5",
     "node-fetch": "^2.6.7",
-    "puppeteer": "^19.4.1",
+    "puppeteer": "^20.1.2",
     "simpul": "^0.9.2",
     "string-strip-html": "^8.3.0"
   },
   "devDependencies": {
-    "eslint": "^8.30.0"
+    "eslint": "^8.40.0"
   }
 }
