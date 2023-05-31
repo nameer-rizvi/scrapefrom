@@ -2,7 +2,7 @@ const simpul = require("simpul");
 const fetcher = requireFetch();
 
 async function fetchResponses(configs) {
-  for (let config of configs)
+  for (let config of configs) {
     if (simpul.isObject(config) && (!config.use || config.use === "fetch")) {
       if (!config.name) config.name = config.url;
 
@@ -22,7 +22,7 @@ async function fetchResponses(configs) {
 
           config.response = config.parser
             ? parsedResponse
-            : simpul.parseJSON(parsedResponse) || parsedResponse;
+            : simpul.parsejson(parsedResponse) || parsedResponse;
         } else {
           throw new Error(response.statusText || response.status.toString());
         }
@@ -33,6 +33,7 @@ async function fetchResponses(configs) {
         clearTimeout(config.timeout);
       }
     }
+  }
 }
 
 function requireFetch() {

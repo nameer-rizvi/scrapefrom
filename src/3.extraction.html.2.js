@@ -33,8 +33,8 @@ function htmlExtraction2({
         for (let scriptType of ["application/ld+json", "application/json"])
           $(`script[type="${scriptType}"]`).each((index, child) => {
             let html = $(child).html();
-            let json = simpul.parseJSON(html);
-            if (!json) json = simpul.parseJSON(html.replace(/\\/g, ""));
+            let json = simpul.parsejson(html);
+            if (!json) json = simpul.parsejson(html.replace(/\\/g, ""));
             if (json) jsons.push(json);
           });
 

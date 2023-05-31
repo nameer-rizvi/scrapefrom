@@ -55,7 +55,7 @@ async function puppeteerResponses(configs) {
 
             config.response = config.parser
               ? parsedResponse
-              : simpul.parseJSON(parsedResponse) || parsedResponse;
+              : simpul.parsejson(parsedResponse) || parsedResponse;
           }
 
           log("Response received.");
