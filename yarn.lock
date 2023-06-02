@@ -493,10 +493,10 @@ dot-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
 
-dottpath@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/dottpath/-/dottpath-0.0.6.tgz#5b30d1d8658032b4aecddd886705aafff320f005"
-  integrity sha512-ba5HvS/5rm/Iiaa4wFqB6fUwGTgoQ38LE970WTL5qjm83cb+SGRE0yUnhVU8zLezfLj3ksT9/aGggHne3Dibog==
+dottpath@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/dottpath/-/dottpath-0.0.7.tgz#95c07b8b318b41d69f27efacbad28838ffe764d6"
+  integrity sha512-JmJlH0T6h4e26wPpsP30wwStgWuazBPSTHdIe2pRws09QD0lw1b/qAOPdGiR6DU0AACqqSa2q0HjT0ZbqkkRKg==
   dependencies:
     simpul "^0.9.3"
 
