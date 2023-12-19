@@ -28,11 +28,12 @@ async function puppeteerResponses(configs) {
 
             await page.waitForSelector(config.waitForSelector);
 
-            if (config.selectDropdown)
+            if (config.selectDropdown) {
               await page.select(
                 config.selectDropdown[0],
-                config.selectDropdown[1]
+                config.selectDropdown[1],
               ); // === page.select(selector, value)
+            }
 
             const pageContent = await page.content();
 

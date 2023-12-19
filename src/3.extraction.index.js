@@ -27,7 +27,7 @@ async function extraction(configs) {
       }
     }
 
-    if (!config.includeResponse) delete config.response;
+    if (config.includeResponse !== true) delete config.response;
 
     datas.push(config);
   }
@@ -35,8 +35,12 @@ async function extraction(configs) {
   if (datas.length === 1) {
     if (simpul.isObject(datas[0]) && datas[0].error) {
       throw new Error(datas[0].error);
-    } else return datas[0];
-  } else return datas;
+    } else {
+      return datas[0];
+    }
+  }
+
+  return datas;
 }
 
 module.exports = extraction;
