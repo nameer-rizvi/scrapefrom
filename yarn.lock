@@ -497,12 +497,12 @@ dot-case@^3.0.4:
     no-case "^3.0.4"
     tslib "^2.0.3"
 
-dottpath@^0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/dottpath/-/dottpath-0.0.8.tgz#fa02ccb212eb3fe93c4fc8c05783741204f69ea3"
-  integrity sha512-pP49cmDSMkMoRbkez+rHUQ63jHRZR3p7pQ7bniojCdsx/l6djuwrETai9uVMx+TwUsmBFBe5XvhWbKvktwJG8Q==
+dottpath@^0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/dottpath/-/dottpath-0.0.9.tgz#ef719aa609548998187234777f96bfd3c819c07f"
+  integrity sha512-AohEI8XEqjcK29ctBICeynutENdcxGc6g5H/HPio9YQYRFmm4AqL/jPJD1GEeI2jABPPTbSfTS3IWK9D/uhrhA==
   dependencies:
-    simpul "^0.9.6"
+    simpul "^0.9.7"
 
 emoji-regex@^8.0.0:
   version "8.0.0"
@@ -1343,10 +1343,10 @@ shebang-regex@^3.0.0:
   resolved "https://registry.yarnpkg.com/shebang-regex/-/shebang-regex-3.0.0.tgz#ae16f1644d873ecad843b0307b143362d4c42172"
   integrity sha512-7++dFhtcx3353uBaq8DDR4NuxBetBzC7ZQOhmTQInHEd6bSrXdiEyzCvG07Z44UYdLShWUyXt5M/yhz8ekcb1A==
 
-simpul@^0.9.6:
-  version "0.9.6"
-  resolved "https://registry.yarnpkg.com/simpul/-/simpul-0.9.6.tgz#7976d3d39aa5a1b63295969c3a3f46a4414afd2d"
-  integrity sha512-4N79ywqw+7MdkT2kxgXYinP2Z+O3aM9COtksZjiTbPHrRamP3ekKvO12TxEING4LAZQQ075U24/+W9ZGQuatQA==
+simpul@^0.9.7:
+  version "0.9.7"
+  resolved "https://registry.yarnpkg.com/simpul/-/simpul-0.9.7.tgz#495de81bd4179251a0c33defc18142dce1005f46"
+  integrity sha512-Kbm44cRa/dE9CM591zum0hCR10sLQkSb90hWnd/WHJh34W6IzNMoJ9IU2273A6g3qcGwVzdehyqQsx0qkkYkRw==
   dependencies:
     change-case "4.1.2"
     eslint "^8.56.0"
