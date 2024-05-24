@@ -1,10 +1,10 @@
 {
   "name": "scrapefrom",
-  "version": "2.5.1",
+  "version": "2.5.2",
   "description": "Scrape data from any webpage.",
   "main": "src/index.js",
   "scripts": {
-    "lint": "eslint . --ext .js,.jsx; exit 0",
+    "lint": "npx eslint src/**; exit 0",
     "sandbox": "node src/sandbox.js"
   },
   "repository": {
@@ -23,17 +23,19 @@
   ],
   "author": "Nameer Rizvi (https://github.com/nameer-rizvi)",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nameer-rizvi/scrapefrom/issues"
-  },
+  "bugs": "https://github.com/nameer-rizvi/scrapefrom/issues",
   "homepage": "https://github.com/nameer-rizvi/scrapefrom#readme",
   "dependencies": {
     "cheerio": "^1.0.0-rc.12",
-    "dottpath": "^0.1.1",
-    "eslint": "^8.56.0",
+    "dottpath": "^0.1.2",
     "node-fetch": "2",
-    "puppeteer": "^21.6.1",
-    "simpul": "^1.0.5",
+    "puppeteer": "^22.10.0",
+    "simpul": "^1.0.8",
     "string-strip-html": "8.5.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.3.0",
+    "eslint": "^9.3.0",
+    "globals": "^15.3.0"
   }
 }
