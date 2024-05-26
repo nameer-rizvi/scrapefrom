@@ -11,7 +11,7 @@ $ npm i scrapefrom
 ### node v16 support
 
 ```
-$ npm i scrapefrom@2.5.4
+$ npm i scrapefrom@2.5.6
 ```
 
 ## import
