@@ -8,6 +8,12 @@ Scrape data from any webpage.
 $ npm i scrapefrom
 ```
 
+### node v16 support
+
+```
+$ npm i scrapefrom@2.5.4
+```
+
 ## import
 
 ```javascript
