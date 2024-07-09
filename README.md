@@ -30,7 +30,7 @@ Extract html, htmlSplits, htmlStripped, htmlStrippedSplits.
 scrapefrom("https://www.npmjs.com/package/scrapefrom").then(console.log);
 ```
 
-Extract an array of strings for all h1 tags on a page.
+Extract an array of h1 tags on a page.
 
 ```javascript
 scrapefrom({
@@ -40,7 +40,7 @@ scrapefrom({
 }).then(console.log); // "{ h1: [...] }"
 ```
 
-Extract an array of strings for all h1 tags on a page as "titles".
+Extract an array of h1 tags on a page as "titles".
 
 ```javascript
 scrapefrom({
@@ -49,7 +49,7 @@ scrapefrom({
 }).then(console.log); // "{ titles: [...] }"
 ```
 
-Extract a joined array of strings for all h1 tags on a page using a delimiter, as "title".
+Extract a commafied list of h1 tags on a page as "titles".
 
 ```javascript
 scrapefrom({
@@ -58,7 +58,7 @@ scrapefrom({
 }).then(console.log); // "{ title: "...,..." }"
 ```
 
-Extract an array of datetime attribute values for all time tags on a page as "dates".
+Extract an array of datetime attributes for all time tags on a page as "dates".
 
 ```javascript
 scrapefrom({
@@ -72,7 +72,7 @@ scrapefrom({
 }).then(console.log); // "{ dates: [...] }"
 ```
 
-Extract previous use cases in a single config.
+Extract previous use cases in a single response.
 
 ```javascript
 scrapefrom({
