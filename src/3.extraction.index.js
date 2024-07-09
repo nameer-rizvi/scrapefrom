@@ -5,12 +5,9 @@ const htmlExtraction1 = require("./3.extraction.html.1");
 const htmlExtraction2 = require("./3.extraction.html.2");
 
 async function extraction(configs) {
-  let datas = [];
+  const datas = [];
 
-  for (let config of configs) {
-    let $ =
-      simpul.isStringValid(config.response) && cheerio.load(config.response);
-
+  for (const config of configs) {
     if (simpul.isObject(config.response) || simpul.isArray(config.response)) {
       if (config.extractor) {
         config.result = config.extractor(config.response);
@@ -18,6 +15,7 @@ async function extraction(configs) {
         config.result = keyPathExtraction(config.keyPath, config.response);
       }
     } else if (simpul.isStringValid(config.response)) {
+      const $ = cheerio.load(config.response);
       if (config.extractor) {
         config.result = config.extractor($);
       } else if (config.extract || config.extracts) {
@@ -29,15 +27,14 @@ async function extraction(configs) {
 
     if (config.includeResponse !== true) delete config.response;
 
+    delete config.timeout;
+
     datas.push(config);
   }
 
-  if (datas.length === 1) {
-    if (simpul.isObject(datas[0]) && datas[0].error) {
-      throw new Error(datas[0].error);
-    } else {
-      return datas[0];
-    }
+  if (configs.length === 1) {
+    if (datas[0]?.error) throw new Error(datas[0].error);
+    return datas[0];
   }
 
   return datas;

@@ -4,14 +4,14 @@ Scrape data from any webpage.
 
 ## installation
 
-```
-$ npm i scrapefrom
+```console
+npm i scrapefrom
 ```
 
 ### node v16 support
 
-```
-$ npm i scrapefrom@2.5.6
+```console
+npm i scrapefrom@2.5.6
 ```
 
 ## import

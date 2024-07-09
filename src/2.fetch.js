@@ -2,44 +2,43 @@ const simpul = require("simpul");
 const fetcher = requireFetch();
 
 async function fetchResponses(configs) {
-  for (let config of configs) {
-    if (simpul.isObject(config) && (!config.use || config.use === "fetch")) {
-      if (!config.name) config.name = config.url;
+  for (const config of configs) {
+    if (config.use && config.use !== "fetch") continue;
 
-      const log = makeLog(config.logFetch, config.name);
+    if (!config.name) config.name = new URL(config.url).hostname;
 
-      try {
-        log("Request sent.");
+    const log = makeLog(config.logFetch, config.name);
 
-        addAbortControllerWithTimeout(config);
+    try {
+      log("Request sent.");
 
-        let response = await fetcher(config.url, config.fetch);
+      addAbortControllerWithTimeout(config);
 
-        if (response.ok) {
-          log("Response received.");
+      const response = await fetcher(config.url, config.fetch);
 
-          let parsedResponse = await response[config.parser || "text"]();
-
-          config.response = config.parser
-            ? parsedResponse
-            : simpul.parsejson(parsedResponse) || parsedResponse;
-        } else {
-          throw new Error(response.statusText || response.status.toString());
-        }
-      } catch (error) {
-        log(error.toString(), "error");
-        config.error = error.toString();
-      } finally {
-        clearTimeout(config.timeout);
+      if (!response.ok) {
+        throw new Error(response.statusText || response.status.toString());
       }
+
+      log("Response received.");
+
+      let parsedResponse = await response[config.parser || "text"]();
+
+      config.response = config.parser
+        ? parsedResponse
+        : simpul.parsejson(parsedResponse) || parsedResponse;
+    } catch (error) {
+      log(error.toString(), "error");
+      config.error = error.toString();
+    } finally {
+      clearTimeout(config.timeout);
     }
   }
 }
 
 function requireFetch() {
-  if (typeof fetch === "undefined") {
-    return require("node-fetch");
-  } else return fetch;
+  if (typeof fetch === "undefined") return require("node-fetch");
+  return fetch;
 }
 
 function makeLog(logFetch, configName) {

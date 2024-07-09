@@ -13,9 +13,9 @@ function htmlExtraction2({
 
   const extractConfigs = getExtractConfigs(extract, extracts);
 
-  if (extractConfigs.length && $)
+  if (extractConfigs.length && $) {
     for (let i = 0; i < extractConfigs.length; i++) {
-      let {
+      const {
         json: extractJSON,
         filter,
         keyPath,
@@ -30,54 +30,50 @@ function htmlExtraction2({
       if (extractJSON) {
         let jsons = [];
 
-        for (let scriptType of ["application/ld+json", "application/json"])
-          $(`script[type="${scriptType}"]`).each((index, child) => {
-            let html = $(child).html();
+        for (let scriptType of ["application/ld+json", "application/json"]) {
+          $(`script[type="${scriptType}"]`).each((_, child) => {
+            const html = $(child).html();
             let json = simpul.parsejson(html);
             if (!json) json = simpul.parsejson(html.replace(/\\/g, ""));
             if (json) jsons.push(json);
           });
+        }
 
         jsons = jsons.flat();
 
-        if (filter) {
-          let jsons2 = [];
-          for (let json of jsons) if (filter(json)) jsons2.push(json);
-          jsons = jsons2;
-        }
+        if (filter) jsons = jsons.filter(filter);
 
         if (keyPath) {
-          let jsons2 = [];
-          for (let json of jsons) jsons2.push(keyPathExtraction(keyPath, json));
-          jsons = jsons2;
+          jsons = jsons.map((json) => keyPathExtraction(keyPath, json));
         }
 
         data[name || "json_" + i] = jsons;
       } else if (extract2 || extracts2) {
-        let extractConfig = { extract: extract2, extracts: extracts2 };
+        const nestedConfig = { extract: extract2, extracts: extracts2 };
 
-        let datas = [];
+        const nestedData = [];
 
-        $(selector).each((index, child) => {
-          let html = $(child).html();
-          let xml = { decodeEntities: false };
-          let htmlCheerio = cheerio.load(html, { xml });
-          let props = { ...extractConfig, $: htmlCheerio, defaultDelimiter };
-          datas.push(htmlExtraction2(props));
+        $(selector).each((_, child) => {
+          const html = $(child).html();
+          const htmlCheerioOptions = { xml: { decodeEntities: false } };
+          const htmlCheerio = cheerio.load(html, htmlCheerioOptions);
+          const props = { ...nestedConfig, $: htmlCheerio, defaultDelimiter };
+          nestedData.push(htmlExtraction2(props));
         });
 
-        data[name || selector] = datas;
+        data[name || selector] = nestedData;
       } else if (selector) {
         let texts = [];
 
-        $(selector).each((index, child) => {
-          let text = attribute ? $(child).attr(attribute) : $(child).text();
+        $(selector).each((_, child) => {
+          const text = attribute ? $(child).attr(attribute) : $(child).text();
           if (simpul.isStringValid(text)) texts.push(simpul.trim(text));
         });
 
         if (texts.length === 1) {
           texts = texts[0];
         } else if (delimiter !== undefined) {
+          // "delimiter" can be null, which ensures the "defaultDelimiter" is not used.
           texts = delimiter ? texts.join(delimiter) : texts;
         } else if (defaultDelimiter) {
           texts = texts.join(defaultDelimiter);
@@ -86,14 +82,14 @@ function htmlExtraction2({
         data[name || selector] = texts;
       }
     }
+  }
 
   return data;
 }
 
 function getExtractConfigs(extract, extracts = []) {
   const extractConfigs = [];
-
-  for (let extractConfig of [extract, ...extracts]) {
+  for (const extractConfig of [extract, ...extracts]) {
     if (simpul.isString(extractConfig)) {
       extractConfigs.push({ selector: extract });
     } else if (simpul.isObject(extractConfig)) {
@@ -103,7 +99,6 @@ function getExtractConfigs(extract, extracts = []) {
       extractConfigs.push(...getExtractConfigs(extractConfig));
     }
   }
-
   return extractConfigs.flat(Infinity);
 }
 

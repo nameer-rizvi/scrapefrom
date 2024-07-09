@@ -4,12 +4,15 @@ const scrapefrom = require("./index");
 // puppeteer options: timeout = 30000, logFetch, name, url, api, waitForSelector, pageGoTo, selectDropdown, index, responseParser
 
 scrapefrom({
-  name: "NPM: Scrapefrom",
-  url: "https://www.npmjs.com/package/scrapefrom",
-  extracts: [{ name: "titles", selector: "h1", delimiter: null }],
-  fetch: { timeout: 30000 },
-  logFetch: true,
-  use: "puppeteer",
+  url: "https://dcmusic.live/",
+  extracts: [
+    {
+      json: true,
+      name: "event_names",
+      filter: (json) => json["@type"] === "Event",
+      keyPath: { name: "name" },
+    },
+  ],
 })
   .then(console.log)
   .catch(console.log);

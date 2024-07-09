@@ -18,8 +18,8 @@ function makeHtmlSplits(raw) {
 
   const splits = [];
 
-  for (let html of htmls) {
-    let trimmed = simpul.trim(html);
+  for (const html of htmls) {
+    const trimmed = simpul.trim(html);
     if (trimmed) splits.push(trimmed);
   }
 
