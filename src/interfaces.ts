@@ -1,4 +1,4 @@
-import { WaitForSelectorOptions, GoToOptions } from "puppeteer";
+import { GoToOptions } from "puppeteer";
 
 export interface Config {
   index?: number;

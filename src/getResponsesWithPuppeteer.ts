@@ -1,5 +1,5 @@
 import { Config } from "./interfaces";
-import puppeteer, { Browser, Page, PuppeteerLaunchOptions } from "puppeteer";
+import puppeteer, { Browser, Page } from "puppeteer";
 import simpul from "simpul";
 
 // https://pptr.dev/guides/getting-started
@@ -23,7 +23,7 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
       const log = makeLog(config.logFetch, config.name);
 
       try {
-        let timeout =
+        const timeout =
           typeof config.timeout === "number" ? config.timeout : 30000;
 
         page.setDefaultNavigationTimeout(timeout);
