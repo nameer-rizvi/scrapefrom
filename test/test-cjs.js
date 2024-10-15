@@ -1,12 +1,12 @@
 const scrapefrom = require("../dist");
 // console.log(scrapefrom);
 
-scrapefrom("https://www.npmjs.com/package/dottpath", [
+scrapefrom({ url: "https://www.npmjs.com/package/dottpath", logFetch: true }, [
   [
     "https://www.npmjs.com/package/jsontxt",
     [
       "https://www.npmjs.com/package/scrapefrom",
-      "https://www.npmjs.com/package/simpul",
+      { url: "https://www.npmjs.com/package/simpul", logFetch: true },
     ],
   ],
 ]).then(console.log);

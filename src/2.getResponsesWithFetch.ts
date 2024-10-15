@@ -1,4 +1,5 @@
 import { Config } from "./interfaces";
+import logger from "./util.logger";
 import simpul from "simpul";
 
 async function getResponsesWithFetch(configs: Config[]) {
@@ -7,11 +8,9 @@ async function getResponsesWithFetch(configs: Config[]) {
 
     if (!config.name) config.name = new URL(config.url).hostname;
 
-    const log = makeLog(config.logFetch, config.name);
+    const log = logger(config.logFetch, "fetch", config.name);
 
     try {
-      log("Request sent.");
-
       const controller = new AbortController();
 
       const timeout =
@@ -22,6 +21,8 @@ async function getResponsesWithFetch(configs: Config[]) {
       }, timeout);
 
       config.fetch = { ...config.fetch, signal: controller.signal };
+
+      log("Request sent.");
 
       const response = await fetch(config.url, config.fetch);
 
@@ -45,14 +46,6 @@ async function getResponsesWithFetch(configs: Config[]) {
       clearTimeout(config.timeout);
     }
   }
-}
-
-function makeLog(logFetch: boolean = false, configName: string) {
-  return (message: string, method: "info" | "error" = "info") => {
-    if (logFetch === true) {
-      console[method](`[scrapefrom:fetch] ${configName}: ${message}`);
-    }
-  };
 }
 
 export default getResponsesWithFetch;

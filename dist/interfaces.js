@@ -1,16 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // TODO
-// name?: string;
-// use?: "fetch" | "puppeteer";
-// logFetch?: boolean;
-// timeout?: number | NodeJS.Timeout;
-// fetch?: RequestInit;
 // pageGoTo?: GoToOptions;
 // waitForSelector?: string;
 // select?: string[];
-// parser?: "text" | "json";
-// response?: any;
 // error?: string;
 // extract?: ExtractConfig;
 // extracts?: ExtractConfig[];
