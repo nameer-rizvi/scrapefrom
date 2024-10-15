@@ -77,7 +77,6 @@ function getResponsesWithPuppeteer(configs) {
                     config.error = error.toString();
                 }
             }
-            console.log(config);
         }
         yield browser.close();
     });

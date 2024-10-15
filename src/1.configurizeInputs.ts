@@ -1,7 +1,7 @@
 import { Config } from "./interfaces";
 import simpul from "simpul";
 
-function configurize(
+function configurizeInputs(
   ...inputs: Config[] | Config[][] | string[] | string[][] | any[] | any[][]
 ): Config[] {
   const configs: Config[] = [];
@@ -12,7 +12,7 @@ function configurize(
     } else if (simpul.isObject(input)) {
       if (typeof input.url === "string") configs.push(input);
     } else if (Array.isArray(input)) {
-      configs.push(...configurize(...input));
+      configs.push(...configurizeInputs(...input));
     }
   }
 
@@ -23,4 +23,4 @@ function configurize(
   return configs;
 }
 
-export default configurize;
+export default configurizeInputs;

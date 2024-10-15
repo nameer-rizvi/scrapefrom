@@ -1,7 +1,9 @@
 import { Config } from "./interfaces";
 import dottpath from "dottpath";
 
-function extractDataKeyPath(config: Config): Record<string, any> {
+function extractDataFromResponsesWithKeyPath(
+  config: Config,
+): Record<string, any> {
   const result: Record<string, any> = {};
 
   for (const key in config.keyPath) {
@@ -11,4 +13,4 @@ function extractDataKeyPath(config: Config): Record<string, any> {
   return result;
 }
 
-export default extractDataKeyPath;
+export default extractDataFromResponsesWithKeyPath;

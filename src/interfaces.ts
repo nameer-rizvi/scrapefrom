@@ -13,20 +13,19 @@ export interface Config {
   select?: string[];
   parser?: "text" | "json";
   response?: any;
+  includeResponse?: boolean;
   error?: string;
+  extractor?: Function;
+  extract?: ExtractConfig;
+  extracts?: ExtractConfig[];
+  keyPath?: { [key: string]: string };
+  result?: any;
 }
 
 export interface ExtractConfig {}
 
 // TODO
-// error?: string;
-// extract?: ExtractConfig;
-// extracts?: ExtractConfig[];
-// extractor?: Function;
-// keyPath?: { [key: string]: any };
-// result?: any;
-// includeResponse?: boolean;
-
+// ...
 // json?: boolean;
 // filter?: (json: any) => boolean;
 // keyPath?: Record<string, any>;
