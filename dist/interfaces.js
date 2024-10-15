@@ -1,9 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 // TODO
-// pageGoTo?: GoToOptions;
-// waitForSelector?: string;
-// select?: string[];
 // error?: string;
 // extract?: ExtractConfig;
 // extracts?: ExtractConfig[];

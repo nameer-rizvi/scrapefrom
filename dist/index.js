@@ -14,12 +14,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 require("cross-fetch/polyfill");
 const _1_configurize_1 = __importDefault(require("./1.configurize"));
 const _2_getResponsesWithFetch_1 = __importDefault(require("./2.getResponsesWithFetch"));
+const _2_getResponsesWithPuppeteer_1 = __importDefault(require("./2.getResponsesWithPuppeteer"));
 function scrapefrom(...inputs) {
     return __awaiter(this, void 0, void 0, function* () {
         const configs = (0, _1_configurize_1.default)(inputs);
         yield (0, _2_getResponsesWithFetch_1.default)(configs);
-        console.log(configs);
-        // await getResponsesWithPuppeteer(configs);
+        yield (0, _2_getResponsesWithPuppeteer_1.default)(configs);
         return { url: "" };
         // const results = extractData(configs);
     });

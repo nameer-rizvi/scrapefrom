@@ -8,6 +8,9 @@ export interface Config {
   logFetch?: boolean;
   timeout?: number | NodeJS.Timeout;
   fetch?: RequestInit;
+  waitForSelector?: string;
+  pageGoTo?: GoToOptions;
+  select?: string[];
   parser?: "text" | "json";
   response?: any;
   error?: string;
@@ -16,9 +19,6 @@ export interface Config {
 export interface ExtractConfig {}
 
 // TODO
-// pageGoTo?: GoToOptions;
-// waitForSelector?: string;
-// select?: string[];
 // error?: string;
 // extract?: ExtractConfig;
 // extracts?: ExtractConfig[];

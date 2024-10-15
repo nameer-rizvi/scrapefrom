@@ -2,6 +2,7 @@ import "cross-fetch/polyfill";
 import { Config } from "./interfaces";
 import configurize from "./1.configurize";
 import getResponsesWithFetch from "./2.getResponsesWithFetch";
+import getResponsesWithPuppeteer from "./2.getResponsesWithPuppeteer";
 
 async function scrapefrom(
   ...inputs: Config[] | Config[][] | string[] | string[][] | any[] | any[][]
@@ -10,8 +11,8 @@ async function scrapefrom(
 
   await getResponsesWithFetch(configs);
 
-  console.log(configs);
-  // await getResponsesWithPuppeteer(configs);
+  await getResponsesWithPuppeteer(configs);
+
   return { url: "" };
   // const results = extractData(configs);
 }
