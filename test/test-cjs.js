@@ -1,10 +1,9 @@
 const scrapefrom = require("../dist");
 // console.log(scrapefrom);
 
-scrapefrom({
-  url: "https://api.dcmusic.live/root?version=2.0.02",
-  keyPath: { route1: "routes.0", route3: "routes.2" },
-}).then(console.log);
+scrapefrom("https://www.npmjs.com/package/dottpath").then((res) =>
+  console.log(res.result),
+);
 
 // scrapefrom(
 //   {

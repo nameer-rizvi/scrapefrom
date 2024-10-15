@@ -30,12 +30,13 @@
   },
   "homepage": "https://github.com/nameer-rizvi/scrapefrom#readme",
   "dependencies": {
+    "@types/jsdom": "^21.1.7",
     "cheerio": "^1.0.0",
     "cross-fetch": "^4.0.0",
     "dottpath": "^0.1.7",
+    "jsdom": "^25.0.1",
     "puppeteer": "^23.5.2",
-    "simpul": "^1.2.1",
-    "string-strip-html": "8.5.0"
+    "simpul": "^1.2.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",

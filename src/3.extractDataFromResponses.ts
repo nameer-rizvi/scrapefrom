@@ -1,7 +1,8 @@
 import { Config } from "./interfaces";
 import simpul from "simpul";
-// import * as cheerio from "cheerio";
-import extractDataFromResponsesWithKeyPath from "./3.extractDataFromResponsesWithKeyPath";
+import * as cheerio from "cheerio";
+import extractDataWithKeyPath from "./3.extractDataWithKeyPath";
+import extractHTMLData2 from "./3.extractHTMLData.2";
 
 function extractDataFromResponses(configs: Config[]): Config | Config[] {
   const results: Config[] = [];
@@ -11,17 +12,19 @@ function extractDataFromResponses(configs: Config[]): Config | Config[] {
       if (config.extractor) {
         config.result = config.extractor(config.response);
       } else if (simpul.isObject(config.keyPath)) {
-        config.result = extractDataFromResponsesWithKeyPath(config);
+        config.result = extractDataWithKeyPath(config);
       }
     } else if (typeof config.response === "string") {
-      // const $ = cheerio.load(config.response);
-      // if (config.extractor) {
-      //   config.result = config.extractor($);
-      // } else if (config.extract || config.extracts) {
-      //   config.result = extractDataHTML1(config, $);
-      // } else {
-      //   config.result = extractDataHTML2(config);
-      // }
+      const $ = cheerio.load(config.response);
+      if (config.extractor) {
+        console.log(1);
+        // config.result = config.extractor($);
+      } else if (config.extract || config.extracts) {
+        console.log(2);
+        // config.result = extractHTMLData1(config, $);
+      } else {
+        config.result = extractHTMLData2(config);
+      }
     }
 
     if (config.includeResponse !== true) delete config.response;

@@ -24,6 +24,13 @@ export interface Config {
 
 export interface ExtractConfig {}
 
+export interface JsonNode {
+  tag: string | null;
+  attributes: { [key: string]: string };
+  children: JsonNode[];
+  textContent: string | null;
+}
+
 // TODO
 // ...
 // json?: boolean;
