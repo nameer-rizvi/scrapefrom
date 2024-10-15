@@ -4,22 +4,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const simpul_1 = __importDefault(require("simpul"));
-function configurize(input) {
-    if (typeof input === "string") {
-        return [{ index: 0, url: input }];
-    }
-    else if (simpul_1.default.isObject(input)) {
-        return [Object.assign({ index: 0 }, input)];
-    }
-    else if (Array.isArray(input)) {
-        const configs = [];
-        for (const i of input) {
-            // ...
+function configurize(...inputs) {
+    const configs = [];
+    for (const input of inputs) {
+        if (typeof input === "string") {
+            configs.push({ url: input });
         }
-        return configs;
+        else if (simpul_1.default.isObject(input)) {
+            if (typeof input.url === "string")
+                configs.push(input);
+        }
+        else if (Array.isArray(input)) {
+            configs.push(...configurize(...input));
+        }
     }
-    else {
-        return [];
+    for (let i = 0; i < configs.length; i++) {
+        configs[i].index = i;
     }
+    return configs;
 }
 exports.default = configurize;

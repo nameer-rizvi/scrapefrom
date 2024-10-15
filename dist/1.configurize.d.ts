@@ -1,3 +1,3 @@
 import { Config } from "./interfaces";
-declare function configurize(input: string | Config | Config[]): Config[];
+declare function configurize(...inputs: Config[] | Config[][] | string[] | string[][] | any[] | any[][]): Config[];
 export default configurize;

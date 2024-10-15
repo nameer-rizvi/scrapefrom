@@ -1,19 +1,20 @@
-const stringStripHtml = require("string-strip-html");
-const simpul = require("simpul");
+import { Config } from "./interfaces";
+import simpul from "simpul";
+import { stripHtml } from "string-strip-html";
 
-function htmlExtraction1(config) {
+function extractDataHTML2(config: Config) {
   const html = config.response;
 
   const htmlSplits = makeHtmlSplits(html);
 
-  const htmlStripped = stringStripHtml.stripHtml(config.response).result;
+  const htmlStripped = stripHtml(config.response).result;
 
   const htmlStrippedSplits = makeHtmlSplits(htmlStripped);
 
   return { html, htmlSplits, htmlStripped, htmlStrippedSplits };
 }
 
-function makeHtmlSplits(raw) {
+function makeHtmlSplits(raw: string) {
   const htmls = raw.split("\n");
 
   const splits = [];
@@ -26,4 +27,4 @@ function makeHtmlSplits(raw) {
   return splits;
 }
 
-module.exports = htmlExtraction1;
+export default extractDataHTML2;

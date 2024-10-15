@@ -12,46 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 require("cross-fetch/polyfill");
-const simpul_1 = __importDefault(require("simpul"));
-const getResponsesWithFetch_1 = __importDefault(require("./getResponsesWithFetch"));
-const getResponsesWithPuppeteer_1 = __importDefault(require("./getResponsesWithPuppeteer"));
+const _1_configurize_1 = __importDefault(require("./1.configurize"));
 function scrapefrom(...inputs) {
     return __awaiter(this, void 0, void 0, function* () {
-        // Configurize inputs
-        const configs = [];
-        for (const input of inputs) {
-            if (typeof input === "string") {
-                configs.push({ url: input });
-            }
-            else if (simpul_1.default.isObject(input)) {
-                if (typeof input.url === "string")
-                    configs.push(input);
-            }
-            else if (Array.isArray(input)) {
-                for (const i of input) {
-                    if (typeof i === "string") {
-                        configs.push({ url: i });
-                    }
-                    else if (simpul_1.default.isObject(i)) {
-                        if (typeof i.url === "string")
-                            configs.push(i);
-                    }
-                }
-            }
-        }
-        for (let i = 0; i < configs.length; i++) {
-            if (typeof configs[i].index !== "number")
-                configs[i].index = i;
-        }
-        // Get responses with fetch and/or puppeteer
-        yield (0, getResponsesWithFetch_1.default)(configs);
-        yield (0, getResponsesWithPuppeteer_1.default)(configs);
+        const configs = (0, _1_configurize_1.default)(inputs);
         console.log(configs);
-        // Return results
-        return {};
+        // await getResponsesWithFetch(configs);
+        // await getResponsesWithPuppeteer(configs);
+        // const results = extractData(configs);
+        return { url: "" };
     });
 }
 module.exports = scrapefrom;
-// import extractData from "./extractData";
-// const results = await extractData(configs);
-// return results;
