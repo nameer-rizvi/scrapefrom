@@ -3,11 +3,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const util_parseHTML_1 = __importDefault(require("./util.parseHTML"));
-const dottpath_1 = __importDefault(require("dottpath"));
 const simpul_1 = __importDefault(require("simpul"));
+const dottpath_1 = __importDefault(require("dottpath"));
+let parseHTML;
+if (simpul_1.default.support.inWindow("DOMParser")) {
+    // Browser environment
+    parseHTML = (html) => {
+        const parser = new DOMParser();
+        return parser.parseFromString(html, "text/html");
+    };
+}
+else {
+    // Node.js environment
+    const jsdom = require("jsdom");
+    parseHTML = (html) => {
+        const dom = new jsdom.JSDOM(html);
+        return dom.window.document;
+    };
+}
 function extractHTMLData2(config) {
-    const doc = (0, util_parseHTML_1.default)(config.response);
+    const doc = parseHTML(config.response);
     const headJson = nodeToJson(doc.head);
     const bodyJson = nodeToJson(doc.body);
     const result = { head: headJson, body: bodyJson };

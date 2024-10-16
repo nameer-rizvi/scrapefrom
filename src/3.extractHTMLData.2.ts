@@ -1,7 +1,23 @@
-import { Config, JsonNode } from "./interfaces";
-import parseHTML from "./util.parseHTML";
-import dottpath from "dottpath";
 import simpul from "simpul";
+import { Config, JsonNode } from "./interfaces";
+import dottpath from "dottpath";
+
+let parseHTML: (html: string) => Document;
+
+if (simpul.support.inWindow("DOMParser")) {
+  // Browser environment
+  parseHTML = (html: string): Document => {
+    const parser = new DOMParser();
+    return parser.parseFromString(html, "text/html");
+  };
+} else {
+  // Node.js environment
+  const jsdom = require("jsdom");
+  parseHTML = (html: string): Document => {
+    const dom = new jsdom.JSDOM(html);
+    return dom.window.document;
+  };
+}
 
 function extractHTMLData2(config: Config): {
   head: JsonNode;

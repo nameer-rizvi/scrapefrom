@@ -2,6 +2,7 @@ import { Config } from "./interfaces";
 import simpul from "simpul";
 import * as cheerio from "cheerio";
 import extractDataWithKeyPath from "./3.extractDataWithKeyPath";
+import extractHTMLData1 from "./3.extractHTMLData.1";
 import extractHTMLData2 from "./3.extractHTMLData.2";
 
 function extractDataFromResponses(configs: Config[]): Config | Config[] {
@@ -17,21 +18,15 @@ function extractDataFromResponses(configs: Config[]): Config | Config[] {
     } else if (typeof config.response === "string") {
       const $ = cheerio.load(config.response);
       if (config.extractor) {
-        console.log(1);
-        // config.result = config.extractor($);
+        config.result = config.extractor($);
       } else if (config.extract || config.extracts) {
-        console.log(2);
-        // config.result = extractHTMLData1(config, $);
+        config.result = extractHTMLData1(config, $);
       } else {
         config.result = extractHTMLData2(config);
       }
     }
 
     if (config.includeResponse !== true) delete config.response;
-
-    if (config.fetch?.signal) delete config.fetch.signal;
-
-    delete config.timeout;
 
     results.push(config);
   }

@@ -29,9 +29,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const simpul_1 = __importDefault(require("simpul"));
 const cheerio = __importStar(require("cheerio"));
 const _3_extractDataWithKeyPath_1 = __importDefault(require("./3.extractDataWithKeyPath"));
+const _3_extractHTMLData_1_1 = __importDefault(require("./3.extractHTMLData.1"));
 const _3_extractHTMLData_2_1 = __importDefault(require("./3.extractHTMLData.2"));
 function extractDataFromResponses(configs) {
-    var _a, _b;
+    var _a;
     const results = [];
     for (const config of configs) {
         if (simpul_1.default.isObject(config.response) || Array.isArray(config.response)) {
@@ -45,12 +46,10 @@ function extractDataFromResponses(configs) {
         else if (typeof config.response === "string") {
             const $ = cheerio.load(config.response);
             if (config.extractor) {
-                console.log(1);
-                // config.result = config.extractor($);
+                config.result = config.extractor($);
             }
             else if (config.extract || config.extracts) {
-                console.log(2);
-                // config.result = extractHTMLData1(config, $);
+                config.result = (0, _3_extractHTMLData_1_1.default)(config, $);
             }
             else {
                 config.result = (0, _3_extractHTMLData_2_1.default)(config);
@@ -58,13 +57,10 @@ function extractDataFromResponses(configs) {
         }
         if (config.includeResponse !== true)
             delete config.response;
-        if ((_a = config.fetch) === null || _a === void 0 ? void 0 : _a.signal)
-            delete config.fetch.signal;
-        delete config.timeout;
         results.push(config);
     }
     if (configs.length === 1) {
-        if ((_b = results[0]) === null || _b === void 0 ? void 0 : _b.error)
+        if ((_a = results[0]) === null || _a === void 0 ? void 0 : _a.error)
             throw new Error(results[0].error);
         return results[0];
     }

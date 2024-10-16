@@ -21,8 +21,20 @@ export interface Config {
         [key: string]: string;
     };
     result?: any;
+    delimiter?: string | null;
 }
 export interface ExtractConfig {
+    name?: string;
+    selector?: string;
+    attribute?: string;
+    delimiter?: string | null;
+    json?: boolean;
+    filter?: (json: any) => boolean;
+    keyPath?: {
+        [key: string]: string;
+    };
+    extract?: ExtractConfig;
+    extracts?: ExtractConfig[];
 }
 export interface JsonNode {
     tag: string | null;
