@@ -47,7 +47,7 @@ function extractHTMLData1(
 
     if (extractJSON === true) {
       let array: any[] = [];
-      for (let scriptType of ["application/ld+json", "application/json"]) {
+      for (const scriptType of ["application/ld+json", "application/json"]) {
         $(`script[type="${scriptType}"]`).each((_, child) => {
           const html = $(child).html() || "";
           let json = simpul.parsejson(html);
@@ -78,7 +78,7 @@ function extractHTMLData1(
       });
       result[name] = array;
     } else if (selector) {
-      let array: string[] = [];
+      const array: string[] = [];
       $(selector).each((_, child) => {
         const text = attribute ? $(child).attr(attribute) : $(child).text();
         const item = simpul.trim(text || "");
