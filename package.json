@@ -1,8 +1,9 @@
 {
   "name": "scrapefrom",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "Scrape data from any webpage.",
-  "main": "src/index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "lint": "npx eslint 'src/**/*.{js,mjs,cjs,ts}'; exit 0",
     "build": "tsc",
