@@ -24,7 +24,7 @@ const scrapefrom = require("scrapefrom");
 
 ## use cases
 
-Extract html, htmlSplits, htmlStripped, htmlStrippedSplits.
+Extract document head and document body in json format as well as a key map of all available properties in dot notation.
 
 ```javascript
 scrapefrom("https://www.npmjs.com/package/scrapefrom").then(console.log);
@@ -36,7 +36,6 @@ Extract an array of h1 tags on a page.
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
   extract: "h1",
-  defaultDelimiter: null,
 }).then(console.log); // "{ h1: [...] }"
 ```
 
@@ -45,7 +44,7 @@ Extract an array of h1 tags on a page as "titles".
 ```javascript
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
-  extract: { name: "titles", selector: "h1", delimiter: null },
+  extract: { name: "titles", selector: "h1" },
 }).then(console.log); // "{ titles: [...] }"
 ```
 
@@ -67,7 +66,6 @@ scrapefrom({
     name: "dates",
     selector: "time",
     attribute: "datetime",
-    delimiter: null,
   },
 }).then(console.log); // "{ dates: [...] }"
 ```
@@ -77,7 +75,6 @@ Extract previous use cases in a single response.
 ```javascript
 scrapefrom({
   url: "https://www.npmjs.com/package/scrapefrom",
-  defaultDelimiter: null,
   extracts: [
     { name: "titles", selector: "h1" },
     { name: "dates", selector: "time", attribute: "datetime" },
@@ -91,7 +88,6 @@ Extract previous use cases from multiple URLs.
 scrapefrom([
   {
     url: "https://www.npmjs.com/package/scrapefrom",
-    defaultDelimiter: null,
     extracts: [
       { name: "titles", selector: "h1" },
       { name: "dates", selector: "time", attribute: "datetime" },
@@ -99,7 +95,6 @@ scrapefrom([
   },
   {
     url: "https://www.npmjs.com/package/async-fetch",
-    defaultDelimiter: null,
     extracts: [
       { name: "titles", selector: "h1" },
       { name: "dates", selector: "time", attribute: "datetime" },
@@ -113,6 +108,7 @@ Extract a list of items from a page.
 ```javascript
 scrapefrom({
   url: "https://www.npmjs.com/package/async-fetch",
+  delimiter: "",
   extract: {
     selector: "tbody tr",
     name: "rows",
