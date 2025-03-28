@@ -1,6 +1,6 @@
 {
   "name": "scrapefrom",
-  "version": "2.6.3",
+  "version": "2.6.4",
   "description": "Scrape data from any webpage.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -33,11 +33,11 @@
   "dependencies": {
     "@types/jsdom": "^21.1.7",
     "cheerio": "^1.0.0",
-    "cross-fetch": "^4.0.0",
-    "dottpath": "^0.1.8",
-    "jsdom": "^25.0.1",
-    "puppeteer": "^23.5.2",
-    "simpul": "^1.2.2"
+    "cross-fetch": "^4.1.0",
+    "dottpath": "^0.1.9",
+    "jsdom": "^26.0.0",
+    "puppeteer": "^24.4.0",
+    "simpul": "^1.2.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.12.0",
