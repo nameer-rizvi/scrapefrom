@@ -1,6 +1,8 @@
 // https://pptr.dev/guides/getting-started
 import { Config } from "./interfaces";
-import puppeteer, { Browser, Page } from "puppeteer";
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
+import { Browser, Page } from "puppeteer";
 import logger from "./util.logger";
 import simpul from "simpul";
 
@@ -11,7 +13,11 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
 
   if (!puppeteerConfigs.length) return;
 
-  const browser: Browser = await puppeteer.launch(); // https://pptr.dev/guides/headless-modes/
+  puppeteer.use(StealthPlugin());
+
+  const launchOptions = configs.find((config) => config.launch)?.launch;
+
+  const browser: Browser = await puppeteer.launch(launchOptions); // https://pptr.dev/guides/headless-modes/
 
   const page: Page = await browser.newPage();
 
@@ -23,6 +29,8 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
     const log = logger(config.logFetch, "puppeteer", config.name);
 
     try {
+      if (config.cookie) browser.setCookie(config.cookie);
+
       const timeout =
         typeof config.timeout === "number" ? config.timeout : 30000;
 

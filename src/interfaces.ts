@@ -6,6 +6,8 @@ export interface Config {
   name?: string;
   use?: "fetch" | "puppeteer";
   logFetch?: boolean;
+  launch?: Record<string, any>;
+  cookie?: { name: string; value: string; domain: string };
   timeout?: number | NodeJS.Timeout;
   fetch?: RequestInit;
   waitForSelector?: string;

@@ -12,18 +12,21 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const puppeteer_1 = __importDefault(require("puppeteer"));
+const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
+const puppeteer_extra_plugin_stealth_1 = __importDefault(require("puppeteer-extra-plugin-stealth"));
 const util_logger_1 = __importDefault(require("./util.logger"));
 const simpul_1 = __importDefault(require("simpul"));
 function getResponsesWithPuppeteer(configs) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a;
+        var _a, _b;
         const puppeteerConfigs = configs.filter((config) => {
             return config.use === "puppeteer";
         });
         if (!puppeteerConfigs.length)
             return;
-        const browser = yield puppeteer_1.default.launch(); // https://pptr.dev/guides/headless-modes/
+        puppeteer_extra_1.default.use((0, puppeteer_extra_plugin_stealth_1.default)());
+        const launchOptions = (_a = configs.find((config) => config.launch)) === null || _a === void 0 ? void 0 : _a.launch;
+        const browser = yield puppeteer_extra_1.default.launch(launchOptions); // https://pptr.dev/guides/headless-modes/
         const page = yield browser.newPage();
         const abortTypes = ["image", "img", "stylesheet", "css", "font"];
         for (const config of puppeteerConfigs) {
@@ -31,13 +34,15 @@ function getResponsesWithPuppeteer(configs) {
                 config.name = new URL(config.url).hostname;
             const log = (0, util_logger_1.default)(config.logFetch, "puppeteer", config.name);
             try {
+                if (config.cookie)
+                    browser.setCookie(config.cookie);
                 const timeout = typeof config.timeout === "number" ? config.timeout : 30000;
                 page.setDefaultNavigationTimeout(timeout);
                 log("Request sent.");
                 if (config.waitForSelector) {
                     yield page.goto(config.url, Object.assign({ waitUntil: "domcontentloaded" }, config.pageGoTo));
                     yield page.waitForSelector(config.waitForSelector);
-                    if ((_a = config.select) === null || _a === void 0 ? void 0 : _a.length) {
+                    if ((_b = config.select) === null || _b === void 0 ? void 0 : _b.length) {
                         const [selector, ...values] = config.select;
                         yield page.select(selector, ...values);
                     }
