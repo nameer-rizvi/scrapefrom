@@ -19,13 +19,14 @@ function getResponsesWithFetch(configs) {
         for (const config of configs) {
             if (config.use && config.use !== "fetch")
                 continue;
-            if (!config.name) {
+            if (!config.name)
                 config.name = new URL(config.url).hostname;
-            }
             const log = (0, logger_1.default)(config.logFetch, "fetch", config.name);
             try {
                 const controller = new AbortController();
-                const timeoutMs = typeof config.timeout === "number" ? config.timeout : 30000; // 30 seconds.
+                const timeoutMs = simpul_1.default.isNumber(config.timeout)
+                    ? config.timeout
+                    : 30000; // 30 seconds.
                 config.timeout = setTimeout(() => controller.abort(), timeoutMs);
                 config.fetch = Object.assign(Object.assign({}, config.fetch), { signal: controller.signal });
                 log("Request sent.");
@@ -41,9 +42,8 @@ function getResponsesWithFetch(configs) {
             }
             catch (error) {
                 if (error instanceof Error) {
-                    const err = error.toString();
-                    log(error.toString(), "error");
                     config.error = error.toString();
+                    log(config.error, "error");
                 }
             }
             finally {

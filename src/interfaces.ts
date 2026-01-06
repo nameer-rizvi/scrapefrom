@@ -1,4 +1,9 @@
-import { GoToOptions } from "puppeteer";
+import {
+  LaunchOptions,
+  CookieData,
+  GoToOptions,
+  WaitForSelectorOptions,
+} from "puppeteer";
 
 export interface Config {
   index?: number;
@@ -8,14 +13,15 @@ export interface Config {
   logFetch?: boolean;
   timeout?: number | NodeJS.Timeout;
   fetch?: RequestInit;
-  parser?: "json" | "text" | "blob" | "formData" | "arrayBuffer";
+  parser?: "json" | "text"; // puppeteer-supported parsers only
+  launch?: LaunchOptions;
+  cookies?: CookieData[];
+  pageGoTo?: GoToOptions;
+  waitForSelector?: string;
+  waitForSelectorOptions?: WaitForSelectorOptions;
+  select?: string[];
   response?: any;
   error?: string;
-  // launch?: Record<string, any>;
-  // cookie?: { name: string; value: string; domain: string };
-  // waitForSelector?: string;
-  // pageGoTo?: GoToOptions;
-  // select?: string[];
   // includeResponse?: boolean;
   // extractor?: Function;
   // extract?: ExtractConfig;

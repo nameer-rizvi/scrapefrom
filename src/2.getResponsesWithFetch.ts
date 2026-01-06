@@ -6,17 +6,16 @@ async function getResponsesWithFetch(configs: Config[]) {
   for (const config of configs) {
     if (config.use && config.use !== "fetch") continue;
 
-    if (!config.name) {
-      config.name = new URL(config.url).hostname;
-    }
+    if (!config.name) config.name = new URL(config.url).hostname;
 
     const log = logger(config.logFetch, "fetch", config.name);
 
     try {
       const controller = new AbortController();
 
-      const timeoutMs =
-        typeof config.timeout === "number" ? config.timeout : 30000; // 30 seconds.
+      const timeoutMs = simpul.isNumber(config.timeout)
+        ? config.timeout
+        : 30000; // 30 seconds.
 
       config.timeout = setTimeout(() => controller.abort(), timeoutMs);
 

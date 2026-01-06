@@ -6,15 +6,16 @@ const scrapefrom = require("../dist");
 // - Allow config to parse properties of root selector.
 
 const scrapers = [
-  "https://github.com/nameer-rizvi/scrapefrom",
+  // "https://github.com/nameer-rizvi/scrapefrom",
+  // {
+  //   url: "https://github.com/nameer-rizvi/scrapefrom",
+  //   logFetch: true,
+  //   extract: "h1",
+  // },
   {
     url: "https://github.com/nameer-rizvi/scrapefrom",
     logFetch: true,
-    extract: "h1",
-  },
-  {
-    url: "https://github.com/nameer-rizvi/scrapefrom",
-    logFetch: true,
+    use: "puppeteer",
     extract: { name: "titles", selector: "h1" },
   },
 ];
