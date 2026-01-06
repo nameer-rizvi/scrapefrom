@@ -4,6 +4,7 @@ import {
   GoToOptions,
   WaitForSelectorOptions,
 } from "puppeteer";
+import { CheerioAPI } from "cheerio";
 
 export interface Config {
   index?: number;
@@ -22,30 +23,31 @@ export interface Config {
   select?: string[];
   response?: any;
   error?: string;
-  includeResponse?: boolean;
-  extractor?: (response: any[] | Record<string, unknown>) => {};
-  // extract?: ExtractConfig;
-  // extracts?: ExtractConfig[];
   keyPath?: { [key: string]: string };
+  extractor?: (response: any[] | Record<string, unknown> | CheerioAPI) => any;
+  extract?: ExtractConfig;
+  extracts?: ExtractConfig[];
   // delimiter?: string | null;
   result?: any;
+  includeResponse?: boolean;
+  includeTimeout?: boolean;
 }
 
-// export interface ExtractConfig {
-//   name?: string;
-//   selector?: string;
-//   attribute?: string;
-//   delimiter?: string | null;
-//   json?: boolean;
-//   filter?: (json: any) => boolean;
-//   keyPath?: { [key: string]: string };
-//   extract?: ExtractConfig;
-//   extracts?: ExtractConfig[];
-// }
+export interface ExtractConfig {
+  // name?: string;
+  // selector?: string;
+  // attribute?: string;
+  // delimiter?: string | null;
+  // json?: boolean;
+  // filter?: (json: any) => boolean;
+  // keyPath?: { [key: string]: string };
+  // extract?: ExtractConfig;
+  // extracts?: ExtractConfig[];
+}
 
-// export interface JsonNode {
-//   tag: string | null;
-//   attributes: { [key: string]: string };
-//   children: JsonNode[];
-//   textContent: string | null;
-// }
+export interface JsonNode {
+  tag: string | null;
+  attributes: { [key: string]: any };
+  children: JsonNode[];
+  textContent: string | null;
+}

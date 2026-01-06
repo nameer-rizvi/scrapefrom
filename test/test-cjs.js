@@ -6,7 +6,7 @@ const scrapefrom = require("../dist");
 // - Allow config to parse properties of root selector.
 
 const scrapers = [
-  // "https://github.com/nameer-rizvi/scrapefrom",
+  { url: "https://google.com" },
   // {
   //   url: "https://github.com/nameer-rizvi/scrapefrom",
   //   logFetch: true,
@@ -18,14 +18,13 @@ const scrapers = [
   //   use: "puppeteer",
   //   extract: { name: "titles", selector: "h1" },
   // },
-  {
-    url: "https://jsonplaceholder.typicode.com/todos/1",
-    logFetch: true,
-    use: "puppeteer",
-    keyPath: {
-      user_id: "userId.0.value",
-    },
-  },
+  // {
+  //   url: "https://jsonplaceholder.typicode.com/todos/1",
+  //   logFetch: true,
+  //   keyPath: {
+  //     user_id: "userId",
+  //   },
+  // },
 ];
 
 scrapefrom(scrapers).then((res) => {

@@ -1,4 +1,5 @@
 import { LaunchOptions, CookieData, GoToOptions, WaitForSelectorOptions } from "puppeteer";
+import { CheerioAPI } from "cheerio";
 export interface Config {
     index?: number;
     url: string;
@@ -16,10 +17,23 @@ export interface Config {
     select?: string[];
     response?: any;
     error?: string;
-    includeResponse?: boolean;
-    extractor?: (response: any[] | Record<string, unknown>) => {};
     keyPath?: {
         [key: string]: string;
     };
+    extractor?: (response: any[] | Record<string, unknown> | CheerioAPI) => any;
+    extract?: ExtractConfig;
+    extracts?: ExtractConfig[];
     result?: any;
+    includeResponse?: boolean;
+    includeTimeout?: boolean;
+}
+export interface ExtractConfig {
+}
+export interface JsonNode {
+    tag: string | null;
+    attributes: {
+        [key: string]: any;
+    };
+    children: JsonNode[];
+    textContent: string | null;
 }
