@@ -2,7 +2,7 @@ import { Config } from "./interfaces";
 import simpul from "simpul";
 import * as cheerio from "cheerio";
 import extractDataWithKeyPath from "./3.extractDataWithKeyPath";
-// import extractHTMLData1 from "./3.extractHTMLData.1";
+import extractHTMLData1 from "./3.extractHTMLData.1";
 import extractHTMLData2 from "./3.extractHTMLData.2";
 
 function extractDataFromResponses(configs: Config[]): Config | Config[] {
@@ -20,7 +20,7 @@ function extractDataFromResponses(configs: Config[]): Config | Config[] {
       if (config.extractor) {
         config.result = config.extractor($);
       } else if (config.extract || config.extracts) {
-        // config.result = extractHTMLData1(config, $);
+        config.result = extractHTMLData1(config, $);
       } else {
         config.result = extractHTMLData2($);
       }

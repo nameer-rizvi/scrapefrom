@@ -6,6 +6,8 @@ import {
 } from "puppeteer";
 import { CheerioAPI } from "cheerio";
 
+export type KeyPath = { [key: string]: string };
+
 export interface Config {
   index?: number;
   url: string;
@@ -23,26 +25,26 @@ export interface Config {
   select?: string[];
   response?: any;
   error?: string;
-  keyPath?: { [key: string]: string };
+  keyPath?: KeyPath;
   extractor?: (response: any[] | Record<string, unknown> | CheerioAPI) => any;
   extract?: ExtractConfig;
   extracts?: ExtractConfig[];
-  // delimiter?: string | null;
+  delimiter?: string | null;
   result?: any;
   includeResponse?: boolean;
   includeTimeout?: boolean;
 }
 
 export interface ExtractConfig {
-  // name?: string;
-  // selector?: string;
-  // attribute?: string;
-  // delimiter?: string | null;
-  // json?: boolean;
-  // filter?: (json: any) => boolean;
-  // keyPath?: { [key: string]: string };
-  // extract?: ExtractConfig;
-  // extracts?: ExtractConfig[];
+  name?: string;
+  delimiter?: string | null;
+  selector?: string;
+  attribute?: string;
+  json?: boolean;
+  filter?: (json: any) => boolean;
+  keyPath?: KeyPath;
+  extract?: ExtractConfig;
+  extracts?: ExtractConfig[];
 }
 
 export interface JsonNode {

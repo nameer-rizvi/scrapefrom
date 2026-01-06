@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const simpul_1 = __importDefault(require("simpul"));
 const cheerio = __importStar(require("cheerio"));
 const _3_extractDataWithKeyPath_1 = __importDefault(require("./3.extractDataWithKeyPath"));
-// import extractHTMLData1 from "./3.extractHTMLData.1";
+const _3_extractHTMLData_1_1 = __importDefault(require("./3.extractHTMLData.1"));
 const _3_extractHTMLData_2_1 = __importDefault(require("./3.extractHTMLData.2"));
 function extractDataFromResponses(configs) {
     var _a;
@@ -59,7 +59,7 @@ function extractDataFromResponses(configs) {
                 config.result = config.extractor($);
             }
             else if (config.extract || config.extracts) {
-                // config.result = extractHTMLData1(config, $);
+                config.result = (0, _3_extractHTMLData_1_1.default)(config, $);
             }
             else {
                 config.result = (0, _3_extractHTMLData_2_1.default)($);
