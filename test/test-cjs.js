@@ -6,13 +6,15 @@ const scrapefrom = require("../dist");
 // - Allow config to parse properties of root selector.
 
 const scrapers = [
-  "https://www.npmjs.com/package/scrapefrom",
+  "https://github.com/nameer-rizvi/scrapefrom",
   {
-    url: "https://www.npmjs.com/package/scrapefrom",
+    url: "https://github.com/nameer-rizvi/scrapefrom",
+    logFetch: true,
     extract: "h1",
   },
   {
-    url: "https://www.npmjs.com/package/scrapefrom",
+    url: "https://github.com/nameer-rizvi/scrapefrom",
+    logFetch: true,
     extract: { name: "titles", selector: "h1" },
   },
 ];
