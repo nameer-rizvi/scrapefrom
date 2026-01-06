@@ -16,4 +16,10 @@ export interface Config {
     select?: string[];
     response?: any;
     error?: string;
+    includeResponse?: boolean;
+    extractor?: (response: any[] | Record<string, unknown>) => {};
+    keyPath?: {
+        [key: string]: string;
+    };
+    result?: any;
 }

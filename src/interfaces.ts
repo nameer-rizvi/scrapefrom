@@ -22,13 +22,13 @@ export interface Config {
   select?: string[];
   response?: any;
   error?: string;
-  // includeResponse?: boolean;
-  // extractor?: Function;
+  includeResponse?: boolean;
+  extractor?: (response: any[] | Record<string, unknown>) => {};
   // extract?: ExtractConfig;
   // extracts?: ExtractConfig[];
-  // keyPath?: { [key: string]: string };
-  // result?: any;
+  keyPath?: { [key: string]: string };
   // delimiter?: string | null;
+  result?: any;
 }
 
 // export interface ExtractConfig {

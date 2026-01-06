@@ -12,11 +12,19 @@ const scrapers = [
   //   logFetch: true,
   //   extract: "h1",
   // },
+  // {
+  //   url: "https://github.com/nameer-rizvi/scrapefrom",
+  //   logFetch: true,
+  //   use: "puppeteer",
+  //   extract: { name: "titles", selector: "h1" },
+  // },
   {
-    url: "https://github.com/nameer-rizvi/scrapefrom",
+    url: "https://jsonplaceholder.typicode.com/todos/1",
     logFetch: true,
     use: "puppeteer",
-    extract: { name: "titles", selector: "h1" },
+    keyPath: {
+      user_id: "userId.0.value",
+    },
   },
 ];
 

@@ -15,16 +15,14 @@ require("cross-fetch/polyfill");
 const _1_configurizeInputs_1 = __importDefault(require("./1.configurizeInputs"));
 const _2_getResponsesWithFetch_1 = __importDefault(require("./2.getResponsesWithFetch"));
 const _2_getResponsesWithPuppeteer_1 = __importDefault(require("./2.getResponsesWithPuppeteer"));
-// import extractDataFromResponses from "./3.extractDataFromResponses";
+const _3_extractDataFromResponses_1 = __importDefault(require("./3.extractDataFromResponses"));
 function scrapefrom(...inputs) {
     return __awaiter(this, void 0, void 0, function* () {
         const configs = (0, _1_configurizeInputs_1.default)(inputs);
         yield (0, _2_getResponsesWithFetch_1.default)(configs);
         yield (0, _2_getResponsesWithPuppeteer_1.default)(configs);
-        // const results = extractDataFromResponses(configs);
-        console.log(configs);
-        return [];
-        // return results;
+        const results = (0, _3_extractDataFromResponses_1.default)(configs);
+        return results;
     });
 }
 module.exports = scrapefrom;
