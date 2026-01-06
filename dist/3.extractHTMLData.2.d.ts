@@ -1,5 +1,6 @@
-import { Config, JsonNode } from "./interfaces";
-declare function extractHTMLData2(config: Config): {
+import { CheerioAPI } from "cheerio";
+import { JsonNode } from "./interfaces";
+declare function extractHTMLData2($: CheerioAPI): {
     head: JsonNode;
     body: JsonNode;
     map: string[];

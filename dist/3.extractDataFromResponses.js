@@ -54,14 +54,15 @@ function extractDataFromResponses(configs) {
             }
         }
         else if (simpul_1.default.isString(config.response)) {
+            const $ = cheerio.load(config.response);
             if (config.extractor) {
-                config.result = config.extractor(cheerio.load(config.response));
+                config.result = config.extractor($);
             }
             else if (config.extract || config.extracts) {
-                // config.result = extractHTMLData1(config, cheerio.load(config.response));
+                // config.result = extractHTMLData1(config, $);
             }
             else {
-                config.result = (0, _3_extractHTMLData_2_1.default)(config);
+                config.result = (0, _3_extractHTMLData_2_1.default)($);
             }
         }
         if (config.includeResponse !== true)

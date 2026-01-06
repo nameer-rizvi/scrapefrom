@@ -16,12 +16,13 @@ function extractDataFromResponses(configs: Config[]): Config | Config[] {
         config.result = extractDataWithKeyPath(config);
       }
     } else if (simpul.isString(config.response)) {
+      const $ = cheerio.load(config.response);
       if (config.extractor) {
-        config.result = config.extractor(cheerio.load(config.response));
+        config.result = config.extractor($);
       } else if (config.extract || config.extracts) {
-        // config.result = extractHTMLData1(config, cheerio.load(config.response));
+        // config.result = extractHTMLData1(config, $);
       } else {
-        config.result = extractHTMLData2(config);
+        config.result = extractHTMLData2($);
       }
     }
 

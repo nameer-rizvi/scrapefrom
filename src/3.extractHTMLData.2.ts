@@ -1,75 +1,51 @@
-import simpul from "simpul";
-import { Config, JsonNode } from "./interfaces";
+import { CheerioAPI } from "cheerio";
+import { JsonNode } from "./interfaces";
 import dottpath from "dottpath";
+import simpul from "simpul";
 
-let parseHtml: (html: string) => Document;
-
-if (simpul.isEnvWindowProperty("DOMParser")) {
-  // Browser environment
-  parseHtml = (html: string): Document => {
-    return new DOMParser().parseFromString(html, "text/html");
-  };
-} else {
-  // Node.js environment
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  const jsdom = require("jsdom");
-  parseHtml = (html: string): Document => {
-    return new jsdom.JSDOM(html).window.document;
-  };
-}
-
-function extractHTMLData2(config: Config): {
+function extractHTMLData2($: CheerioAPI): {
   head: JsonNode;
   body: JsonNode;
   map: string[];
 } {
-  const doc = parseHtml(config.response);
-  const head = nodeToJson(doc.head);
-  const body = nodeToJson(doc.body);
+  const head = nodeToJson($("head"), $);
+  const body = nodeToJson($("body"), $);
   const map = dottpath.map({ head, body });
   return { head, body, map };
 }
 
-function nodeToJson(node: Node): JsonNode {
-  switch (node.nodeType) {
-    case node.TEXT_NODE: {
-      return {
-        tag: null,
-        attributes: {},
-        children: [],
-        textContent: simpul.trim(node.textContent) || null,
-      };
+function nodeToJson(node: CheerioAPI | any, $: CheerioAPI): JsonNode {
+  const jsonNode: JsonNode = {
+    tag: null,
+    attributes: {},
+    children: [],
+    textContent: null,
+  };
+
+  if (!node?.length) return jsonNode;
+
+  const element = node[0] as any;
+
+  if (element.type === "text") {
+    jsonNode.textContent = simpul.trim(element.data) || null;
+  } else if (element.type === "tag") {
+    jsonNode.tag = element.tagName.toLowerCase();
+
+    for (const [name, value] of Object.entries(element.attribs ?? {})) {
+      jsonNode.attributes[name] = value as string;
     }
-    case node.ELEMENT_NODE: {
-      const element = node as HTMLElement;
-      const tag = element.tagName.toLowerCase();
-      const attributes: Record<string, string> = {};
-      for (const attribute of element.attributes) {
-        attributes[attribute.name] = attribute.value;
-      }
-      const children: JsonNode[] = [];
-      for (const child of node.childNodes) {
-        const childJson = nodeToJson(child);
-        if (childJson.textContent || childJson.tag) {
-          children.push(childJson);
-        }
-      }
-      return {
-        tag,
-        attributes,
-        children,
-        textContent: null,
-      };
-    }
-    default: {
-      return {
-        tag: null,
-        attributes: {},
-        children: [],
-        textContent: null,
-      };
-    }
+
+    const children: JsonNode[] = [];
+
+    node.contents().each((_: number, child: any) => {
+      const childJson = nodeToJson($(child), $);
+      if (childJson.tag || childJson.textContent) children.push(childJson);
+    });
+
+    jsonNode.children = children;
   }
+
+  return jsonNode;
 }
 
 export default extractHTMLData2;
