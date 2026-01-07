@@ -1,6 +1,6 @@
 {
   "name": "scrapefrom",
-  "version": "2.6.7",
+  "version": "2.6.8",
   "description": "Scrape data from any webpage.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
