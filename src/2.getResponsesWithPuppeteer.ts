@@ -1,9 +1,11 @@
 import { Config } from "./interfaces";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
-import { Browser, Page } from "puppeteer";
+import { Browser, Page, HTTPRequest } from "puppeteer";
 import logger from "./logger";
 import simpul from "simpul";
+
+const ABORT_TYPES = new Set(["image", "stylesheet", "font", "media"]);
 
 async function getResponsesWithPuppeteer(configs: Config[]) {
   const puppeteerConfigs = configs.filter((c) => c.use === "puppeteer");
@@ -16,42 +18,38 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
 
   const browser: Browser = await puppeteer.launch(launchOptions); // https://pptr.dev/guides/headless-modes/
 
-  const abortTypes = new Set(["image", "img", "stylesheet", "css", "font"]);
-
   try {
     for (const config of puppeteerConfigs) {
       if (!config.name) config.name = new URL(config.url).hostname;
 
-      const log = logger(config.logFetch, "puppeteer", config.name);
+      const log = logger(config.log, "puppeteer", config.name);
 
       const page: Page = await browser.newPage();
 
-      await page.setRequestInterception(true);
-
-      page.on("request", (interceptedRequest) => {
-        if (abortTypes.has(interceptedRequest.resourceType())) {
-          interceptedRequest.abort();
-        } else {
-          interceptedRequest.continue();
-        }
-      });
-
       try {
-        if (config.cookies) await browser.setCookie(...(config.cookies || []));
+        await page.setRequestInterception(true);
 
-        const timeoutMs = simpul.isNumber(config.timeout)
-          ? config.timeout
-          : 30000; // 30 seconds.
+        page.on("request", (req: HTTPRequest) => {
+          console.log(req.resourceType()); // --> TODO REMOVE
+          if (ABORT_TYPES.has(req.resourceType())) {
+            req.abort();
+          } else {
+            req.continue();
+          }
+        });
 
-        page.setDefaultNavigationTimeout(timeoutMs);
+        if (config.cookies) await page.setCookie(...(config.cookies || []));
+
+        config.pageGoTo = {
+          waitUntil: "domcontentloaded",
+          timeout: 30000,
+          ...config.pageGoTo,
+        };
 
         log("Request sent.");
 
         if (config.waitForSelector) {
-          await page.goto(config.url, {
-            waitUntil: "domcontentloaded",
-            ...config.pageGoTo,
-          });
+          await page.goto(config.url, config.pageGoTo);
 
           await page.waitForSelector(
             config.waitForSelector,
@@ -63,9 +61,9 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
             await page.select(selector, ...values);
           }
 
-          const pageContent = await page.content();
+          const response = await page.content();
 
-          config.response = simpul.parseJson(pageContent) || pageContent;
+          config.response = simpul.parseJson(response) || response;
         } else {
           const response = await page.goto(config.url, config.pageGoTo);
 

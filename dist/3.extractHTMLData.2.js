@@ -4,7 +4,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const dottpath_1 = __importDefault(require("dottpath"));
-const simpul_1 = __importDefault(require("simpul"));
 function extractHTMLData2($) {
     const head = nodeToJson($("head"), $);
     const body = nodeToJson($("body"), $);
@@ -12,32 +11,28 @@ function extractHTMLData2($) {
     return { head, body, map };
 }
 function nodeToJson(node, $) {
-    var _a;
     const jsonNode = {
         tag: null,
         attributes: {},
         children: [],
         textContent: null,
     };
-    if (!(node === null || node === void 0 ? void 0 : node.length))
-        return jsonNode;
-    const element = node[0];
-    if (element.type === "text") {
-        jsonNode.textContent = simpul_1.default.trim(element.data) || null;
-    }
-    else if (element.type === "tag") {
-        jsonNode.tag = element.tagName.toLowerCase();
-        for (const [name, value] of Object.entries((_a = element.attribs) !== null && _a !== void 0 ? _a : {})) {
-            jsonNode.attributes[name] = value;
-        }
-        const children = [];
-        node.contents().each((_, child) => {
-            const childJson = nodeToJson($(child), $);
-            if (childJson.tag || childJson.textContent)
-                children.push(childJson);
-        });
-        jsonNode.children = children;
-    }
+    // if (!node?.length) return jsonNode;
+    // const element = node[0] as any;
+    // if (element.type === "text") {
+    //   jsonNode.textContent = simpul.trim(element.data) || null;
+    // } else if (element.type === "tag") {
+    //   jsonNode.tag = element.tagName.toLowerCase();
+    //   for (const [name, value] of Object.entries(element.attribs ?? {})) {
+    //     jsonNode.attributes[name] = value as string;
+    //   }
+    //   const children: JsonNode[] = [];
+    //   node.contents().each((_: number, child: any) => {
+    //     const childJson = nodeToJson($(child), $);
+    //     if (childJson.tag || childJson.textContent) children.push(childJson);
+    //   });
+    //   jsonNode.children = children;
+    // }
     return jsonNode;
 }
 exports.default = extractHTMLData2;

@@ -3,18 +3,60 @@ const scrapefrom = require("../dist");
 
 // TODO
 // - Add `extract` option at the `extract.config` level which passes the cheerio `$` to allow custom extraction.
-// - Allow config to parse properties of root selector.
+// - Allow config to parse properties of parent selector.
+
+// TODO: revisit after scrapefrom update to allow parsing attribute at root level.
+// const configVenuesWalterreedScraper = {
+//   url: "https://theparksdc.com/events/",
+//   delimiter: " ",
+//   extract: {
+//     selector: "a[data-comp='event'][data-category*='music']",
+//     name: "events",
+//     extracts: [
+//       {
+//         name: "title",
+//         selector: "h3",
+//       },
+//       {
+//         name: "description",
+//         selector: "p",
+//         delimiter: simpul.delimiter,
+//       },
+//       {
+//         name: "date",
+//         attribute: "data-date",
+//       },
+//       {
+//         name: "time",
+//         selector: "time",
+//       },
+//       {
+//         name: "eventLink",
+//         selector: "a",
+//         attribute: "href",
+//       },
+//       {
+//         name: "imgSrc",
+//         selector: "img",
+//         attribute: "src",
+//       },
+//     ],
+//   },
+// };
+
+// module.exports = configVenuesWalterreedScraper;
 
 scrapefrom([
-  {
-    url: "https://www.npmjs.com/package/scrapefrom",
-    use: "puppeteer",
-    logFetch: true,
-    extracts: [
-      { name: "titles", selector: "h1" },
-      { name: "dates", selector: "time", attribute: "datetime" },
-    ],
-  },
+  { url: "https://google.com", log: true, use: "puppeteer" },
+  // {
+  //   url: "https://www.npmjs.com/package/scrapefrom",
+  //   use: "puppeteer",
+  //   logFetch: true,
+  //   extracts: [
+  //     { name: "titles", selector: "h1" },
+  //     { name: "dates", selector: "time", attribute: "datetime" },
+  //   ],
+  // },
   // {
   //   url: "https://www.npmjs.com/package/async-fetch",
   //   use: "puppeteer",

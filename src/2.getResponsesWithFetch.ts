@@ -4,20 +4,20 @@ import simpul from "simpul";
 
 async function getResponsesWithFetch(configs: Config[]) {
   for (const config of configs) {
-    if (config.use && config.use !== "fetch") continue;
+    if (config.use && config.use !== "fetch") continue; // "fetch" is default
 
     if (!config.name) config.name = new URL(config.url).hostname;
 
-    const log = logger(config.logFetch, "fetch", config.name);
+    const log = logger(config.log, "fetch", config.name);
 
     try {
       const controller = new AbortController();
 
       const timeoutMs = simpul.isNumber(config.timeout)
         ? config.timeout
-        : 30000; // 30 seconds.
+        : 30000; // 30 seconds
 
-      config.timeout = setTimeout(() => controller.abort(), timeoutMs);
+      config.timeout = setTimeout(controller.abort, timeoutMs);
 
       config.fetch = { ...config.fetch, signal: controller.signal };
 

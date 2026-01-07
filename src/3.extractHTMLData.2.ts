@@ -22,28 +22,28 @@ function nodeToJson(node: CheerioAPI | any, $: CheerioAPI): JsonNode {
     textContent: null,
   };
 
-  if (!node?.length) return jsonNode;
+  // if (!node?.length) return jsonNode;
 
-  const element = node[0] as any;
+  // const element = node[0] as any;
 
-  if (element.type === "text") {
-    jsonNode.textContent = simpul.trim(element.data) || null;
-  } else if (element.type === "tag") {
-    jsonNode.tag = element.tagName.toLowerCase();
+  // if (element.type === "text") {
+  //   jsonNode.textContent = simpul.trim(element.data) || null;
+  // } else if (element.type === "tag") {
+  //   jsonNode.tag = element.tagName.toLowerCase();
 
-    for (const [name, value] of Object.entries(element.attribs ?? {})) {
-      jsonNode.attributes[name] = value as string;
-    }
+  //   for (const [name, value] of Object.entries(element.attribs ?? {})) {
+  //     jsonNode.attributes[name] = value as string;
+  //   }
 
-    const children: JsonNode[] = [];
+  //   const children: JsonNode[] = [];
 
-    node.contents().each((_: number, child: any) => {
-      const childJson = nodeToJson($(child), $);
-      if (childJson.tag || childJson.textContent) children.push(childJson);
-    });
+  //   node.contents().each((_: number, child: any) => {
+  //     const childJson = nodeToJson($(child), $);
+  //     if (childJson.tag || childJson.textContent) children.push(childJson);
+  //   });
 
-    jsonNode.children = children;
-  }
+  //   jsonNode.children = children;
+  // }
 
   return jsonNode;
 }
