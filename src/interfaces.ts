@@ -11,10 +11,8 @@ export type KeyPath = { [key: string]: string };
 export interface Config {
   index?: number;
   url: string;
-  error?: string;
-  use?: "fetch" | "puppeteer";
   name?: string;
-  log?: boolean;
+  use?: "fetch" | "puppeteer";
   timeout?: number | NodeJS.Timeout;
   fetch?: RequestInit;
   parser?: "json" | "text"; // puppeteer-supported parsers only
@@ -25,14 +23,16 @@ export interface Config {
   pageGoTo?: GoToOptions;
   select?: string[];
   response?: any;
-  // keyPath?: KeyPath;
-  // extractor?: (response: any[] | Record<string, unknown> | CheerioAPI) => any;
-  // extract?: ExtractConfig;
-  // extracts?: ExtractConfig[];
-  // delimiter?: string | null;
-  // result?: any;
-  // includeResponse?: boolean;
-  // includeTimeout?: boolean;
+  keyPath?: KeyPath;
+  extractor?: (response: any[] | Record<string, unknown> | CheerioAPI) => any;
+  extract?: ExtractConfig;
+  extracts?: ExtractConfig[];
+  delimiter?: string | null;
+  result?: any;
+  error?: string;
+  log?: boolean;
+  includeResponse?: boolean;
+  includeTimeout?: boolean;
 }
 
 export interface ExtractConfig {
@@ -49,8 +49,8 @@ export interface ExtractConfig {
 }
 
 export interface JsonNode {
-  // tag: string | null;
-  // attributes: { [key: string]: any };
-  // children: JsonNode[];
-  // textContent: string | null;
+  tag: string | null;
+  attributes: { [key: string]: any };
+  children: JsonNode[];
+  textContent: string | null;
 }

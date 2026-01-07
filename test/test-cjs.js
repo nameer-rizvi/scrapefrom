@@ -47,7 +47,10 @@ const scrapefrom = require("../dist");
 // module.exports = configVenuesWalterreedScraper;
 
 scrapefrom([
-  { url: "https://google.com", log: true, use: "puppeteer" },
+  {
+    url: "https://google.com",
+    log: true,
+  },
   // {
   //   url: "https://www.npmjs.com/package/scrapefrom",
   //   use: "puppeteer",
@@ -66,7 +69,7 @@ scrapefrom([
   //     { name: "dates", selector: "time", attribute: "datetime" },
   //   ],
   // },
-]).then(console.log);
+]).then((res) => console.log(res.result.body.children[0]));
 // scrapefrom({
 //   url: "https://www.npmjs.com/package/scrapefrom",
 //   extract: { name: "title", selector: "h1", delimiter: "," },

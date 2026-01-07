@@ -35,7 +35,6 @@ function getResponsesWithPuppeteer(configs) {
                 try {
                     yield page.setRequestInterception(true);
                     page.on("request", (req) => {
-                        console.log(req.resourceType()); // --> TODO REMOVE
                         if (ABORT_TYPES.has(req.resourceType())) {
                             req.abort();
                         }
