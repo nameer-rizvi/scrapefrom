@@ -5,8 +5,9 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
+    "update": "yarn && node package.update.js",
     "lint": "npx eslint 'src/**/*.{js,mjs,cjs,ts}'; exit 0",
-    "build": "tsc",
+    "build": "npx rimraf dist && tsc",
     "test-cjs": "yarn build && node test/test-cjs.js",
     "test-esm": "yarn build && node test/test-esm.mjs"
   },
@@ -31,23 +32,21 @@
   },
   "homepage": "https://github.com/nameer-rizvi/scrapefrom#readme",
   "dependencies": {
-    "@types/jsdom": "^21.1.7",
-    "cheerio": "^1.0.0",
+    "cheerio": "^1.1.2",
     "cross-fetch": "^4.1.0",
-    "dottpath": "^0.2.0",
-    "jsdom": "^26.0.0",
-    "puppeteer": "^24.4.0",
+    "dottpath": "^0.2.1",
+    "puppeteer": "^24.34.0",
     "puppeteer-extra": "^3.3.6",
     "puppeteer-extra-plugin-stealth": "^2.11.2",
-    "simpul": "^1.2.6"
+    "simpul": "^1.2.7"
   },
   "devDependencies": {
-    "@eslint/js": "^9.12.0",
-    "@types/node": "^22.7.5",
-    "eslint": "^9.12.0",
-    "globals": "^15.11.0",
+    "@eslint/js": "^9.39.2",
+    "@types/node": "^25.0.3",
+    "eslint": "^9.39.2",
+    "globals": "^17.0.0",
     "ts-node": "^10.9.2",
-    "typescript": "^5.6.3",
-    "typescript-eslint": "^8.9.0"
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.52.0"
   }
 }

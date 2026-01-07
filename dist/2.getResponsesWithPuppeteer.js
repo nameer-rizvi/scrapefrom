@@ -14,76 +14,85 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const puppeteer_extra_1 = __importDefault(require("puppeteer-extra"));
 const puppeteer_extra_plugin_stealth_1 = __importDefault(require("puppeteer-extra-plugin-stealth"));
-const util_logger_1 = __importDefault(require("./util.logger"));
+const logger_1 = __importDefault(require("./logger"));
 const simpul_1 = __importDefault(require("simpul"));
+const ABORT_TYPES = new Set(["image", "stylesheet", "font", "media"]);
 function getResponsesWithPuppeteer(configs) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b;
-        const puppeteerConfigs = configs.filter((config) => {
-            return config.use === "puppeteer";
-        });
+        var _a, _b, _c, _d;
+        const puppeteerConfigs = configs.filter((c) => c.use === "puppeteer");
         if (!puppeteerConfigs.length)
             return;
         puppeteer_extra_1.default.use((0, puppeteer_extra_plugin_stealth_1.default)());
-        const launchOptions = (_a = configs.find((config) => config.launch)) === null || _a === void 0 ? void 0 : _a.launch;
+        const launchOptions = (_a = configs.find((c) => c.launch)) === null || _a === void 0 ? void 0 : _a.launch;
         const browser = yield puppeteer_extra_1.default.launch(launchOptions); // https://pptr.dev/guides/headless-modes/
-        const page = yield browser.newPage();
-        const abortTypes = ["image", "img", "stylesheet", "css", "font"];
-        for (const config of puppeteerConfigs) {
-            if (!config.name)
-                config.name = new URL(config.url).hostname;
-            const log = (0, util_logger_1.default)(config.logFetch, "puppeteer", config.name);
-            try {
-                if (config.cookie)
-                    browser.setCookie(config.cookie);
-                const timeout = typeof config.timeout === "number" ? config.timeout : 30000;
-                page.setDefaultNavigationTimeout(timeout);
-                log("Request sent.");
-                if (config.waitForSelector) {
-                    yield page.goto(config.url, Object.assign({ waitUntil: "domcontentloaded" }, config.pageGoTo));
-                    yield page.waitForSelector(config.waitForSelector);
-                    if ((_b = config.select) === null || _b === void 0 ? void 0 : _b.length) {
-                        const [selector, ...values] = config.select;
-                        yield page.select(selector, ...values);
+        try {
+            for (const config of puppeteerConfigs) {
+                if (!config.name)
+                    config.name = new URL(config.url).hostname;
+                const log = (0, logger_1.default)(config.log, "puppeteer", config.name);
+                const page = yield browser.newPage();
+                try {
+                    if ((_b = config.cookies) === null || _b === void 0 ? void 0 : _b.length) {
+                        yield page.setCookie(...(config.cookies || []));
                     }
-                    const pageContent = yield page.content();
-                    log("Response received.");
-                    config.response = simpul_1.default.parsejson(pageContent) || pageContent;
-                }
-                else {
-                    page.removeAllListeners("request");
                     yield page.setRequestInterception(true);
-                    page.on("request", (interceptedRequest) => {
-                        if (abortTypes.includes(interceptedRequest.resourceType())) {
-                            interceptedRequest.abort();
+                    page.on("request", (req) => {
+                        if (ABORT_TYPES.has(req.resourceType())) {
+                            req.abort();
                         }
                         else {
-                            interceptedRequest.continue();
+                            req.continue();
                         }
                     });
-                    const response = yield page.goto(config.url, config.pageGoTo);
-                    if (response === null) {
-                        throw new Error("Response is null.");
+                    config.pageGoTo = Object.assign({ waitUntil: "domcontentloaded", timeout: 30000 }, config.pageGoTo);
+                    log("Request sent.");
+                    if (config.waitForSelector) {
+                        yield page.goto(config.url, config.pageGoTo);
+                        yield page.waitForSelector(config.waitForSelector, config.waitForSelectorOptions);
+                        if ((_c = config.select) === null || _c === void 0 ? void 0 : _c.length) {
+                            const [selector, ...values] = config.select;
+                            yield page.select(selector, ...values);
+                        }
+                        if ((_d = config.selects) === null || _d === void 0 ? void 0 : _d.length) {
+                            for (const [selector, ...values] of config.selects) {
+                                yield page.select(selector, ...values);
+                            }
+                        }
+                        const pageContent = yield page.content();
+                        config.response = simpul_1.default.parseJson(pageContent) || pageContent;
                     }
-                    else if (!response.ok()) {
-                        const status = response.statusText() || response.status().toString();
-                        throw new Error(status);
+                    else {
+                        const response = yield page.goto(config.url, config.pageGoTo);
+                        if (response === null) {
+                            throw new Error("Response is null.");
+                        }
+                        else if (!response.ok()) {
+                            const err = response.statusText() || response.status().toString();
+                            throw new Error(err);
+                        }
+                        const parsedResponse = yield response[config.parser || "text"]();
+                        config.response = config.parser
+                            ? parsedResponse
+                            : simpul_1.default.parseJson(parsedResponse) || parsedResponse;
                     }
                     log("Response received.");
-                    const parsedResponse = yield response[config.parser || "text"]();
-                    config.response = config.parser
-                        ? parsedResponse
-                        : simpul_1.default.parsejson(parsedResponse) || parsedResponse;
                 }
-            }
-            catch (error) {
-                if (error instanceof Error) {
-                    log(error.toString(), "error");
-                    config.error = error.toString();
+                catch (error) {
+                    if (error instanceof Error) {
+                        config.error = error.toString();
+                        log(config.error, "error");
+                    }
+                }
+                finally {
+                    yield page.close();
                 }
             }
         }
-        yield browser.close();
+        finally {
+            yield browser.close();
+        }
     });
 }
 exports.default = getResponsesWithPuppeteer;
+// https://pptr.dev/guides/getting-started

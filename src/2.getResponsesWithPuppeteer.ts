@@ -1,100 +1,108 @@
-// https://pptr.dev/guides/getting-started
 import { Config } from "./interfaces";
 import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
-import { Browser, Page } from "puppeteer";
-import logger from "./util.logger";
+import { Browser, Page, HTTPRequest } from "puppeteer";
+import logger from "./logger";
 import simpul from "simpul";
 
+const ABORT_TYPES = new Set(["image", "stylesheet", "font", "media"]);
+
 async function getResponsesWithPuppeteer(configs: Config[]) {
-  const puppeteerConfigs = configs.filter((config) => {
-    return config.use === "puppeteer";
-  });
+  const puppeteerConfigs = configs.filter((c) => c.use === "puppeteer");
 
   if (!puppeteerConfigs.length) return;
 
   puppeteer.use(StealthPlugin());
 
-  const launchOptions = configs.find((config) => config.launch)?.launch;
+  const launchOptions = configs.find((c) => c.launch)?.launch;
 
   const browser: Browser = await puppeteer.launch(launchOptions); // https://pptr.dev/guides/headless-modes/
 
-  const page: Page = await browser.newPage();
+  try {
+    for (const config of puppeteerConfigs) {
+      if (!config.name) config.name = new URL(config.url).hostname;
 
-  const abortTypes = ["image", "img", "stylesheet", "css", "font"];
+      const log = logger(config.log, "puppeteer", config.name);
 
-  for (const config of puppeteerConfigs) {
-    if (!config.name) config.name = new URL(config.url).hostname;
+      const page: Page = await browser.newPage();
 
-    const log = logger(config.logFetch, "puppeteer", config.name);
-
-    try {
-      if (config.cookie) browser.setCookie(config.cookie);
-
-      const timeout =
-        typeof config.timeout === "number" ? config.timeout : 30000;
-
-      page.setDefaultNavigationTimeout(timeout);
-
-      log("Request sent.");
-
-      if (config.waitForSelector) {
-        await page.goto(config.url, {
-          waitUntil: "domcontentloaded",
-          ...config.pageGoTo,
-        });
-
-        await page.waitForSelector(config.waitForSelector);
-
-        if (config.select?.length) {
-          const [selector, ...values] = config.select;
-          await page.select(selector, ...values);
+      try {
+        if (config.cookies?.length) {
+          await page.setCookie(...(config.cookies || []));
         }
-
-        const pageContent = await page.content();
-
-        log("Response received.");
-
-        config.response = simpul.parsejson(pageContent) || pageContent;
-      } else {
-        page.removeAllListeners("request");
 
         await page.setRequestInterception(true);
 
-        page.on("request", (interceptedRequest) => {
-          if (abortTypes.includes(interceptedRequest.resourceType())) {
-            interceptedRequest.abort();
+        page.on("request", (req: HTTPRequest) => {
+          if (ABORT_TYPES.has(req.resourceType())) {
+            req.abort();
           } else {
-            interceptedRequest.continue();
+            req.continue();
           }
         });
 
-        const response = await page.goto(config.url, config.pageGoTo);
+        config.pageGoTo = {
+          waitUntil: "domcontentloaded",
+          timeout: 30000,
+          ...config.pageGoTo,
+        };
 
-        if (response === null) {
-          throw new Error("Response is null.");
-        } else if (!response.ok()) {
-          const status = response.statusText() || response.status().toString();
-          throw new Error(status);
+        log("Request sent.");
+
+        if (config.waitForSelector) {
+          await page.goto(config.url, config.pageGoTo);
+
+          await page.waitForSelector(
+            config.waitForSelector,
+            config.waitForSelectorOptions,
+          );
+
+          if (config.select?.length) {
+            const [selector, ...values] = config.select;
+            await page.select(selector, ...values);
+          }
+
+          if (config.selects?.length) {
+            for (const [selector, ...values] of config.selects) {
+              await page.select(selector, ...values);
+            }
+          }
+
+          const pageContent = await page.content();
+
+          config.response = simpul.parseJson(pageContent) || pageContent;
+        } else {
+          const response = await page.goto(config.url, config.pageGoTo);
+
+          if (response === null) {
+            throw new Error("Response is null.");
+          } else if (!response.ok()) {
+            const err = response.statusText() || response.status().toString();
+            throw new Error(err);
+          }
+
+          const parsedResponse = await response[config.parser || "text"]();
+
+          config.response = config.parser
+            ? parsedResponse
+            : simpul.parseJson(parsedResponse) || parsedResponse;
         }
 
         log("Response received.");
-
-        const parsedResponse = await response[config.parser || "text"]();
-
-        config.response = config.parser
-          ? parsedResponse
-          : simpul.parsejson(parsedResponse) || parsedResponse;
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        log(error.toString(), "error");
-        config.error = error.toString();
+      } catch (error) {
+        if (error instanceof Error) {
+          config.error = error.toString();
+          log(config.error, "error");
+        }
+      } finally {
+        await page.close();
       }
     }
+  } finally {
+    await browser.close();
   }
-
-  await browser.close();
 }
 
 export default getResponsesWithPuppeteer;
+
+// https://pptr.dev/guides/getting-started

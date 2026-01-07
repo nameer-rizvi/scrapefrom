@@ -1,45 +1,65 @@
-import { GoToOptions } from "puppeteer";
+import {
+  LaunchOptions,
+  CookieData,
+  GoToOptions,
+  WaitForSelectorOptions,
+} from "puppeteer";
+import { CheerioAPI, Cheerio } from "cheerio";
+import type { AnyNode } from "domhandler";
+
+export type KeyPath = { [key: string]: string };
 
 export interface Config {
   index?: number;
   url: string;
   name?: string;
   use?: "fetch" | "puppeteer";
-  logFetch?: boolean;
-  launch?: Record<string, any>;
-  cookie?: { name: string; value: string; domain: string };
+  log?: boolean;
   timeout?: number | NodeJS.Timeout;
   fetch?: RequestInit;
-  waitForSelector?: string;
+  parser?: "json" | "text"; // puppeteer-supported parsers only
+  launch?: LaunchOptions;
+  cookies?: CookieData[];
   pageGoTo?: GoToOptions;
+  waitForSelector?: string;
+  waitForSelectorOptions?: WaitForSelectorOptions;
   select?: string[];
-  parser?: "text" | "json";
-  response?: any;
-  includeResponse?: boolean;
-  error?: string;
-  extractor?: Function;
+  selects?: string[][];
+  response?: unknown;
+  keyPath?: KeyPath;
+  extractor?: (res: unknown | CheerioAPI) => unknown;
   extract?: ExtractConfig;
   extracts?: ExtractConfig[];
-  keyPath?: { [key: string]: string };
-  result?: any;
   delimiter?: string | null;
+  result?: unknown;
+  error?: string;
+  includeResponse?: boolean;
+  includeTimeout?: boolean;
 }
 
 export interface ExtractConfig {
   name?: string;
+  delimiter?: string | null;
   selector?: string;
   attribute?: string;
-  delimiter?: string | null;
   json?: boolean;
-  filter?: (json: any) => boolean;
-  keyPath?: { [key: string]: string };
+  filter?: (res: unknown) => boolean;
+  keyPath?: KeyPath;
   extract?: ExtractConfig;
   extracts?: ExtractConfig[];
+  extractor?: ($: CheerioAPI, parentNode?: Cheerio<AnyNode>) => any;
+}
+
+export interface HTMLData {
+  head: JsonNode;
+  body: JsonNode;
+  map: string[];
+  extract: (path: string) => unknown;
 }
 
 export interface JsonNode {
   tag: string | null;
-  attributes: { [key: string]: string };
+  attributes: { [key: string]: any };
   children: JsonNode[];
   textContent: string | null;
 }

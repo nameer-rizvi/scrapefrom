@@ -32,17 +32,6 @@ var __importStar = (this && this.__importStar) || (function () {
         return result;
     };
 })();
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -50,30 +39,28 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const cheerio = __importStar(require("cheerio"));
 const simpul_1 = __importDefault(require("simpul"));
 const _3_extractDataWithKeyPath_1 = __importDefault(require("./3.extractDataWithKeyPath"));
-function extractHTMLData1(config, $) {
+function extractHTMLData1(config, $, parentNode) {
     const result = {};
     const extractConfigs = getExtractConfigs(config.extract, config.extracts);
-    if (!extractConfigs.length)
-        return result;
     for (let i = 0; i < extractConfigs.length; i++) {
-        const _a = extractConfigs[i], { json: extractJSON, extract: extractChild, extracts: extractChildren, selector, attribute, filter: jsonFilter, keyPath: jsonKeyPath } = _a, extractConfig = __rest(_a, ["json", "extract", "extracts", "selector", "attribute", "filter", "keyPath"]);
+        const { name: explicitName, delimiter: localDelimiter, selector, attribute, json: extractJSON, filter: jsonFilter, keyPath: jsonKeyPath, extract: extractChild, extracts: extractChildren, extractor: extractCustom, } = extractConfigs[i];
         let name, delimiter;
-        if (typeof extractConfig.name === "string") {
-            name = extractConfig.name;
+        if (simpul_1.default.isString(explicitName)) {
+            name = explicitName;
         }
-        else if (typeof selector === "string") {
-            name = [selector, attribute].filter(Boolean).join("_");
+        else if (simpul_1.default.isString(selector)) {
+            name = [selector, attribute].filter(Boolean).join(" ");
         }
         else {
             name = i.toString();
         }
-        if (typeof extractConfig.delimiter === "string") {
-            delimiter = extractConfig.delimiter;
+        if (simpul_1.default.isString(localDelimiter)) {
+            delimiter = localDelimiter;
         }
-        else if (extractConfig.delimiter === null) {
-            delimiter = null; // To prevent use of parent config.delimiter.
+        else if (localDelimiter === null) {
+            delimiter = null; // override parent delimiter
         }
-        else if (typeof config.delimiter === "string") {
+        else if (simpul_1.default.isString(config.delimiter)) {
             delimiter = config.delimiter;
         }
         else if (config.delimiter === null) {
@@ -84,9 +71,9 @@ function extractHTMLData1(config, $) {
             for (const scriptType of ["application/ld+json", "application/json"]) {
                 $(`script[type="${scriptType}"]`).each((_, child) => {
                     const html = $(child).html() || "";
-                    let json = simpul_1.default.parsejson(html);
+                    let json = simpul_1.default.parseJson(html);
                     if (!json)
-                        json = simpul_1.default.parsejson(html.replace(/\\/g, ""));
+                        json = simpul_1.default.parseJson(html.replace(/\\/g, ""));
                     if (json)
                         array.push(json);
                 });
@@ -95,7 +82,9 @@ function extractHTMLData1(config, $) {
             if (jsonFilter)
                 array = array.filter(jsonFilter);
             if (jsonKeyPath) {
-                array = array.map((response) => (0, _3_extractDataWithKeyPath_1.default)({ response, keyPath: jsonKeyPath }));
+                array = array.map((response) => {
+                    return (0, _3_extractDataWithKeyPath_1.default)({ response, keyPath: jsonKeyPath });
+                });
             }
             result[name] = array;
         }
@@ -108,21 +97,23 @@ function extractHTMLData1(config, $) {
             const array = [];
             $(selector).each((_, child) => {
                 const html = $(child).html() || "";
-                const htmlCheerioOptions = { xml: { decodeEntities: false } };
-                const htmlCheerio = cheerio.load(html, htmlCheerioOptions);
-                array.push(extractHTMLData1(nestedConfig, htmlCheerio));
+                const $$ = cheerio.load(html, { xml: { decodeEntities: false } });
+                array.push(extractHTMLData1(nestedConfig, $$, $(child)));
             });
             result[name] = array;
+        }
+        else if (extractCustom) {
+            result[name] = extractCustom($, parentNode);
         }
         else if (selector) {
             const array = [];
             $(selector).each((_, child) => {
                 const text = attribute ? $(child).attr(attribute) : $(child).text();
-                const item = simpul_1.default.trim(text || "");
-                if (typeof item === "string" && item.length)
+                const item = simpul_1.default.trim(text);
+                if (simpul_1.default.isStringNonEmpty(item))
                     array.push(item);
             });
-            if (typeof delimiter === "string") {
+            if (simpul_1.default.isString(delimiter)) {
                 result[name] = array.join(delimiter);
             }
             else {
@@ -135,15 +126,16 @@ function extractHTMLData1(config, $) {
 function getExtractConfigs(extract, extracts = []) {
     const extractConfigs = [];
     for (const extractConfig of [extract, ...extracts]) {
-        if (typeof extractConfig === "string") {
+        if (simpul_1.default.isString(extractConfig)) {
             extractConfigs.push({ selector: extractConfig });
         }
-        else if (Array.isArray(extractConfig)) {
+        else if (simpul_1.default.isArray(extractConfig)) {
             extractConfigs.push(...getExtractConfigs(...extractConfig));
         }
-        else if (extractConfig && simpul_1.default.isObject(extractConfig)) {
-            const isValid = typeof extractConfig.selector === "string" ||
-                extractConfig.json === true;
+        else if (simpul_1.default.isObject(extractConfig)) {
+            const isValid = extractConfig.json === true ||
+                simpul_1.default.isString(extractConfig.selector) ||
+                simpul_1.default.isFunction(extractConfig.extractor);
             if (isValid)
                 extractConfigs.push(extractConfig);
         }

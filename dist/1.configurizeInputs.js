@@ -6,21 +6,22 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const simpul_1 = __importDefault(require("simpul"));
 function configurizeInputs(...inputs) {
     const configs = [];
+    let index = 0;
     for (const input of inputs) {
-        if (typeof input === "string") {
+        if (simpul_1.default.isString(input)) {
             configs.push({ url: input });
         }
-        else if (simpul_1.default.isObject(input)) {
-            if (typeof input.url === "string")
-                configs.push(input);
-        }
-        else if (Array.isArray(input)) {
+        else if (simpul_1.default.isArray(input)) {
             configs.push(...configurizeInputs(...input));
         }
-    }
-    for (let i = 0; i < configs.length; i++) {
-        configs[i].index = i;
+        else if (isConfig(input)) {
+            configs.push(Object.assign({ index }, input));
+            index++;
+        }
     }
     return configs;
+}
+function isConfig(input) {
+    return simpul_1.default.isObject(input) && simpul_1.default.isString(input.url);
 }
 exports.default = configurizeInputs;

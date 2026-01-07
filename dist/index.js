@@ -18,11 +18,17 @@ const _2_getResponsesWithPuppeteer_1 = __importDefault(require("./2.getResponses
 const _3_extractDataFromResponses_1 = __importDefault(require("./3.extractDataFromResponses"));
 function scrapefrom(...inputs) {
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         const configs = (0, _1_configurizeInputs_1.default)(inputs);
         yield (0, _2_getResponsesWithFetch_1.default)(configs);
         yield (0, _2_getResponsesWithPuppeteer_1.default)(configs);
-        const results = (0, _3_extractDataFromResponses_1.default)(configs);
-        return results;
+        (0, _3_extractDataFromResponses_1.default)(configs);
+        if (configs.length === 1) {
+            if ((_a = configs[0]) === null || _a === void 0 ? void 0 : _a.error)
+                throw new Error(configs[0].error);
+            return configs[0];
+        }
+        return configs;
     });
 }
 module.exports = scrapefrom;

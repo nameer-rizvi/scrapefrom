@@ -1,26 +1,27 @@
 import { Config } from "./interfaces";
 import simpul from "simpul";
 
-function configurizeInputs(
-  ...inputs: Config[] | Config[][] | string[] | string[][] | any[] | any[][]
-): Config[] {
+function configurizeInputs(...inputs: unknown[]): Config[] {
   const configs: Config[] = [];
 
+  let index = 0;
+
   for (const input of inputs) {
-    if (typeof input === "string") {
+    if (simpul.isString(input)) {
       configs.push({ url: input });
-    } else if (simpul.isObject(input)) {
-      if (typeof input.url === "string") configs.push(input);
-    } else if (Array.isArray(input)) {
+    } else if (simpul.isArray(input)) {
       configs.push(...configurizeInputs(...input));
+    } else if (isConfig(input)) {
+      configs.push({ index, ...input });
+      index++;
     }
   }
 
-  for (let i = 0; i < configs.length; i++) {
-    configs[i].index = i;
-  }
-
   return configs;
+}
+
+function isConfig(input: unknown): input is Config {
+  return simpul.isObject(input) && simpul.isString((input as any).url);
 }
 
 export default configurizeInputs;
