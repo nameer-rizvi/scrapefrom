@@ -48,8 +48,12 @@ const scrapefrom = require("../dist");
 
 scrapefrom([
   {
-    url: "https://google.com",
+    url: "https://jsonplaceholder.typicode.com/todos/1",
     log: true,
+    extractor: ($) => {
+      console.log($);
+      return { test: 1 };
+    },
   },
   // {
   //   url: "https://www.npmjs.com/package/scrapefrom",
@@ -69,7 +73,7 @@ scrapefrom([
   //     { name: "dates", selector: "time", attribute: "datetime" },
   //   ],
   // },
-]).then((res) => console.log(res.result.body.children[0]));
+]).then((res) => console.log(res));
 // scrapefrom({
 //   url: "https://www.npmjs.com/package/scrapefrom",
 //   extract: { name: "title", selector: "h1", delimiter: "," },

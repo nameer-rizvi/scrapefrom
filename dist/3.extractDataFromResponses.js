@@ -44,7 +44,7 @@ function extractDataFromResponses(configs) {
     for (const config of configs) {
         if (simpul_1.default.isObject(config.response) || simpul_1.default.isArray(config.response)) {
             if (simpul_1.default.isFunction(config.extractor)) {
-                // config.result = config.extractor(config.response);
+                config.result = config.extractor(config.response);
             }
             else if (simpul_1.default.isObject(config.keyPath)) {
                 config.result = (0, _3_extractDataWithKeyPath_1.default)(config);
@@ -52,8 +52,8 @@ function extractDataFromResponses(configs) {
         }
         else if (simpul_1.default.isString(config.response)) {
             const $ = cheerio.load(config.response);
-            if (config.extractor) {
-                // config.result = config.extractor($);
+            if (simpul_1.default.isFunction(config.extractor)) {
+                config.result = config.extractor($);
             }
             else if (config.extract || config.extracts) {
                 // config.result = extractHTMLData1(config, $);
