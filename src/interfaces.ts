@@ -38,16 +38,16 @@ export interface Config {
 }
 
 export interface ExtractConfig {
-  // name?: string;
-  // delimiter?: string | null;
-  // selector?: string;
-  // attribute?: string;
-  // json?: boolean;
-  // filter?: (res: unknown) => boolean;
-  // keyPath?: KeyPath;
-  // extract?: ExtractConfig;
-  // extracts?: ExtractConfig[];
-  // extractor?: ($: CheerioAPI, parent?: Cheerio<AnyNode>) => any;
+  name?: string;
+  delimiter?: string | null;
+  selector?: string;
+  attribute?: string;
+  json?: boolean;
+  filter?: (res: unknown) => boolean;
+  keyPath?: KeyPath;
+  extract?: ExtractConfig;
+  extracts?: ExtractConfig[];
+  extractor?: ($: CheerioAPI, parentNode?: Cheerio<AnyNode>) => any;
 }
 
 export interface HTMLData {

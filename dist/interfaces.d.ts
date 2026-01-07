@@ -1,5 +1,6 @@
 import { LaunchOptions, CookieData, GoToOptions, WaitForSelectorOptions } from "puppeteer";
-import { CheerioAPI } from "cheerio";
+import { CheerioAPI, Cheerio } from "cheerio";
+import type { AnyNode } from "domhandler";
 export type KeyPath = {
     [key: string]: string;
 };
@@ -31,6 +32,16 @@ export interface Config {
     includeTimeout?: boolean;
 }
 export interface ExtractConfig {
+    name?: string;
+    delimiter?: string | null;
+    selector?: string;
+    attribute?: string;
+    json?: boolean;
+    filter?: (res: unknown) => boolean;
+    keyPath?: KeyPath;
+    extract?: ExtractConfig;
+    extracts?: ExtractConfig[];
+    extractor?: ($: CheerioAPI, parentNode?: Cheerio<AnyNode>) => any;
 }
 export interface HTMLData {
     head: JsonNode;
