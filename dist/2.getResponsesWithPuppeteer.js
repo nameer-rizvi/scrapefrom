@@ -19,7 +19,7 @@ const simpul_1 = __importDefault(require("simpul"));
 const ABORT_TYPES = new Set(["image", "stylesheet", "font", "media"]);
 function getResponsesWithPuppeteer(configs) {
     return __awaiter(this, void 0, void 0, function* () {
-        var _a, _b;
+        var _a, _b, _c, _d;
         const puppeteerConfigs = configs.filter((c) => c.use === "puppeteer");
         if (!puppeteerConfigs.length)
             return;
@@ -33,6 +33,9 @@ function getResponsesWithPuppeteer(configs) {
                 const log = (0, logger_1.default)(config.log, "puppeteer", config.name);
                 const page = yield browser.newPage();
                 try {
+                    if ((_b = config.cookies) === null || _b === void 0 ? void 0 : _b.length) {
+                        yield page.setCookie(...(config.cookies || []));
+                    }
                     yield page.setRequestInterception(true);
                     page.on("request", (req) => {
                         if (ABORT_TYPES.has(req.resourceType())) {
@@ -42,19 +45,22 @@ function getResponsesWithPuppeteer(configs) {
                             req.continue();
                         }
                     });
-                    if (config.cookies)
-                        yield page.setCookie(...(config.cookies || []));
                     config.pageGoTo = Object.assign({ waitUntil: "domcontentloaded", timeout: 30000 }, config.pageGoTo);
                     log("Request sent.");
                     if (config.waitForSelector) {
                         yield page.goto(config.url, config.pageGoTo);
                         yield page.waitForSelector(config.waitForSelector, config.waitForSelectorOptions);
-                        if ((_b = config.select) === null || _b === void 0 ? void 0 : _b.length) {
+                        if ((_c = config.select) === null || _c === void 0 ? void 0 : _c.length) {
                             const [selector, ...values] = config.select;
                             yield page.select(selector, ...values);
                         }
-                        const response = yield page.content();
-                        config.response = simpul_1.default.parseJson(response) || response;
+                        if ((_d = config.selects) === null || _d === void 0 ? void 0 : _d.length) {
+                            for (const [selector, ...values] of config.selects) {
+                                yield page.select(selector, ...values);
+                            }
+                        }
+                        const pageContent = yield page.content();
+                        config.response = simpul_1.default.parseJson(pageContent) || pageContent;
                     }
                     else {
                         const response = yield page.goto(config.url, config.pageGoTo);

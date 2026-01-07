@@ -27,7 +27,7 @@ function getResponsesWithFetch(configs) {
                 const timeoutMs = simpul_1.default.isNumber(config.timeout)
                     ? config.timeout
                     : 30000; // 30 seconds
-                config.timeout = setTimeout(controller.abort, timeoutMs);
+                config.timeout = setTimeout(() => controller.abort(), timeoutMs);
                 config.fetch = Object.assign(Object.assign({}, config.fetch), { signal: controller.signal });
                 log("Request sent.");
                 const response = yield fetch(config.url, config.fetch);

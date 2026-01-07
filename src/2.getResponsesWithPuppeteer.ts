@@ -27,6 +27,10 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
       const page: Page = await browser.newPage();
 
       try {
+        if (config.cookies?.length) {
+          await page.setCookie(...(config.cookies || []));
+        }
+
         await page.setRequestInterception(true);
 
         page.on("request", (req: HTTPRequest) => {
@@ -36,8 +40,6 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
             req.continue();
           }
         });
-
-        if (config.cookies) await page.setCookie(...(config.cookies || []));
 
         config.pageGoTo = {
           waitUntil: "domcontentloaded",
@@ -60,9 +62,15 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
             await page.select(selector, ...values);
           }
 
-          const response = await page.content();
+          if (config.selects?.length) {
+            for (const [selector, ...values] of config.selects) {
+              await page.select(selector, ...values);
+            }
+          }
 
-          config.response = simpul.parseJson(response) || response;
+          const pageContent = await page.content();
+
+          config.response = simpul.parseJson(pageContent) || pageContent;
         } else {
           const response = await page.goto(config.url, config.pageGoTo);
 

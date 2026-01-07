@@ -38,14 +38,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const cheerio = __importStar(require("cheerio"));
 const simpul_1 = __importDefault(require("simpul"));
+const _3_extractDataWithKeyPath_1 = __importDefault(require("./3.extractDataWithKeyPath"));
 function extractHTMLData1(config, $, parent) {
     const result = {};
     const extractConfigs = getExtractConfigs(config.extract, config.extracts);
     for (let i = 0; i < extractConfigs.length; i++) {
-        const { name: explicitName, delimiter: localDelimiter, selector, attribute, json: extractJSON, extract: extractChild, extracts: extractChildren, extractor: extractCustom,
-        // filter: jsonFilter,
-        // keyPath: jsonKeyPath,
-         } = extractConfigs[i];
+        const { name: explicitName, delimiter: localDelimiter, selector, attribute, json: extractJSON, filter: jsonFilter, keyPath: jsonKeyPath, extract: extractChild, extracts: extractChildren, extractor: extractCustom, } = extractConfigs[i];
         let name, delimiter;
         if (simpul_1.default.isString(explicitName)) {
             name = explicitName;
@@ -69,24 +67,26 @@ function extractHTMLData1(config, $, parent) {
             delimiter = null;
         }
         if (extractJSON === true) {
-            console.log("\n--> 1\n");
-            // let array: any[] = [];
-            // for (const scriptType of ["application/ld+json", "application/json"]) {
-            //   $(`script[type="${scriptType}"]`).each((_, child) => {
-            //     const html = $(child).html() || "";
-            //     let json = simpul.parseJson(html);
-            //     if (!json) json = simpul.parseJson(html.replace(/\\/g, ""));
-            //     if (json) array.push(json);
-            //   });
-            // }
-            // array = array.flat();
-            // if (jsonFilter) array = array.filter(jsonFilter);
-            // if (jsonKeyPath) {
-            //   array = array.map((response) => {
-            //     return extractDataWithKeyPath({ response, keyPath: jsonKeyPath });
-            //   });
-            // }
-            // result[name] = array;
+            let array = [];
+            for (const scriptType of ["application/ld+json", "application/json"]) {
+                $(`script[type="${scriptType}"]`).each((_, child) => {
+                    const html = $(child).html() || "";
+                    let json = simpul_1.default.parseJson(html);
+                    if (!json)
+                        json = simpul_1.default.parseJson(html.replace(/\\/g, ""));
+                    if (json)
+                        array.push(json);
+                });
+            }
+            array = array.flat();
+            if (jsonFilter)
+                array = array.filter(jsonFilter);
+            if (jsonKeyPath) {
+                array = array.map((response) => {
+                    return (0, _3_extractDataWithKeyPath_1.default)({ response, keyPath: jsonKeyPath });
+                });
+            }
+            result[name] = array;
         }
         else if (extractChild || extractChildren) {
             const nestedConfig = {
@@ -102,9 +102,6 @@ function extractHTMLData1(config, $, parent) {
             });
             result[name] = array;
         }
-        else if (extractCustom) {
-            result[name] = extractCustom($, parent);
-        }
         else if (selector) {
             const array = [];
             $(selector).each((_, child) => {
@@ -119,6 +116,9 @@ function extractHTMLData1(config, $, parent) {
             else {
                 result[name] = array;
             }
+        }
+        else if (extractCustom) {
+            result[name] = extractCustom($, parent);
         }
     }
     return result;

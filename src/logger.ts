@@ -1,7 +1,7 @@
 import simpul from "simpul";
 
-function logger(enabled = false, processName: string, configName: string) {
-  if (enabled !== true) {
+function logger(isEnabled = false, processName: string, configName: string) {
+  if (isEnabled !== true) {
     return simpul.noop;
   }
 

@@ -17,7 +17,7 @@ async function getResponsesWithFetch(configs: Config[]) {
         ? config.timeout
         : 30000; // 30 seconds
 
-      config.timeout = setTimeout(controller.abort, timeoutMs);
+      config.timeout = setTimeout(() => controller.abort(), timeoutMs);
 
       config.fetch = { ...config.fetch, signal: controller.signal };
 

@@ -18,9 +18,10 @@ export interface Config {
     waitForSelectorOptions?: WaitForSelectorOptions;
     pageGoTo?: GoToOptions;
     select?: string[];
+    selects?: string[][];
     response?: any;
     keyPath?: KeyPath;
-    extractor?: (response: unknown[] | Record<string, unknown> | CheerioAPI) => unknown;
+    extractor?: (res: unknown[] | Record<string, unknown> | CheerioAPI) => unknown;
     extract?: ExtractConfig;
     extracts?: ExtractConfig[];
     delimiter?: string | null;
@@ -36,6 +37,8 @@ export interface ExtractConfig {
     selector?: string;
     attribute?: string;
     json?: boolean;
+    filter?: (res: unknown) => boolean;
+    keyPath?: KeyPath;
     extract?: ExtractConfig;
     extracts?: ExtractConfig[];
     extractor?: ($: CheerioAPI, parent?: Cheerio<AnyNode>) => any;

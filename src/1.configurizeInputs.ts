@@ -4,18 +4,17 @@ import simpul from "simpul";
 function configurizeInputs(...inputs: unknown[]): Config[] {
   const configs: Config[] = [];
 
+  let index = 0;
+
   for (const input of inputs) {
     if (simpul.isString(input)) {
       configs.push({ url: input });
     } else if (simpul.isArray(input)) {
       configs.push(...configurizeInputs(...input));
     } else if (isConfig(input)) {
-      configs.push(input);
+      configs.push({ index, ...input });
+      index++;
     }
-  }
-
-  for (let i = 0; i < configs.length; i++) {
-    configs[i].index = i;
   }
 
   return configs;
