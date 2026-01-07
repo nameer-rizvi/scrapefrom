@@ -14,29 +14,27 @@ export interface Config {
   url: string;
   name?: string;
   use?: "fetch" | "puppeteer";
+  log?: boolean;
   timeout?: number | NodeJS.Timeout;
   fetch?: RequestInit;
   parser?: "json" | "text"; // puppeteer-supported parsers only
   launch?: LaunchOptions;
   cookies?: CookieData[];
+  pageGoTo?: GoToOptions;
   waitForSelector?: string;
   waitForSelectorOptions?: WaitForSelectorOptions;
-  pageGoTo?: GoToOptions;
   select?: string[];
   selects?: string[][];
   response?: unknown;
-  // keyPath?: KeyPath;
-  // extractor?: (
-  //   res: unknown[] | Record<string, unknown> | CheerioAPI,
-  // ) => unknown;
-  // extract?: ExtractConfig;
-  // extracts?: ExtractConfig[];
-  // delimiter?: string | null;
-  // result?: any;
-  // error?: string;
-  // log?: boolean;
-  // includeResponse?: boolean;
-  // includeTimeout?: boolean;
+  keyPath?: KeyPath;
+  extractor?: (res: unknown | CheerioAPI) => unknown;
+  extract?: ExtractConfig;
+  extracts?: ExtractConfig[];
+  delimiter?: string | null;
+  result?: unknown;
+  error?: string;
+  includeResponse?: boolean;
+  includeTimeout?: boolean;
 }
 
 export interface ExtractConfig {
@@ -53,8 +51,8 @@ export interface ExtractConfig {
 }
 
 export interface JsonNode {
-  // tag: string | null;
-  // attributes: { [key: string]: any };
-  // children: JsonNode[];
-  // textContent: string | null;
+  tag: string | null;
+  attributes: { [key: string]: any };
+  children: JsonNode[];
+  textContent: string | null;
 }

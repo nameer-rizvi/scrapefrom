@@ -9,7 +9,8 @@ function extractHTMLData2($) {
     const head = nodeToJson($("head"), $);
     const body = nodeToJson($("body"), $);
     const map = dottpath_1.default.map({ head, body });
-    return { head, body, map };
+    const extract = (path) => dottpath_1.default.extract({ head, body }, path);
+    return { head, body, map, extract };
 }
 function nodeToJson(node, $) {
     const jsonNode = {
@@ -25,7 +26,7 @@ function nodeToJson(node, $) {
         jsonNode.textContent = simpul_1.default.trim(element.data) || null;
     }
     else if (element.type === "tag") {
-        jsonNode.tag = element.tagName.toLowerCase() || null;
+        jsonNode.tag = element.tagName.toLowerCase();
         for (const [name, value] of Object.entries(element.attribs || {})) {
             jsonNode.attributes[name] = value;
         }

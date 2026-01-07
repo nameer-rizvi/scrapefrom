@@ -4,5 +4,6 @@ declare function extractHTMLData2($: CheerioAPI): {
     head: JsonNode;
     body: JsonNode;
     map: string[];
+    extract: (path: string) => unknown;
 };
 export default extractHTMLData2;

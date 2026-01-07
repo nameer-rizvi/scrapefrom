@@ -1,4 +1,5 @@
-import { CheerioAPI } from "cheerio";
+import { CheerioAPI, Cheerio } from "cheerio";
+import type { AnyNode } from "domhandler";
 import { JsonNode } from "./interfaces";
 import dottpath from "dottpath";
 import simpul from "simpul";
@@ -7,14 +8,16 @@ function extractHTMLData2($: CheerioAPI): {
   head: JsonNode;
   body: JsonNode;
   map: string[];
+  extract: (path: string) => unknown;
 } {
   const head = nodeToJson($("head"), $);
   const body = nodeToJson($("body"), $);
   const map = dottpath.map({ head, body });
-  return { head, body, map };
+  const extract = (path: string) => dottpath.extract({ head, body }, path);
+  return { head, body, map, extract };
 }
 
-function nodeToJson(node: CheerioAPI | any, $: CheerioAPI): JsonNode {
+function nodeToJson(node: Cheerio<AnyNode>, $: CheerioAPI): JsonNode {
   const jsonNode: JsonNode = {
     tag: null,
     attributes: {},
@@ -29,7 +32,7 @@ function nodeToJson(node: CheerioAPI | any, $: CheerioAPI): JsonNode {
   if (element.type === "text") {
     jsonNode.textContent = simpul.trim(element.data) || null;
   } else if (element.type === "tag") {
-    jsonNode.tag = element.tagName.toLowerCase() || null;
+    jsonNode.tag = element.tagName.toLowerCase();
 
     for (const [name, value] of Object.entries(element.attribs || {})) {
       jsonNode.attributes[name] = value as any;

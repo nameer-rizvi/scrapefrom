@@ -1,6 +1,10 @@
 const scrapefrom = require("../dist");
 // console.log(scrapefrom);
 
+scrapefrom({
+  url: "https://google.com",
+  log: true,
+}).then((res) => console.log(res.result));
 // scrapefrom({
 //   url: "https://www.npmjs.com/package/scrapefrom",
 //   extract: { name: "title", selector: "h1", delimiter: "," },

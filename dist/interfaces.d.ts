@@ -1,6 +1,5 @@
 import { LaunchOptions, CookieData, GoToOptions, WaitForSelectorOptions } from "puppeteer";
-import { CheerioAPI, Cheerio } from "cheerio";
-import type { AnyNode } from "domhandler";
+import { CheerioAPI } from "cheerio";
 export type KeyPath = {
     [key: string]: string;
 };
@@ -9,39 +8,29 @@ export interface Config {
     url: string;
     name?: string;
     use?: "fetch" | "puppeteer";
+    log?: boolean;
     timeout?: number | NodeJS.Timeout;
     fetch?: RequestInit;
     parser?: "json" | "text";
     launch?: LaunchOptions;
     cookies?: CookieData[];
+    pageGoTo?: GoToOptions;
     waitForSelector?: string;
     waitForSelectorOptions?: WaitForSelectorOptions;
-    pageGoTo?: GoToOptions;
     select?: string[];
     selects?: string[][];
-    response?: any;
+    response?: unknown;
     keyPath?: KeyPath;
-    extractor?: (res: unknown[] | Record<string, unknown> | CheerioAPI) => unknown;
+    extractor?: (res: unknown | CheerioAPI) => unknown;
     extract?: ExtractConfig;
     extracts?: ExtractConfig[];
     delimiter?: string | null;
-    result?: any;
+    result?: unknown;
     error?: string;
-    log?: boolean;
     includeResponse?: boolean;
     includeTimeout?: boolean;
 }
 export interface ExtractConfig {
-    name?: string;
-    delimiter?: string | null;
-    selector?: string;
-    attribute?: string;
-    json?: boolean;
-    filter?: (res: unknown) => boolean;
-    keyPath?: KeyPath;
-    extract?: ExtractConfig;
-    extracts?: ExtractConfig[];
-    extractor?: ($: CheerioAPI, parent?: Cheerio<AnyNode>) => any;
 }
 export interface JsonNode {
     tag: string | null;
