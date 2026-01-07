@@ -50,6 +50,13 @@ export interface ExtractConfig {
   // extractor?: ($: CheerioAPI, parent?: Cheerio<AnyNode>) => any;
 }
 
+export interface HTMLData {
+  head: JsonNode;
+  body: JsonNode;
+  map: string[];
+  extract: (path: string) => unknown;
+}
+
 export interface JsonNode {
   tag: string | null;
   attributes: { [key: string]: any };

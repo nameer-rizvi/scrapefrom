@@ -8,17 +8,17 @@ import extractHTMLData2 from "./3.extractHTMLData.2";
 function extractDataFromResponses(configs: Config[]) {
   for (const config of configs) {
     if (simpul.isObject(config.response) || simpul.isArray(config.response)) {
-      if (simpul.isObject(config.keyPath)) {
-        config.result = extractDataWithKeyPath(config);
-      } else if (simpul.isFunction(config.extractor)) {
+      if (simpul.isFunction(config.extractor)) {
         config.result = config.extractor(config.response);
+      } else if (simpul.isObject(config.keyPath)) {
+        config.result = extractDataWithKeyPath(config);
       }
     } else if (simpul.isString(config.response)) {
       const $ = cheerio.load(config.response);
-      if (config.extract || config.extracts) {
-        // config.result = extractHTMLData1(config, $);
-      } else if (simpul.isFunction(config.extractor)) {
+      if (simpul.isFunction(config.extractor)) {
         config.result = config.extractor($);
+      } else if (config.extract || config.extracts) {
+        config.result = extractHTMLData1(config, $);
       } else {
         config.result = extractHTMLData2($);
       }

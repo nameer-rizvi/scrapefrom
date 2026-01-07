@@ -1,15 +1,10 @@
 import { CheerioAPI, Cheerio } from "cheerio";
 import type { AnyNode } from "domhandler";
-import { JsonNode } from "./interfaces";
+import { HTMLData, JsonNode } from "./interfaces";
 import dottpath from "dottpath";
 import simpul from "simpul";
 
-function extractHTMLData2($: CheerioAPI): {
-  head: JsonNode;
-  body: JsonNode;
-  map: string[];
-  extract: (path: string) => unknown;
-} {
+function extractHTMLData2($: CheerioAPI): HTMLData {
   const head = nodeToJson($("head"), $);
   const body = nodeToJson($("body"), $);
   const map = dottpath.map({ head, body });
@@ -29,24 +24,21 @@ function nodeToJson(node: Cheerio<AnyNode>, $: CheerioAPI): JsonNode {
 
   const element = node[0] as any;
 
-  if (element.type === "text") {
-    jsonNode.textContent = simpul.trim(element.data) || null;
-  } else if (element.type === "tag") {
-    jsonNode.tag = element.tagName.toLowerCase();
+  jsonNode.textContent = simpul.trim(element.data) || null;
 
-    for (const [name, value] of Object.entries(element.attribs || {})) {
-      jsonNode.attributes[name] = value as any;
-    }
+  jsonNode.tag = element.tagName?.toLowerCase() || null;
 
-    const children: JsonNode[] = [];
-
-    node.contents().each((_: number, child: any) => {
-      const childJson = nodeToJson($(child), $);
-      if (childJson.tag || childJson.textContent) children.push(childJson);
-    });
-
-    jsonNode.children = children;
+  for (const [name, value] of Object.entries(element.attribs || {})) {
+    jsonNode.attributes[name] = value as any;
   }
+
+  const children: JsonNode[] = [];
+
+  node.contents().each((_: number, child: any) => {
+    children.push(nodeToJson($(child), $));
+  });
+
+  jsonNode.children = children;
 
   return jsonNode;
 }

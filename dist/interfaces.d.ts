@@ -32,6 +32,12 @@ export interface Config {
 }
 export interface ExtractConfig {
 }
+export interface HTMLData {
+    head: JsonNode;
+    body: JsonNode;
+    map: string[];
+    extract: (path: string) => unknown;
+}
 export interface JsonNode {
     tag: string | null;
     attributes: {

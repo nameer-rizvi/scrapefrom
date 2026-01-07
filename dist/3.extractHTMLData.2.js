@@ -13,6 +13,7 @@ function extractHTMLData2($) {
     return { head, body, map, extract };
 }
 function nodeToJson(node, $) {
+    var _a;
     const jsonNode = {
         tag: null,
         attributes: {},
@@ -22,22 +23,16 @@ function nodeToJson(node, $) {
     if (!(node === null || node === void 0 ? void 0 : node.length))
         return jsonNode;
     const element = node[0];
-    if (element.type === "text") {
-        jsonNode.textContent = simpul_1.default.trim(element.data) || null;
+    jsonNode.textContent = simpul_1.default.trim(element.data) || null;
+    jsonNode.tag = ((_a = element.tagName) === null || _a === void 0 ? void 0 : _a.toLowerCase()) || null;
+    for (const [name, value] of Object.entries(element.attribs || {})) {
+        jsonNode.attributes[name] = value;
     }
-    else if (element.type === "tag") {
-        jsonNode.tag = element.tagName.toLowerCase();
-        for (const [name, value] of Object.entries(element.attribs || {})) {
-            jsonNode.attributes[name] = value;
-        }
-        const children = [];
-        node.contents().each((_, child) => {
-            const childJson = nodeToJson($(child), $);
-            if (childJson.tag || childJson.textContent)
-                children.push(childJson);
-        });
-        jsonNode.children = children;
-    }
+    const children = [];
+    node.contents().each((_, child) => {
+        children.push(nodeToJson($(child), $));
+    });
+    jsonNode.children = children;
     return jsonNode;
 }
 exports.default = extractHTMLData2;
