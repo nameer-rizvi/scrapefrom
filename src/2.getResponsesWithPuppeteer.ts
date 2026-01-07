@@ -30,7 +30,6 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
         await page.setRequestInterception(true);
 
         page.on("request", (req: HTTPRequest) => {
-          console.log(req.resourceType()); // --> TODO REMOVE
           if (ABORT_TYPES.has(req.resourceType())) {
             req.abort();
           } else {
