@@ -2,6 +2,7 @@ import { Config } from "./interfaces";
 import logger from "./logger";
 import simpul from "simpul";
 
+// TODO: support for "new URL(url)" constructor.
 async function getResponsesWithFetch(configs: Config[]) {
   for (const config of configs) {
     if (config.use && config.use !== "fetch") continue; // "fetch" is default
