@@ -47,8 +47,9 @@ function getResponsesWithPuppeteer(configs) {
                     });
                     config.pageGoTo = Object.assign({ waitUntil: "domcontentloaded", timeout: 30000 }, config.pageGoTo);
                     log("Request sent.");
+                    const website = simpul_1.default.isURL(config.url) ? config.url.href : config.url;
                     if (config.waitForSelector) {
-                        yield page.goto(config.url, config.pageGoTo);
+                        yield page.goto(website, config.pageGoTo);
                         yield page.waitForSelector(config.waitForSelector, config.waitForSelectorOptions);
                         if ((_c = config.select) === null || _c === void 0 ? void 0 : _c.length) {
                             const [selector, ...values] = config.select;
@@ -63,7 +64,7 @@ function getResponsesWithPuppeteer(configs) {
                         config.response = simpul_1.default.parseJson(pageContent) || pageContent;
                     }
                     else {
-                        const response = yield page.goto(config.url, config.pageGoTo);
+                        const response = yield page.goto(website, config.pageGoTo);
                         if (response === null) {
                             throw new Error("Response is null.");
                         }

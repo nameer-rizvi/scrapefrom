@@ -22,6 +22,9 @@ function configurizeInputs(...inputs) {
     return configs;
 }
 function isConfig(input) {
-    return simpul_1.default.isObject(input) && simpul_1.default.isString(input.url);
+    if (!simpul_1.default.isObject(input))
+        return false;
+    const url = input.url;
+    return simpul_1.default.isURLString(url) || simpul_1.default.isURL(url);
 }
 exports.default = configurizeInputs;

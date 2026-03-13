@@ -49,8 +49,10 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
 
         log("Request sent.");
 
+        const website = simpul.isURL(config.url) ? config.url.href : config.url;
+
         if (config.waitForSelector) {
-          await page.goto(config.url, config.pageGoTo);
+          await page.goto(website, config.pageGoTo);
 
           await page.waitForSelector(
             config.waitForSelector,
@@ -72,7 +74,7 @@ async function getResponsesWithPuppeteer(configs: Config[]) {
 
           config.response = simpul.parseJson(pageContent) || pageContent;
         } else {
-          const response = await page.goto(config.url, config.pageGoTo);
+          const response = await page.goto(website, config.pageGoTo);
 
           if (response === null) {
             throw new Error("Response is null.");

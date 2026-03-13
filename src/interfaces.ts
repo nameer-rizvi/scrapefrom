@@ -11,7 +11,7 @@ export type KeyPath = { [key: string]: string };
 
 export interface Config {
   index?: number;
-  url: string;
+  url: string | URL;
   name?: string;
   use?: "fetch" | "puppeteer";
   log?: boolean;

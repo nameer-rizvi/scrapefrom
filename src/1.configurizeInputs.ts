@@ -21,7 +21,9 @@ function configurizeInputs(...inputs: unknown[]): Config[] {
 }
 
 function isConfig(input: unknown): input is Config {
-  return simpul.isObject(input) && simpul.isString((input as any).url);
+  if (!simpul.isObject(input)) return false;
+  const url = (input as any).url;
+  return simpul.isURLString(url) || simpul.isURL(url);
 }
 
 export default configurizeInputs;
