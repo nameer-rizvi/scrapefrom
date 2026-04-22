@@ -1,4 +1,4 @@
-import { writeFileSync } from "fs";
+import { writeFileSync, appendFileSync } from "fs";
 
 // Tell Node.js this folder contains CommonJS modules
 writeFileSync(
@@ -12,8 +12,8 @@ writeFileSync(
   JSON.stringify({ type: "module" }, null, 2),
 );
 
-// // Append CJS interop so require("...") returns the function directly
-// appendFileSync(
-//   "dist/cjs/index.js",
-//   `\nmodule.exports = exports.default;\nmodule.exports.default = exports.default;\n`,
-// );
+// Append CJS interop so require("...") returns the function directly
+appendFileSync(
+  "dist/cjs/index.js",
+  `\nmodule.exports = exports.default;\nmodule.exports.default = exports.default;\n`,
+);
