@@ -1,0 +1,114 @@
+import { type Config } from "./interfaces.js";
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
+import { type Browser, type Page, type HTTPRequest } from "puppeteer";
+import logger from "./logger.js";
+import * as utils from "@nameer/utils";
+
+const ABORT_TYPES = new Set(["image", "stylesheet", "font", "media"]);
+
+async function getResponsesWithPuppeteer(configs: Config[]): Promise<void> {
+  const puppeteerConfigs = configs.filter((c) => c.use === "puppeteer");
+
+  if (!puppeteerConfigs.length) return;
+
+  puppeteer.use(StealthPlugin());
+
+  const launchOptions = configs.find((c) => c.launch)?.launch;
+
+  const browser: Browser = await puppeteer.launch(launchOptions); // https://pptr.dev/guides/headless-modes/
+
+  try {
+    for (const config of puppeteerConfigs) {
+      if (!config.name) config.name = new URL(config.url).hostname;
+
+      const log = logger(config.log, "puppeteer", config.name);
+
+      const page: Page = await browser.newPage();
+
+      try {
+        if (config.cookies?.length) {
+          await page.setCookie(...config.cookies);
+        }
+
+        await page.setRequestInterception(true);
+
+        page.on("request", (req: HTTPRequest) => {
+          if (ABORT_TYPES.has(req.resourceType())) {
+            void req.abort();
+          } else {
+            void req.continue();
+          }
+        });
+
+        config.pageGoTo = {
+          waitUntil: "domcontentloaded",
+          timeout: 30000,
+          ...config.pageGoTo,
+        };
+
+        log("Request sent.");
+
+        const website = utils.isUrl(config.url) ? config.url.href : config.url;
+
+        if (config.waitForSelector) {
+          await page.goto(website, config.pageGoTo);
+
+          await page.waitForSelector(
+            config.waitForSelector,
+            config.waitForSelectorOptions,
+          );
+
+          if (config.select?.length) {
+            const [selector, ...values] = config.select;
+            await page.select(selector, ...values);
+          }
+
+          if (config.selects?.length) {
+            for (const [selector, ...values] of config.selects) {
+              await page.select(selector, ...values);
+            }
+          }
+
+          const pageContent = await page.content();
+
+          config.response = utils.parseJson(pageContent) ?? pageContent;
+        } else {
+          const response = await page.goto(website, config.pageGoTo);
+
+          if (response === null) {
+            throw new Error("Response is null.");
+          }
+
+          if (!response.ok()) {
+            const err = response.statusText() || response.status().toString();
+            throw new Error(err);
+          }
+
+          const parser = config.parser ?? "text";
+
+          const parsedResponse = (await response[parser]()) as unknown;
+
+          config.response = config.parser
+            ? parsedResponse
+            : utils.parseJson(parsedResponse) ?? parsedResponse;
+        }
+
+        log("Response received.");
+      } catch (error) {
+        if (error instanceof Error) {
+          config.error = error.toString();
+          log(config.error, "error");
+        }
+      } finally {
+        await page.close();
+      }
+    }
+  } finally {
+    await browser.close();
+  }
+}
+
+export default getResponsesWithPuppeteer;
+
+// https://pptr.dev/guides/getting-started

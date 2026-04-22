@@ -2,7 +2,7 @@
   "name": "scrapefrom",
   "packageManager": "yarn@4.13.0",
   "version": "2.7.0",
-  "description": "todo",
+  "description": "Scrape data from any publicly accessible webpage.",
   "author": "Nameer Rizvi (https://github.com/nameer-rizvi)",
   "license": "MIT",
   "repository": {
@@ -12,6 +12,9 @@
   "homepage": "https://github.com/nameer-rizvi/scrapefrom#readme",
   "bugs": {
     "url": "https://github.com/nameer-rizvi/scrapefrom/issues"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "keywords": [
     "typescript",
@@ -57,9 +60,26 @@
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
+    "@types/node": "^25.6.0",
     "eslint": "^10.2.0",
+    "puppeteer": "^24.42.0",
     "rimraf": "^6.1.3",
     "typescript": "^6.0.2",
     "typescript-eslint": "^8.58.0"
+  },
+  "dependencies": {
+    "@nameer/utils": "^0.1.2",
+    "cheerio": "^1.2.0",
+    "dottpath": "^0.2.3",
+    "puppeteer-extra": "^3.3.6",
+    "puppeteer-extra-plugin-stealth": "^2.11.2"
+  },
+  "peerDependencies": {
+    "puppeteer": ">=20"
+  },
+  "peerDependenciesMeta": {
+    "puppeteer": {
+      "optional": true
+    }
   }
 }
