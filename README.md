@@ -176,6 +176,7 @@ await scrapefrom({
 | Option                   | Type                     | Default   | Description                            |
 | ------------------------ | ------------------------ | --------- | -------------------------------------- |
 | `url`                    | `string \| URL`          |           | URL to scrape                          |
+| `name`                   | `string`                 |           | Name assigned to config for logging    |
 | `use`                    | `"fetch" \| "puppeteer"` | `"fetch"` | HTTP strategy to use                   |
 | `log`                    | `boolean`                | `false`   | Enable request/response logging        |
 | `timeout`                | `number`                 | `30000`   | Request timeout in milliseconds        |
@@ -201,9 +202,9 @@ await scrapefrom({
 | Option      | Type                          | Description                                     |
 | ----------- | ----------------------------- | ----------------------------------------------- |
 | `name`      | `string`                      | Key name in the result object                   |
+| `delimiter` | `string \| null`              | Join extracted array with this delimiter        |
 | `selector`  | `string`                      | CSS selector to query                           |
 | `attribute` | `string`                      | Element attribute to extract instead of text    |
-| `delimiter` | `string \| null`              | Join extracted array with this delimiter        |
 | `json`      | `boolean`                     | Extract JSON-LD or application/json script tags |
 | `filter`    | `(res) => boolean`            | Filter function for JSON extraction results     |
 | `keyPath`   | `Record<string, string>`      | Dot path key map for JSON extraction results    |
