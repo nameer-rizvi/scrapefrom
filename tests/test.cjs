@@ -7,7 +7,6 @@ scrapefrom(
     use: "puppeteer",
     name: "scrapefrom",
     log: true,
-    extractor: console.log,
   },
   // {
   //   url: new URL("https://jsonplaceholder.typicode.com/posts"),
@@ -26,7 +25,7 @@ scrapefrom(
   //     log: true,
   //   },
   // ],
-).then(console.log);
+).then((res) => console.log(res.result.extract(res.result.map)));
 
 // scrapefrom({
 //   url: "https://www.npmjs.com/package/scrapefrom",

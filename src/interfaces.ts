@@ -9,6 +9,8 @@ import type {
 
 export type PathResolver = Record<string, string>;
 
+export type StringOrNull = string | null;
+
 export interface Config {
   url: string | URL;
   name?: string;
@@ -30,15 +32,16 @@ export interface Config {
   extractor?: (res: unknown) => unknown; // The `res` argument will be a `CheerioAPI` instance when scraping HTML pages.
   extract?: ExtractConfig;
   extracts?: ExtractConfig[];
-  // delimiter?: string | null;
+  delimiter?: StringOrNull;
   result?: unknown;
   includeResponse?: boolean;
   includeTimeout?: boolean;
 }
 
 export interface ExtractConfig {
-  name?: string;
-  // delimiter?: string | null;
+  todo: unknown;
+  // name?: string;
+  // delimiter?: StringOrNull;
   // selector?: string;
   // attribute?: string;
   // json?: boolean;
@@ -49,16 +52,16 @@ export interface ExtractConfig {
   // extractor?: ($: CheerioAPI, parentNode?: Cheerio<AnyNode>) => unknown;
 }
 
-// export interface HtmlData {
-//   head: JsonNode;
-//   body: JsonNode;
-//   map: string[];
-//   extract: (path: string) => unknown;
-// }
+export interface HtmlData {
+  head: JsonNode;
+  body: JsonNode;
+  map: string[];
+  extract: (path: unknown) => unknown;
+}
 
-// export interface JsonNode {
-//   tag: string | null;
-//   attributes: Record<string, unknown>;
-//   children: JsonNode[];
-//   textContent: string | null;
-// }
+export interface JsonNode {
+  tag: StringOrNull;
+  attributes: Record<string, unknown>;
+  children: JsonNode[];
+  textContent: StringOrNull;
+}

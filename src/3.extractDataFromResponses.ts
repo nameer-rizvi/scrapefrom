@@ -2,8 +2,8 @@ import { type Config } from "./interfaces.js";
 import * as utils from "@nameer/utils";
 import * as cheerio from "cheerio";
 import extractDataWithKeyPath from "./3.extractDataWithKeyPath.js";
-// import extractHTMLData1 from "./3.extractHTMLData.1.js";
-// import extractHTMLData2 from "./3.extractHTMLData.2.js";
+// import extractHTMLData1 from "./3.extractHtmlData.1.js";
+import extractHTMLData2 from "./3.extractHtmlData.2.js";
 
 function extractDataFromResponses(configs: Config[]): void {
   for (const config of configs) {
@@ -20,7 +20,7 @@ function extractDataFromResponses(configs: Config[]): void {
       } else if (config.extract ?? config.extracts) {
         // config.result = extractHTMLData1(config, $);
       } else {
-        // config.result = extractHTMLData2($);
+        config.result = extractHTMLData2($);
       }
     }
 

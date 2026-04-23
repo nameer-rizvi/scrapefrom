@@ -1,11 +1,11 @@
-// import { type Config, type ExtractConfig } from "./interfaces.js";
+// import { type Config,type StringOrNull, type ExtractConfig } from "./interfaces.js";
 // import { type CheerioAPI, type Cheerio } from "cheerio";
 // import type { AnyNode } from "domhandler";
 // import * as cheerio from "cheerio";
 // import * as utils from "@nameer/utils";
 // import extractDataWithKeyPath from "./3.extractDataWithKeyPath.js";
 
-// function extractHTMLData1(
+// function extractHtmlData1(
 //   config: Partial<Config>,
 //   $: CheerioAPI,
 //   parentNode?: Cheerio<AnyNode>,
@@ -28,7 +28,7 @@
 //     } = extractConfigs[i];
 
 //     let name: string;
-//     let delimiter: string | null | undefined;
+//     let delimiter: StringOrNull | undefined;
 
 //     if (utils.isString(explicitName)) {
 //       name = explicitName;
@@ -80,7 +80,7 @@
 //       $(selector).each((_, child) => {
 //         const html = $(child).html() ?? "";
 //         const $$ = cheerio.load(html, { xml: { decodeEntities: false } });
-//         array.push(extractHTMLData1(nestedConfig, $$, $(child)));
+//         array.push(extractHtmlData1(nestedConfig, $$, $(child)));
 //       });
 
 //       result[name] = array;
@@ -127,7 +127,7 @@
 //   return extractConfigs;
 // }
 
-// export default extractHTMLData1;
+// export default extractHtmlData1;
 
 // // import { Config, ExtractConfig } from "./interfaces";
 // // import { CheerioAPI, Cheerio } from "cheerio";
@@ -136,7 +136,7 @@
 // // import simpul from "simpul";
 // // import extractDataWithKeyPath from "./3.extractDataWithKeyPath";
 
-// // function extractHTMLData1(
+// // function extractHtmlData1(
 // //   config: Partial<Config>,
 // //   $: CheerioAPI,
 // //   parentNode?: Cheerio<AnyNode>,
@@ -207,7 +207,7 @@
 // //       $(selector).each((_, child) => {
 // //         const html = $(child).html() || "";
 // //         const $$ = cheerio.load(html, { xml: { decodeEntities: false } });
-// //         array.push(extractHTMLData1(nestedConfig, $$, $(child)));
+// //         array.push(extractHtmlData1(nestedConfig, $$, $(child)));
 // //       });
 // //       result[name] = array;
 // //     } else if (extractCustom) {
@@ -251,4 +251,4 @@
 // //   return extractConfigs;
 // // }
 
-// // export default extractHTMLData1;
+// // export default extractHtmlData1;
