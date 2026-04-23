@@ -2,20 +2,24 @@ const scrapefrom = require("../dist/cjs/index.js");
 
 scrapefrom(
   // "https://dcmusic.live/",
-  // {
-  //   url: "https://www.npmjs.com/package/scrapefrom",
-  //   name: "scrapefrom",
-  //   log: true,
-  // },
+  {
+    url: "https://www.npmjs.com/package/scrapefrom",
+    use: "puppeteer",
+    name: "scrapefrom",
+    log: true,
+  },
   {
     url: new URL("https://jsonplaceholder.typicode.com/posts"),
+    use: "puppeteer",
     log: true,
     parser: "json",
   },
   [
     {
       url: "https://httpbin.org/delay/10",
+      use: "puppeteer",
       timeout: 1000,
+      pageGoTo: { timeout: 1000 },
       log: true,
     },
   ],

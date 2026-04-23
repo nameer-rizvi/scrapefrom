@@ -1,9 +1,9 @@
-// import type {
-//   LaunchOptions,
-//   CookieData,
-//   GoToOptions,
-//   WaitForSelectorOptions,
-// } from "puppeteer";
+import type {
+  LaunchOptions,
+  CookieData,
+  GoToOptions,
+  WaitForSelectorOptions,
+} from "puppeteer";
 // import type { CheerioAPI, Cheerio } from "cheerio";
 // import type { AnyNode } from "domhandler";
 
@@ -17,13 +17,13 @@ export interface Config {
   timeout?: ReturnType<typeof setTimeout>;
   fetch?: RequestInit;
   parser?: "json" | "text"; // Puppeteer-supported parsers only.
-  // launch?: LaunchOptions;
-  // cookies?: CookieData[];
-  // pageGoTo?: GoToOptions;
-  // waitForSelector?: string;
-  // waitForSelectorOptions?: WaitForSelectorOptions;
-  // select?: string[];
-  // selects?: string[][];
+  launch?: LaunchOptions;
+  cookies?: CookieData[];
+  pageGoTo?: GoToOptions;
+  waitForSelector?: string;
+  waitForSelectorOptions?: WaitForSelectorOptions;
+  select?: string[];
+  selects?: string[][];
   response?: unknown;
   error?: string;
   // keyPath?: PathResolver;
