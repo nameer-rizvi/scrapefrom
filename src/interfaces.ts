@@ -4,8 +4,8 @@ import type {
   GoToOptions,
   WaitForSelectorOptions,
 } from "puppeteer";
-// import type { CheerioAPI, Cheerio } from "cheerio";
-// import type { AnyNode } from "domhandler";
+import type { CheerioAPI, Cheerio } from "cheerio";
+import type { AnyNode } from "domhandler";
 
 export type PathResolver = Record<string, string>;
 
@@ -39,17 +39,16 @@ export interface Config {
 }
 
 export interface ExtractConfig {
-  todo: unknown;
-  // name?: string;
-  // delimiter?: StringOrNull;
-  // selector?: string;
-  // attribute?: string;
-  // json?: boolean;
-  // filter?: (res: unknown) => boolean;
-  // keyPath?: PathResolver;
-  // extract?: ExtractConfig;
-  // extracts?: ExtractConfig[];
-  // extractor?: ($: CheerioAPI, parentNode?: Cheerio<AnyNode>) => unknown;
+  name?: string;
+  delimiter?: StringOrNull;
+  selector?: string;
+  attribute?: string;
+  json?: boolean;
+  filter?: (res: unknown) => boolean;
+  keyPath?: PathResolver;
+  extract?: ExtractConfig;
+  extracts?: ExtractConfig[];
+  extractor?: ($: CheerioAPI, parentNode?: Cheerio<AnyNode>) => unknown;
 }
 
 export interface HtmlData {
