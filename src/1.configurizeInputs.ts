@@ -4,16 +4,13 @@ import * as utils from "@nameer/utils";
 function configurizeInputs(...inputs: unknown[]): Config[] {
   const configs: Config[] = [];
 
-  let index = 0;
-
   for (const input of inputs) {
     if (utils.isString(input)) {
       configs.push({ url: input });
     } else if (utils.isArray(input)) {
       configs.push(...configurizeInputs(...(input as unknown[])));
     } else if (isConfig(input)) {
-      configs.push({ index, ...input });
-      index++;
+      configs.push(input);
     }
   }
 

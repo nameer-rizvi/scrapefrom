@@ -1,8 +1,8 @@
 import { type Config } from "./interfaces.js";
 import configurizeInputs from "./1.configurizeInputs.js";
 import getResponsesWithFetch from "./2.getResponsesWithFetch.js";
-import getResponsesWithPuppeteer from "./2.getResponsesWithPuppeteer.js";
-import extractDataFromResponses from "./3.extractDataFromResponses.js";
+// import getResponsesWithPuppeteer from "./2.getResponsesWithPuppeteer.js";
+// import extractDataFromResponses from "./3.extractDataFromResponses.js";
 
 /**
  * Scrapes data from one or more webpages.
@@ -27,14 +27,12 @@ async function scrapefrom(...inputs: unknown[]): Promise<Config | Config[]> {
 
   await getResponsesWithFetch(configs);
 
-  await getResponsesWithPuppeteer(configs);
-
-  extractDataFromResponses(configs);
-
-  if (configs.length === 1) {
-    if (configs[0]?.error) throw new Error(configs[0].error);
-    return configs[0];
-  }
+  // await getResponsesWithPuppeteer(configs);
+  // extractDataFromResponses(configs);
+  // if (configs.length === 1) {
+  //   if (configs[0]?.error) throw new Error(configs[0].error);
+  //   return configs[0];
+  // }
 
   return configs;
 }

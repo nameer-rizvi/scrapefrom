@@ -29,7 +29,9 @@ async function getResponsesWithFetch(configs: Config[]): Promise<void> {
 
       log("Response received.");
 
-      const parsedResponse = await response[config.parser ?? "text"]();
+      const parser = config.parser ?? "text";
+
+      const parsedResponse = (await response[parser]()) as unknown;
 
       config.response = config.parser
         ? parsedResponse

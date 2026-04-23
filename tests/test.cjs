@@ -1,6 +1,25 @@
 const scrapefrom = require("../dist/cjs/index.js");
 
-// scrapefrom("https://dcmusic.live/").then(console.log);
+scrapefrom(
+  // "https://dcmusic.live/",
+  // {
+  //   url: "https://www.npmjs.com/package/scrapefrom",
+  //   name: "scrapefrom",
+  //   log: true,
+  // },
+  {
+    url: new URL("https://jsonplaceholder.typicode.com/posts"),
+    log: true,
+    parser: "json",
+  },
+  [
+    {
+      url: "https://httpbin.org/delay/10",
+      timeout: 1000,
+      log: true,
+    },
+  ],
+).then(console.log);
 
 // scrapefrom({
 //   url: "https://www.npmjs.com/package/scrapefrom",
@@ -51,20 +70,20 @@ const scrapefrom = require("../dist/cjs/index.js");
 //   },
 // ]).then(console.log);
 
-scrapefrom({
-  url: "https://www.npmjs.com/package/async-fetch",
-  use: "puppeteer",
-  delimiter: "",
-  extract: {
-    selector: "tbody tr",
-    name: "rows",
-    extracts: [
-      { selector: "td:nth-child(1)", name: "key" },
-      { selector: "td:nth-child(2)", name: "type" },
-      { selector: "td:nth-child(3)", name: "definition" },
-      { selector: "td:nth-child(4)", name: "default" },
-    ],
-  },
-}).then(console.log);
+// scrapefrom({
+//   url: "https://www.npmjs.com/package/async-fetch",
+//   use: "puppeteer",
+//   delimiter: "",
+//   extract: {
+//     selector: "tbody tr",
+//     name: "rows",
+//     extracts: [
+//       { selector: "td:nth-child(1)", name: "key" },
+//       { selector: "td:nth-child(2)", name: "type" },
+//       { selector: "td:nth-child(3)", name: "definition" },
+//       { selector: "td:nth-child(4)", name: "default" },
+//     ],
+//   },
+// }).then((res) => console.log(res.result));
 
 // console.log({ cjs: scrapefrom });
