@@ -26,30 +26,30 @@ export interface Config {
   selects?: string[][];
   response?: unknown;
   error?: string;
-  // keyPath?: PathResolver;
-  // extractor?: (res: unknown) => unknown; // The `res` argument will be a `CheerioAPI` instance when scraping HTML pages.
-  // extract?: ExtractConfig;
-  // extracts?: ExtractConfig[];
+  keyPath?: PathResolver;
+  extractor?: (res: unknown) => unknown; // The `res` argument will be a `CheerioAPI` instance when scraping HTML pages.
+  extract?: ExtractConfig;
+  extracts?: ExtractConfig[];
   // delimiter?: string | null;
-  // result?: unknown;
-  // includeResponse?: boolean;
-  // includeTimeout?: boolean;
+  result?: unknown;
+  includeResponse?: boolean;
+  includeTimeout?: boolean;
 }
 
-// export interface ExtractConfig {
-//   name?: string;
-//   delimiter?: string | null;
-//   selector?: string;
-//   attribute?: string;
-//   json?: boolean;
-//   filter?: (res: unknown) => boolean;
-//   keyPath?: PathResolver;
-//   extract?: ExtractConfig;
-//   extracts?: ExtractConfig[];
-//   extractor?: ($: CheerioAPI, parentNode?: Cheerio<AnyNode>) => unknown;
-// }
+export interface ExtractConfig {
+  name?: string;
+  // delimiter?: string | null;
+  // selector?: string;
+  // attribute?: string;
+  // json?: boolean;
+  // filter?: (res: unknown) => boolean;
+  // keyPath?: PathResolver;
+  // extract?: ExtractConfig;
+  // extracts?: ExtractConfig[];
+  // extractor?: ($: CheerioAPI, parentNode?: Cheerio<AnyNode>) => unknown;
+}
 
-// export interface HTMLData {
+// export interface HtmlData {
 //   head: JsonNode;
 //   body: JsonNode;
 //   map: string[];

@@ -7,22 +7,25 @@ scrapefrom(
     use: "puppeteer",
     name: "scrapefrom",
     log: true,
+    extractor: console.log,
   },
-  {
-    url: new URL("https://jsonplaceholder.typicode.com/posts"),
-    use: "puppeteer",
-    log: true,
-    parser: "json",
-  },
-  [
-    {
-      url: "https://httpbin.org/delay/10",
-      use: "puppeteer",
-      timeout: 1000,
-      pageGoTo: { timeout: 1000 },
-      log: true,
-    },
-  ],
+  // {
+  //   url: new URL("https://jsonplaceholder.typicode.com/posts"),
+  //   log: true,
+  //   parser: "json",
+  //   keyPath: {
+  //     id: "1.id",
+  //     user: "0.userId",
+  //   },
+  // },
+  // [
+  //   {
+  //     url: "https://httpbin.org/delay/10",
+  //     timeout: 1000,
+  //     pageGoTo: { timeout: 1000 },
+  //     log: true,
+  //   },
+  // ],
 ).then(console.log);
 
 // scrapefrom({
