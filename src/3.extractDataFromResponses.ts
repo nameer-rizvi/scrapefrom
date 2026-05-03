@@ -16,7 +16,7 @@ function extractDataFromResponses(configs: Config[]): void {
     } else if (utils.isString(config.response)) {
       const $ = cheerio.load(config.response);
       if (utils.isFunction(config.extractor)) {
-        config.result = config.extractor($);
+        config.result = config.extractor($, config.response);
       } else if (config.extract ?? config.extracts) {
         config.result = extractHtmlData1(config, $);
       } else {

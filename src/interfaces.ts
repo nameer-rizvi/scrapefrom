@@ -29,7 +29,7 @@ export interface Config {
   response?: unknown;
   error?: string;
   keyPath?: PathResolver;
-  extractor?: (res: unknown) => unknown; // The `res` argument will be a `CheerioAPI` instance when scraping HTML pages.
+  extractor?: (res: unknown, raw?: string) => unknown; // The `res` argument will be a `CheerioAPI` instance when scraping HTML pages.
   extract?: ExtractConfig;
   extracts?: ExtractConfig[];
   delimiter?: StringOrNull;
