@@ -21,6 +21,7 @@ export interface Config {
   parser?: "json" | "text"; // Puppeteer-supported parsers only.
   launch?: LaunchOptions;
   cookies?: CookieData[];
+  preNavigate?: { url: string; pageGoTo?: GoToOptions };
   pageGoTo?: GoToOptions;
   waitForSelector?: string;
   waitForSelectorOptions?: WaitForSelectorOptions;

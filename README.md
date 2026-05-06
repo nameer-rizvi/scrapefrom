@@ -173,41 +173,42 @@ await scrapefrom({
 
 ## Config options
 
-| Option                   | Type                     | Default   | Description                            |
-| ------------------------ | ------------------------ | --------- | -------------------------------------- |
-| `url`                    | `string \| URL`          |           | URL to scrape                          |
-| `name`                   | `string`                 |           | Name assigned to config for logging    |
-| `use`                    | `"fetch" \| "puppeteer"` | `"fetch"` | HTTP strategy to use                   |
-| `log`                    | `boolean`                | `false`   | Enable request/response logging        |
-| `timeout`                | `number`                 | `30000`   | Request timeout in milliseconds        |
-| `fetch`                  | `RequestInit`            |           | Options passed to the `fetch` call     |
-| `parser`                 | `"json" \| "text"`       | `"text"`  | Response parser                        |
-| `launch`                 | `LaunchOptions`          |           | Puppeteer launch options               |
-| `cookies`                | `CookieData[]`           |           | Cookies to set before the request      |
-| `pageGoTo`               | `GoToOptions`            |           | Puppeteer page navigation options      |
-| `waitForSelector`        | `string`                 |           | Selector to wait for before extracting |
-| `waitForSelectorOptions` | `WaitForSelectorOptions` |           | Options for `waitForSelector`          |
-| `select`                 | `string[]`               |           | Selector and values for `page.select`  |
-| `selects`                | `string[][]`             |           | Multiple `page.select` calls           |
-| `extractor`              | `(res) => unknown`       |           | Custom extractor function              |
-| `extract`                | `ExtractConfig`          |           | Single extraction config               |
-| `extracts`               | `ExtractConfig[]`        |           | Multiple extraction configs            |
-| `keyPath`                | `Record<string, string>` |           | Dot path key map for JSON responses    |
-| `delimiter`              | `string \| null`         |           | Delimiter for joining extracted arrays |
-| `includeResponse`        | `boolean`                | `false`   | Include raw response in result         |
-| `includeTimeout`         | `boolean`                | `false`   | Include timeout in result              |
+| Option                   | Type                     | Default        | Description                            |
+| ------------------------ | ------------------------ | -------------- | -------------------------------------- |
+| `url`                    | `string \| URL`          |                | URL to scrape                          |
+| `name`                   | `string`                 | `url.hostname` | Custom name assigned to config         |
+| `use`                    | `"fetch" \| "puppeteer"` | `"fetch"`      | HTTP strategy to use                   |
+| `log`                    | `boolean`                | `false`        | Enable request/response logging        |
+| `timeout`                | `number`                 | `30000`        | Request timeout in milliseconds        |
+| `fetch`                  | `RequestInit`            |                | Options passed to the `fetch` call     |
+| `parser`                 | `"json" \| "text"`       | `"text"`       | Response parser                        |
+| `launch`                 | `LaunchOptions`          |                | Puppeteer launch options               |
+| `cookies`                | `CookieData[]`           |                | Cookies to set before page request     |
+| `preNavigate`            | `{ url, pageGoTo? }`     |                | Optional pre-navigation page request   |
+| `pageGoTo`               | `GoToOptions`            |                | Puppeteer page navigation options      |
+| `waitForSelector`        | `string`                 |                | Selector to wait for before parsing    |
+| `waitForSelectorOptions` | `WaitForSelectorOptions` |                | Options for `waitForSelector`          |
+| `select`                 | `string[]`               |                | Selector and values for `page.select`  |
+| `selects`                | `string[][]`             |                | Multiple `page.select` calls           |
+| `keyPath`                | `PathResolver`           |                | Dot path key map for JSON responses    |
+| `extractor`              | `(res, raw) => unknown`  |                | Custom extractor function              |
+| `extract`                | `ExtractConfig`          |                | Single extraction config               |
+| `extracts`               | `ExtractConfig[]`        |                | Multiple extraction configs            |
+| `delimiter`              | `string \| null`         |                | Delimiter for joining extracted arrays |
+| `includeResponse`        | `boolean`                | `false`        | Include raw response in result         |
+| `includeTimeout`         | `boolean`                | `false`        | Include timeout in result              |
 
 ## ExtractConfig options
 
 | Option      | Type                          | Description                                     |
 | ----------- | ----------------------------- | ----------------------------------------------- |
-| `name`      | `string`                      | Key name in the result object                   |
+| `name`      | `string`                      | Config name assigned to result                  |
 | `delimiter` | `string \| null`              | Join extracted array with this delimiter        |
 | `selector`  | `string`                      | CSS selector to query                           |
-| `attribute` | `string`                      | Element attribute to extract instead of text    |
+| `attribute` | `string`                      | Element attribute to extract instead of content |
 | `json`      | `boolean`                     | Extract JSON-LD or application/json script tags |
 | `filter`    | `(res) => boolean`            | Filter function for JSON extraction results     |
-| `keyPath`   | `Record<string, string>`      | Dot path key map for JSON extraction results    |
+| `keyPath`   | `PathResolver`                | Dot path key map for JSON extraction results    |
 | `extract`   | `ExtractConfig`               | Nested extraction config                        |
 | `extracts`  | `ExtractConfig[]`             | Multiple nested extraction configs              |
 | `extractor` | `($, parentNode?) => unknown` | Custom extractor function                       |

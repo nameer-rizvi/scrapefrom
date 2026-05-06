@@ -51,6 +51,11 @@ async function getResponsesWithPuppeteer(configs: Config[]): Promise<void> {
 
         const website = utils.isUrl(config.url) ? config.url.href : config.url;
 
+        if (config.preNavigate) {
+          await page.goto(config.preNavigate.url, config.preNavigate.pageGoTo);
+          await new Promise((r) => setTimeout(r, 1500)); // let cookies settle
+        }
+
         if (config.waitForSelector) {
           await page.goto(website, config.pageGoTo);
 

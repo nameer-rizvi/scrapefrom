@@ -1,7 +1,7 @@
 {
   "name": "scrapefrom",
   "packageManager": "yarn@4.13.0",
-  "version": "2.7.1",
+  "version": "2.7.2",
   "description": "Scrape data from any publicly accessible webpage.",
   "author": "Nameer Rizvi (https://github.com/nameer-rizvi)",
   "license": "MIT",
