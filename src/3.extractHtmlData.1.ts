@@ -6,7 +6,7 @@ import {
 import { type CheerioAPI, type Cheerio } from "cheerio";
 import type { AnyNode } from "domhandler";
 import extractDataWithKeyPath from "./3.extractDataWithKeyPath.js";
-import * as utils from "@nameer/utils";
+import * as utilN from "@nameer/utils";
 import * as cheerio from "cheerio";
 
 function extractHtmlData1(
@@ -35,19 +35,19 @@ function extractHtmlData1(
     let name: string;
     let delimiter: StringOrNull | undefined;
 
-    if (utils.isString(explicitName)) {
+    if (utilN.isString(explicitName)) {
       name = explicitName;
-    } else if (utils.isString(selector)) {
+    } else if (utilN.isString(selector)) {
       name = [selector, attribute].filter(Boolean).join(" ");
     } else {
       name = i.toString();
     }
 
-    if (utils.isString(localDelimiter)) {
+    if (utilN.isString(localDelimiter)) {
       delimiter = localDelimiter;
     } else if (localDelimiter === null) {
       delimiter = null;
-    } else if (utils.isString(config.delimiter)) {
+    } else if (utilN.isString(config.delimiter)) {
       delimiter = config.delimiter;
     } else if (config.delimiter === null) {
       delimiter = null;
@@ -58,8 +58,8 @@ function extractHtmlData1(
       for (const scriptType of ["application/ld+json", "application/json"]) {
         $(`script[type="${scriptType}"]`).each((_, child) => {
           const html = $(child).html() ?? "";
-          let json = utils.parseJson(html);
-          if (!json) json = utils.parseJson(html.replace(/\\/g, ""));
+          let json = utilN.parseJson(html);
+          if (!json) json = utilN.parseJson(html.replace(/\\/g, ""));
           if (json) array.push(json);
         });
       }
@@ -90,10 +90,10 @@ function extractHtmlData1(
       const array: string[] = [];
       $(selector).each((_, child) => {
         const text = attribute ? $(child).attr(attribute) : $(child).text();
-        const item = utils.trim(text);
-        if (utils.isStringNonEmpty(item)) array.push(item);
+        const item = utilN.trim(text);
+        if (utilN.isStringNonEmpty(item)) array.push(item);
       });
-      result[name] = utils.isString(delimiter) ? array.join(delimiter) : array;
+      result[name] = utilN.isString(delimiter) ? array.join(delimiter) : array;
     }
   }
 
@@ -106,16 +106,16 @@ function getExtractConfigs(
 ): ExtractConfig[] {
   const extractConfigs: ExtractConfig[] = [];
   for (const extractConfig of [extract, ...extracts]) {
-    if (utils.isString(extractConfig)) {
+    if (utilN.isString(extractConfig)) {
       extractConfigs.push({ selector: extractConfig });
-    } else if (utils.isArray(extractConfig)) {
+    } else if (utilN.isArray(extractConfig)) {
       const castedExtractConfig = extractConfig as ExtractConfig[];
       extractConfigs.push(...getExtractConfigs(...castedExtractConfig));
-    } else if (utils.isObject(extractConfig)) {
+    } else if (utilN.isObject(extractConfig)) {
       const isValid =
         extractConfig.json === true ||
-        utils.isString(extractConfig.selector) ||
-        utils.isFunction(extractConfig.extractor);
+        utilN.isString(extractConfig.selector) ||
+        utilN.isFunction(extractConfig.extractor);
       if (isValid) extractConfigs.push(extractConfig);
     }
   }

@@ -3,7 +3,7 @@ import puppeteer from "puppeteer-extra";
 import StealthPlugin from "puppeteer-extra-plugin-stealth";
 import { type Browser, type Page, type HTTPRequest } from "puppeteer";
 import logger from "./logger.js";
-import * as utils from "@nameer/utils";
+import * as utilN from "@nameer/utils";
 
 const ABORT_TYPES = new Set(["image", "stylesheet", "font", "media"]);
 
@@ -49,7 +49,7 @@ async function getResponsesWithPuppeteer(configs: Config[]): Promise<void> {
 
         log("Request sent.");
 
-        const website = utils.isUrl(config.url) ? config.url.href : config.url;
+        const website = utilN.isUrl(config.url) ? config.url.href : config.url;
 
         if (config.preNavigate) {
           await page.goto(config.preNavigate.url, config.preNavigate.pageGoTo);
@@ -77,7 +77,7 @@ async function getResponsesWithPuppeteer(configs: Config[]): Promise<void> {
 
           const pageContent = await page.content();
 
-          config.response = utils.parseJson(pageContent) ?? pageContent;
+          config.response = utilN.parseJson(pageContent) ?? pageContent;
         } else {
           const response = await page.goto(website, config.pageGoTo);
 
@@ -96,7 +96,7 @@ async function getResponsesWithPuppeteer(configs: Config[]): Promise<void> {
 
           config.response = config.parser
             ? parsedResponse
-            : utils.parseJson(parsedResponse) ?? parsedResponse;
+            : utilN.parseJson(parsedResponse) ?? parsedResponse;
         }
 
         log("Response received.");

@@ -1,13 +1,13 @@
 import { type Config } from "./interfaces.js";
-import * as utils from "@nameer/utils";
+import * as utilN from "@nameer/utils";
 
 function configurizeInputs(...inputs: unknown[]): Config[] {
   const configs: Config[] = [];
 
   for (const input of inputs) {
-    if (utils.isString(input)) {
+    if (utilN.isString(input)) {
       configs.push({ url: input });
-    } else if (utils.isArray(input)) {
+    } else if (utilN.isArray(input)) {
       configs.push(...configurizeInputs(...(input as unknown[])));
     } else if (isConfig(input)) {
       configs.push(input);
@@ -18,9 +18,9 @@ function configurizeInputs(...inputs: unknown[]): Config[] {
 }
 
 function isConfig(input: unknown): input is Config {
-  if (!utils.isObject(input)) return false;
+  if (!utilN.isObject(input)) return false;
   const url = (input as unknown as Config).url;
-  return utils.isUrlString(url) || utils.isUrl(url);
+  return utilN.isUrlString(url) || utilN.isUrl(url);
 }
 
 export default configurizeInputs;

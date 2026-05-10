@@ -1,6 +1,6 @@
 import { type Config } from "./interfaces.js";
 import logger from "./logger.js";
-import * as utils from "@nameer/utils";
+import * as utilN from "@nameer/utils";
 
 async function getResponsesWithFetch(configs: Config[]): Promise<void> {
   for (const config of configs) {
@@ -13,7 +13,7 @@ async function getResponsesWithFetch(configs: Config[]): Promise<void> {
     try {
       const controller = new AbortController();
 
-      const timeoutMs = utils.isNumber(config.timeout) ? config.timeout : 30000;
+      const timeoutMs = utilN.isNumber(config.timeout) ? config.timeout : 30000;
 
       config.timeout = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -35,7 +35,7 @@ async function getResponsesWithFetch(configs: Config[]): Promise<void> {
 
       config.response = config.parser
         ? parsedResponse
-        : utils.parseJson(parsedResponse) ?? parsedResponse;
+        : utilN.parseJson(parsedResponse) ?? parsedResponse;
     } catch (error) {
       if (error instanceof Error) {
         config.error = error.toString();

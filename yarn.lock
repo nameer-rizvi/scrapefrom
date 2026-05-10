@@ -140,9 +140,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nameer/utils@npm:^0.1.2":
-  version: 0.1.2
-  resolution: "@nameer/utils@npm:0.1.2"
+"@nameer/utils@npm:^0.1.3":
+  version: 0.1.3
+  resolution: "@nameer/utils@npm:0.1.3"
   dependencies:
     change-case: "npm:^5.4.4"
     he: "npm:^1.2.0"
@@ -150,7 +150,7 @@ __metadata:
     pluralize: "npm:^8.0.0"
     safe-regex: "npm:^2.1.1"
     string-strip-html: "npm:^13.5.3"
-  checksum: 10c0/324f2f26ba8f9379467fa306aae998d1e0578909eed50145827bd878e2a784de85ec33b7d1d32f364b77c44b6b507730d0661eb26a01b17ba0ed3bb64d25fba8
+  checksum: 10c0/d76a393cb763511ab51cfdee568d5664fd2ec9a639cb086d9873e67ef979b6d96e9ac8ce5334480279c114f19bc124c73f493bf6b81c624b99223a4d2754fbd7
   languageName: node
   linkType: hard
 
@@ -854,12 +854,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"dottpath@npm:^0.2.3":
-  version: 0.2.3
-  resolution: "dottpath@npm:0.2.3"
+"dottpath@npm:^0.2.4":
+  version: 0.2.4
+  resolution: "dottpath@npm:0.2.4"
   dependencies:
-    "@nameer/utils": "npm:^0.1.2"
-  checksum: 10c0/61da4259344b63d5e490136b634c9aab673d580bfb8543cd251f9bca5a203628c8e2f196f6ececcefa63c0af9dcf3ccccb7e699b5f6ac7d118ab040707ced785
+    "@nameer/utils": "npm:^0.1.3"
+  checksum: 10c0/d7ed90e60041b5b4c7ab082053415b3145da685bc8f064fb9e82e7358694c4bc6fe1ad10d5b7b01625c4f2f1fa7b1de6717a1686e89fb54c859aff54afdad88e
   languageName: node
   linkType: hard
 
@@ -2198,10 +2198,10 @@ __metadata:
   resolution: "scrapefrom@workspace:."
   dependencies:
     "@eslint/js": "npm:^10.0.1"
-    "@nameer/utils": "npm:^0.1.2"
+    "@nameer/utils": "npm:^0.1.3"
     "@types/node": "npm:^25.6.0"
     cheerio: "npm:^1.2.0"
-    dottpath: "npm:^0.2.3"
+    dottpath: "npm:^0.2.4"
     eslint: "npm:^10.2.0"
     puppeteer: "npm:^24.42.0"
     puppeteer-extra: "npm:^3.3.6"

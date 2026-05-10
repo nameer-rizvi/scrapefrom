@@ -1,7 +1,7 @@
-import * as utils from "@nameer/utils";
+import * as utilN from "@nameer/utils";
 
 function logger(isEnabled = false, processName: string, configName: string) {
-  if (isEnabled !== true) return utils.noop;
+  if (isEnabled !== true) return utilN.noop;
 
   const prefix = processName.slice(0, 3);
 

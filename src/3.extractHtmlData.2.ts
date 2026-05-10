@@ -2,7 +2,7 @@ import { type CheerioAPI, type Cheerio } from "cheerio";
 import type { AnyNode } from "domhandler";
 import { type HtmlData, type JsonNode } from "./interfaces.js";
 import dottpath from "dottpath";
-import * as utils from "@nameer/utils";
+import * as utilN from "@nameer/utils";
 
 function extractHtmlData2($: CheerioAPI): HtmlData {
   const head = nodeToJson($("head"), $);
@@ -24,7 +24,7 @@ function nodeToJson(node: Cheerio<AnyNode>, $: CheerioAPI): JsonNode {
 
   const element = node[0] as unknown as Record<string, unknown>;
 
-  jsonNode.textContent = utils.trim(element.data) ?? null;
+  jsonNode.textContent = utilN.trim(element.data) ?? null;
 
   jsonNode.tag = (element.tagName as string)?.toLowerCase() ?? null;
 
